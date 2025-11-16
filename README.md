@@ -1,40 +1,73 @@
-# 🛠️ 팀별 협업 가이드
+# React + TypeScript + Vite
 
-### 1. 중앙 레포지토리 Fork
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-각 팀은 본 레포지토리를 **Fork**하여 팀별 저장소를 생성합니다.
+Currently, two official plugins are available:
 
-- ex. `12th-Integrated-Team6`  (6조의 경우)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### 2. 팀 협업 환경 구성
+## React Compiler
 
-- 팀장은 **팀원들을 Collaborator로 초대**합니다.
-- 팀원들은 팀 저장소를 **Clone**하여 로컬 개발 환경을 세팅합니다.
-- 세팅 시 필요한 패키지나 환경 변수는 팀 내에서 공유해주세요.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### 3. 브랜치 전략
+## Expanding the ESLint configuration
 
-- 팀별 저장소의 기본 브랜치는 `develop`입니다.
-- 각 조는 **조별 네이밍 규칙**에 맞게 기능 브랜치를 생성해 작업합니다.
-    - ex. `feat/home`, `fix/weather-error`
-    - 꼭 위 예시의 형식이 아니라도 팀별로 통일하여 작업하면 됩니다.
-- 커밋 메시지는 한눈에 기능이 파악되도록 작성해주세요.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### 4. 최종 결과물 제출
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-- 모든 구현이 완료되면,
-    
-    팀 저장소의 `develop` 브랜치에서 **본 레포지토리의** `develop` **브랜치**로 PR을 생성합니다.
-  > 💬 PR 시 자동으로 템플릿이 적용됩니다. 구현 내용, 트러블슈팅, 배운 점 등을 템플릿에 맞게 작성해주세요.
-    
-- PR 제목 예시:
-    
-    ```
-    [6조] 프론트엔드 통합 네트워킹 과제 제출
-    ```
-    
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-### 5. 코드 리뷰 및 병합
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-- 모든 팀은 **다른 팀의 PR을 확인하고 피드백**할 수 있습니다.
-- 다른 팀들의 PR을 확인하시고 리뷰나 코멘트 자유롭게 남겨주시면 좋을 것 같습니다!
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
