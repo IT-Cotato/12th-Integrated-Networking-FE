@@ -1,0 +1,32 @@
+# Output
+dist
+build
+
+#Github
+.github/*
+
+# Node
+node_modules
+pnpm-lock.yaml
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+
+# Vite cache
+.vite
+.vite-cache
+
+# Editor settings
+.vscode
+.idea
+
+# Misc
+coverage
+*.local
+.DS_Store
