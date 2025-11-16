@@ -1,5 +1,26 @@
 @import 'tailwindcss';
 
+@theme {
+  /* Color Palette */
+  --color-red: #ff3232;
+  --color-coral: #ffcccc;
+  --color-blue: #32a1ff;
+  --color-skyblue: #cce8ff;
+  --color-yellow: #ffc532;
+  --color-lime: #f6ffcc;
+  --color-green: #32ff35;
+  --color-mint: #ceffcc;
+
+  /* Gray Scale */
+  --color-gray100: #000000;
+  --color-gray60: #292e2e;
+  --color-gray40: #a4a4a4;
+  --color-gray20: #d6d6d6;
+  --color-gray10: #f2f2f2;
+  --color-gray5: #f6f6f6;
+  --color-gray0: #ffffff;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
