@@ -4,7 +4,7 @@ import type { Location } from '@/types/location';
 
 interface SelectedLocationContextType {
   selectedLocation: Location | null;
-  selectLocation: (location: Location) => void;
+  selectLocation: (location: Location | null) => void;
 }
 
 export const SelectedLocationContext = createContext<
