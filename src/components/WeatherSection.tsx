@@ -6,7 +6,7 @@ interface WeatherSectionProps {
 const WeatherSection = ({ title, children, gap }: WeatherSectionProps) => {
   return (
     <div
-      className={`section-shadow p-6 flex flex-col bg-gray-0 border border-gray-10 rounded-2xl w-[1080px] ${gap}`}
+      className={`section-shadow bg-gray-0 border-gray-10 flex w-[1080px] flex-col rounded-2xl border p-6 ${gap}`}
     >
       <div className="text-body-lg text-gray-100">{title}</div>
       <div>{children}</div>
