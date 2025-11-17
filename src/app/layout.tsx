@@ -13,6 +13,9 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "Location Weather Service",
   description: "12th Cotato FE-BE Integrated Networking Project",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
