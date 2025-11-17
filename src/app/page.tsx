@@ -1,3 +1,11 @@
+import WeatherSection from "@/components/WeatherSection";
+
 export default function Home() {
-  return <div>메인페이지</div>;
+  return (
+    <div className="bg-gray-5 flex flex-col justify-center items-center w-full min-h-screen gap-6">
+      <WeatherSection title="4월 26일 롯데월드 날씨 현황" />
+      <WeatherSection title="시간별 현황" />
+      <WeatherSection title="주간 예보" />
+    </div>
+  );
 }
