@@ -8,6 +8,7 @@ export default function App() {
         Tailwind 동작 확인!
       </div>
 
+      {/* 주간예보패널 */}
       <WeeklyForecast />
     </>
   );

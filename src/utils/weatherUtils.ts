@@ -1,5 +1,4 @@
 // 날씨 관련 유틸리티
-
 export const getWeatherIconAM = (weather: string): string => {
   switch (weather) {
     case "Sunny":

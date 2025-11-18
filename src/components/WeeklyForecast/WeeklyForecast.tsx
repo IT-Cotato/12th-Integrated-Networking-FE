@@ -1,5 +1,4 @@
 import DailyForecast from "./DailyForecast";
-
 export default function WeeklyForecast() {
   return (
     <>

@@ -1,6 +1,7 @@
 import { getWeatherIconAM, getWeatherIconPM } from "../../utils/weatherUtils";
 
 interface DailyForecastProps {
+  //
   amWeather: string;
   pmWeather: string;
   amRain: number;
