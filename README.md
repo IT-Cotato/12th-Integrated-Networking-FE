@@ -1,4 +1,4 @@
-# 날씨 앱 프로젝트
+# FE-BE Networking 과제 6팀
 
 React + TypeScript + Vite로 구현한 날씨 정보 애플리케이션입니다.
 
@@ -44,7 +44,10 @@ pnpm install
 
 ```env
 # 백엔드 API 기본 URL
-VITE_API_BASE_URL=http://localhost:3000/api
+> VITE_API_BASE_URL은 아직 백엔드에서 최종 엔드포인트를 제공하지 않았기 때문에  
+> 나중에 백엔드 팀(API URL 확정)에서 알려주는 값으로 다시 업데이트해야 합니다
+
+VITE_API_BASE_URL=
 
 # 카카오맵 API 키
 VITE_KAKAO_MAP_API_KEY=your_kakao_map_api_key_here
@@ -95,7 +98,7 @@ pnpm build
 
 날씨 데이터는 백엔드 API를 통해 가져옵니다. 다음 엔드포인트를 구현해야 합니다:
 
-- 추후 추가 예정정
+- 추후 추가 예정
 
 ### 카카오맵 API
 
@@ -120,6 +123,47 @@ API 호출은 `src/services/` 디렉토리의 서비스 파일을 통해 이루�
 - 서버 상태: TanStack Query 사용
 - 클라이언트 상태: React useState, 커스텀 훅 사용
 - 위치 목록: 로컬 스토리지 사용
+
+## 브랜치 네이밍 규칙
+
+브랜치를 생성할 때는 다음 규칙을 따르세요:
+
+- **feature/기능명** - 새로운 기능 추가 시
+  - 예: `feature/add-location-search`, `feature/weekly-forecast`
+- **hotfix/버그명** - 급한 버그 수정 시
+  - 예: `hotfix/api-error-handling`, `hotfix/critical-bug`
+- **fix/수정명** - 작은 오류 수정 시
+  - 예: `fix/typo-in-readme`, `fix/minor-ui-issue`
+
+## 이슈 및 PR 템플릿
+
+### 이슈 생성
+
+새로운 이슈를 생성할 때는 `.github/ISSUE_TEMPLATE/` 폴더의 템플릿을 사용하세요:
+
+- **🐞 Bug** - 버그/오류 리포트
+- **✨ Feature** - 새로운 기능 개발 요청
+- **🎨 UI/UX** - UI 버그 또는 UI 개선
+
+이슈 생성 시 제목은 자동으로 접두사가 붙습니다:
+- `[BUG] 버그 설명`
+- `[FEAT] 기능 설명`
+- `[UI] UI 개선 설명`
+
+### Pull Request 생성
+
+PR을 생성할 때는 `.github/PULL_REQUEST_TEMPLATE.md` 템플릿이 자동으로 적용됩니다. 다음 항목을 작성해주세요:
+
+- 작업 내용 요약
+- 상세 작업 내용 (체크리스트)
+- 스크린샷 (UI 작업 시)
+- 관련 이슈 번호
+- 체크리스트 확인
+
+PR 제목은 다음 형식을 권장합니다:
+- `[feat] 기능 설명`
+- `[fix] 수정 내용 설명`
+- `[hotfix] 긴급 수정 내용 설명`
 
 ## 참고사항
 
