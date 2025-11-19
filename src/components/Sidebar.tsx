@@ -1,12 +1,9 @@
 import React, { useContext, useState } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
+import AddLocationModal from './AddLocationModal';
 
-type SidebarProps = {
-  onAdd: () => void;
-};
-
-export default function Sidebar({ onAdd }: SidebarProps) {
+export default function Sidebar() {
   const [locations, setLocations] = useState<Location[]>([
     {
       id: '1',
@@ -23,7 +20,8 @@ export default function Sidebar({ onAdd }: SidebarProps) {
     { id: '6', name: '구관', address: '', x: '', y: '', isFixed: false },
     { id: '7', name: 'Osiu', address: '', x: '', y: '', isFixed: false },
   ]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleAddLocation = () => setIsModalOpen(true);
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
     setLocations((locs) =>
@@ -42,9 +40,9 @@ export default function Sidebar({ onAdd }: SidebarProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
 
-  const handleDeleteConfirm = () => {
-    setDeleteTarget(null);
-  };
+  // const handleDeleteConfirm = () => {
+  //   setDeleteTarget(null);
+  // };
 
   return (
     <aside className="flex aspect-[31/150] [height:1200px] [width:248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
@@ -65,7 +63,7 @@ export default function Sidebar({ onAdd }: SidebarProps) {
       {/* 추가하기 버튼 */}
       <button
         className="text-gray-60 flex h-10 w-full items-center rounded bg-white text-[20px] font-normal"
-        onClick={onAdd}
+        onClick={handleAddLocation}
       >
         <img src="/plus-front-clay.svg" alt="추가" className="mr-4 h-10 w-10" />
         <span>추가하기</span>
@@ -130,6 +128,9 @@ export default function Sidebar({ onAdd }: SidebarProps) {
       </ul>
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
+      {isModalOpen && (
+        <AddLocationModal onClose={() => setIsModalOpen(false)} />
+      )}
     </aside>
   );
 }
