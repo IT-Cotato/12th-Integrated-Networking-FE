@@ -1,17 +1,13 @@
-export interface Weather {
-  weather: string;
-  time: string;
-  sunrise: string; // TBD: iso타임으로 내려줄 경우 유틸 추가 필요
+export interface WeeklyWeatherPeriod {
+  weather: string; // 날씨
+  avgTemp: number; // 평균 기온
+  pop: number; // 강수확률 (percent)
 }
 
 export interface WeeklyWeather {
-  date: string;
-  dayHumidity: number;
-  nightHumidity: number;
-  dayTemp: number;
-  nightTemp: number;
-  dayWeather: string;
-  nightWeather: string;
+  date: string; // "2025-11-19"
+  am: WeeklyWeatherPeriod;
+  pm: WeeklyWeatherPeriod;
 }
 
 export interface CurrentWeather {
@@ -23,8 +19,9 @@ export interface CurrentWeather {
   uvIndex: "fine" | "normal" | "danger"; // 자외선
   windDirection: string; // 풍향
   windSpeed: number; // 풍속
-  weather: string; // 날씨 (clouds, clouds-night 같은 방식?)
+  weather: string; // 날씨
   sunrise: string; // 일출시각
+  sunsetTime: string; // 일몰시각
   timestamp: string;
 }
 
