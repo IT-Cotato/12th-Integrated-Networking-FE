@@ -24,7 +24,7 @@ const TEXT_MAP: { [key: string]: string } = {
 
 export function convertKelvinToCelsius(
   kelvinTemp: number,
-  decimalPlaces: number = 2,
+  decimalPlaces: number = 1,
 ): number {
   const celsiusTemp = kelvinTemp - 273.15;
   const factor = Math.pow(10, decimalPlaces);
