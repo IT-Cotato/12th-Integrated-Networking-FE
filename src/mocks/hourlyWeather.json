@@ -2,12 +2,12 @@
   "hourlyWeather": [
     {
       "time": "2025-11-19T06:00:00+09:00",
-      "weather": "clear",
+      "weather": "sun",
       "temperature": 12
     },
     {
       "time": "2025-11-19T07:00:00+09:00",
-      "weather": "clear",
+      "weather": "sun",
       "temperature": 13
     },
     {
@@ -32,12 +32,12 @@
     },
     {
       "time": "2025-11-19T12:00:00+09:00",
-      "weather": "clear",
+      "weather": "snow",
       "temperature": 19
     },
     {
       "time": "2025-11-19T13:00:00+09:00",
-      "weather": "clear",
+      "weather": "snow",
       "temperature": 20
     },
     {
@@ -67,17 +67,17 @@
     },
     {
       "time": "2025-11-19T19:00:00+09:00",
-      "weather": "clear-night",
+      "weather": "rain-night",
       "temperature": 12
     },
     {
       "time": "2025-11-19T20:00:00+09:00",
-      "weather": "clear-night",
+      "weather": "rain-night",
       "temperature": 11
     },
     {
       "time": "2025-11-19T21:00:00+09:00",
-      "weather": "clear-night",
+      "weather": "storm-night",
       "temperature": 10
     },
     {
@@ -92,7 +92,7 @@
     },
     {
       "time": "2025-11-20T00:00:00+09:00",
-      "weather": "clear-night",
+      "weather": "sun-night",
       "temperature": 7
     }
   ]
