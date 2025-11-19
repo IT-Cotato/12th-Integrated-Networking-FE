@@ -21,7 +21,7 @@ export default function MainView() {
   }
 
   return (
-    <div className="bg-gray5 mx-auto flex h-screen max-w-7xl flex-col items-center gap-6 p-10">
+    <div className="mx-auto flex h-screen w-full max-w-7xl flex-col items-center gap-6 p-10">
       <div className="border-gray10 flex w-full max-w-[1080px] flex-col gap-3 rounded-2xl border-2 bg-white p-4 shadow-[0_0_8px_2px_rgba(0,0,0,0.10)]">
         <p>
           {selectedLocation.name} / {selectedLocation.address}
