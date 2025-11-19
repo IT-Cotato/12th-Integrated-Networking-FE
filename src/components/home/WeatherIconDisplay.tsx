@@ -6,5 +6,5 @@ export const WeatherIconDisplay = ({
   weather: WeatherIconKey;
 }) => {
   const Icon = WEATHER_ICON_MAP[weather];
-  return <Icon width={130} height={130} />;
+  return <Icon width={160} height={160} />;
 };
