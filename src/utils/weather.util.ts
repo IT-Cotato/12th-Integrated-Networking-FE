@@ -74,3 +74,9 @@ export function getWindDirectionText(deg: number): string {
   const directionText = WIND_DIRECTIONS[index];
   return directionText + '풍';
 }
+
+export function getUvLevel(value: number): number {
+  if (value < 3) return 0;
+  if (value < 6) return 1;
+  return 2;
+}
