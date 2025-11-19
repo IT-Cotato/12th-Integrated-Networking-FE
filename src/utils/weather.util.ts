@@ -80,3 +80,9 @@ export function getUvLevel(value: number): number {
   if (value < 6) return 1;
   return 2;
 }
+
+export function getPm25Level(value: number): number {
+  if (value < 15) return 0;
+  if (value < 35) return 1;
+  return 2;
+}
