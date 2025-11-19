@@ -45,7 +45,7 @@ export default function Sidebar() {
   // };
 
   return (
-    <aside className="flex aspect-[31/150] [height:1200px] [width:248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
+    <aside className="flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
       {/* 헤더: 아이콘 + 타이틀 */}
       <div className="mb-0 flex h-10 items-center">
         <img
@@ -75,7 +75,7 @@ export default function Sidebar() {
           return (
             <li
               key={loc.id}
-              className={`flex w-full items-center ${
+              className={`relative flex w-full items-center ${
                 isSelected
                   ? 'rounded-[8px] bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
                   : ''
@@ -112,7 +112,7 @@ export default function Sidebar() {
               {hovered === loc.id && (
                 <button
                   onClick={() => setDeleteTarget(loc)}
-                  className="ml-2 flex h-6 w-6 items-center justify-center"
+                  className="absolute right-2 flex h-6 w-6 items-center justify-center"
                   tabIndex={-1}
                 >
                   <img
