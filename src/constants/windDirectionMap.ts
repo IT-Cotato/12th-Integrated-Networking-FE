@@ -1,0 +1,18 @@
+export const WIND_DIRECTION_LABEL: Record<string, string> = {
+  N: "북",
+  NNE: "북북동",
+  NE: "북동",
+  ENE: "동북동",
+  E: "동",
+  ESE: "동남동",
+  SE: "남동",
+  SSE: "남남동",
+  S: "남",
+  SSW: "남남서",
+  SW: "남서",
+  WSW: "서남서",
+  W: "서",
+  WNW: "서북서",
+  NW: "북서",
+  NNW: "북북서",
+};
