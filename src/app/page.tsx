@@ -26,7 +26,7 @@ const Home = () => {
           <WeatherSection title={`${date} ${LOCATION} 날씨 현황`}>
             <TodayWeather />
           </WeatherSection>
-          <WeatherSection title="시간별 현황">
+          <WeatherSection title="시간별 현황" gap={4}>
             <HourlyWeather />
           </WeatherSection>
           <WeatherSection title="주간 예보">
