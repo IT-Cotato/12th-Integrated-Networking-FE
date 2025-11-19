@@ -5,7 +5,7 @@
     "humidity": 55,
     "fineDust": "normal",
     "ultraFineDust": "fine",
-    "uvIndex": "normal",
+    "uvIndex": "danger",
     "windDirection": "NW",
     "windSpeed": 3.2,
     "weather": "clouds-night",
