@@ -3,14 +3,38 @@ import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 
 type SidebarProps = {
-  locations: Location[];
   onAdd: () => void;
-  onTogglePin: (id: string) => void;
 };
 
-export default function Sidebar({ locations, onAdd, onTogglePin }: SidebarProps) {
+export default function Sidebar({ onAdd }: SidebarProps) {
+  const [locations, setLocations] = useState<Location[]>([
+    {
+      id: '1',
+      name: '강남역 1번 출구',
+      address: '',
+      x: '',
+      y: '',
+      isFixed: true,
+    },
+    { id: '2', name: 'RATTHAT', address: '', x: '', y: '', isFixed: false },
+    { id: '3', name: '파이홀', address: '', x: '', y: '', isFixed: false },
+    { id: '4', name: '청수당공명', address: '', x: '', y: '', isFixed: false },
+    { id: '5', name: '롯데월드', address: '', x: '', y: '', isFixed: false },
+    { id: '6', name: '구관', address: '', x: '', y: '', isFixed: false },
+    { id: '7', name: 'Osiu', address: '', x: '', y: '', isFixed: false },
+  ]);
+
+  // 핀 버튼 클릭 시 고정/비고정 상태를 토글
+  const handleTogglePin = (id: string) => {
+    setLocations((locs) =>
+      locs.map((loc) =>
+        loc.id === id ? { ...loc, isFixed: !loc.isFixed } : loc,
+      ),
+    );
+  };
   // useContext 훅은 컴포넌트 함수 안에서 실행!
   const ctx = useContext(SelectedLocationContext);
+
   // context 값이 undefined일 수 있으니 방어 코드
   if (!ctx) throw new Error('SelectedLocationContext not found!');
   const { selectedLocation, selectLocation } = ctx;
@@ -20,90 +44,92 @@ export default function Sidebar({ locations, onAdd, onTogglePin }: SidebarProps)
 
   const handleDeleteConfirm = () => {
     setDeleteTarget(null);
-  }
+  };
 
   return (
-    <aside
-      className="
-        flex flex-col items-start
-        [width:248px] [height:1200px]
-        px-4 pt-12 pb-12
-        gap-10
-        aspect-[31/150]
-        rounded-r-[48px]
-        bg-white
-        shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]
-      "
-    >
-
+    <aside className="flex aspect-[31/150] [height:1200px] [width:248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
       {/* 헤더: 아이콘 + 타이틀 */}
-      <div className="flex items-center h-10 mb-0">
-        <img src="/map-pin-front-color.svg" alt="위치 아이콘" className="w-10 h-10 mr-4" />
-        <span className="font-normal text-[20px]" style={{ color: 'var(--color-gray-60)' }}>위치 목록</span>
+      <div className="mb-0 flex h-10 items-center">
+        <img
+          src="/map-pin-front-color.svg"
+          alt="위치 아이콘"
+          className="mr-4 h-10 w-10"
+        />
+        <span
+          className="text-[20px] font-normal"
+          style={{ color: 'var(--color-gray-60)' }}
+        >
+          위치 목록
+        </span>
       </div>
       {/* 추가하기 버튼 */}
       <button
-        className="flex items-center h-10 w-full rounded bg-white text-gray-60 font-normal text-[20px]"
+        className="text-gray-60 flex h-10 w-full items-center rounded bg-white text-[20px] font-normal"
         onClick={onAdd}
       >
-        <img src="/plus-front-clay.svg" alt="추가" className="w-10 h-10 mr-4" />
+        <img src="/plus-front-clay.svg" alt="추가" className="mr-4 h-10 w-10" />
         <span>추가하기</span>
       </button>
       {/* 위치 리스트 */}
-      <ul className="flex flex-col gap-2 w-full">
+      <ul className="flex w-full flex-col gap-2">
         {locations.map((loc) => {
           const isSelected = selectedLocation?.id === loc.id;
           return (
             <li
               key={loc.id}
-              className={`
-            flex items-center w-full
-            ${isSelected
-              ? 'bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)] rounded-[8px]'
-              : ''
-            }
-            text-gray-800 group
-            transition
-            cursor-pointer
-          `}
-          style={{
-            marginBottom: '8px',
-            padding: '8px',
-            gap: '12px',           // 리스트 내부 아이템 gap
-          }}
-          onMouseEnter={() => setHovered(loc.id)}
-          onMouseLeave={() => setHovered(null)}
-          onClick={() => selectLocation(loc)}
-        >
-            <button
-              onClick={(e) => { e.stopPropagation(); onTogglePin(loc.id); }}  // 리스트 선택 이벤트와 분리
-              className="p-0 bg-transparent border-none outline-none"
-              tabIndex={-1}
+              className={`flex w-full items-center ${
+                isSelected
+                  ? 'rounded-[8px] bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
+                  : ''
+              } group cursor-pointer text-gray-800 transition`}
+              style={{
+                marginBottom: '8px',
+                padding: '8px',
+                gap: '12px', // 리스트 내부 아이템 gap
+              }}
+              onMouseEnter={() => setHovered(loc.id)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => selectLocation(loc)}
             >
-              <img
-              src={loc.isFixed ? '/pin-front-color.svg' : '/pin-front-clay.svg'}
-              alt="핀"
-              className="w-6 h-6 ml-2 mr-3"
-            />
-          </button>
-            <span className="flex-1 font-medium text-[16px] leading-5">{loc.name}</span>
-            {/* hover 시 trash 노출 */}
-            {hovered === loc.id && (
               <button
-                onClick={() => setDeleteTarget(loc)}
-                className="ml-2 w-6 h-6 flex items-center justify-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTogglePin(loc.id);
+                }} // 리스트 선택 이벤트와 분리
+                className="border-none bg-transparent p-0 outline-none"
                 tabIndex={-1}
+              >
+                <img
+                  src={
+                    loc.isFixed ? '/pin-front-color.svg' : '/pin-front-clay.svg'
+                  }
+                  alt="핀"
+                  className="mr-3 ml-2 h-6 w-6"
+                />
+              </button>
+              <span className="flex-1 text-[16px] leading-5 font-medium">
+                {loc.name}
+              </span>
+              {/* hover 시 trash 노출 */}
+              {hovered === loc.id && (
+                <button
+                  onClick={() => setDeleteTarget(loc)}
+                  className="ml-2 flex h-6 w-6 items-center justify-center"
+                  tabIndex={-1}
                 >
-                  <img src ="/trash-can-front-color.svg" alt="휴지통" className="w-6 h-6" />
+                  <img
+                    src="/trash-can-front-color.svg"
+                    alt="휴지통"
+                    className="h-6 w-6"
+                  />
                 </button>
-            )}
-          </li>
-        );
-      })}
+              )}
+            </li>
+          );
+        })}
       </ul>
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
     </aside>
   );
 }
-
