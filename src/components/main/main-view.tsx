@@ -1,3 +1,33 @@
+import { use } from 'react';
+import { SelectedLocationContext } from '@/contexts/selected-location-context';
+import { useWeather } from '@/hooks/use-weather';
+import CurrentWeather from './current-weather';
+
 export default function MainView() {
-  return <div className="max-w flex flex-col gap-6"></div>;
+  const contextValue = use(SelectedLocationContext);
+  if (!contextValue) {
+    throw new Error('Must be used inside SelectedLocationProvider.');
+  }
+
+  const { selectedLocation } = contextValue;
+
+  const { data } = useWeather(selectedLocation);
+  if (!selectedLocation) {
+    return (
+      <main className="mx-auto flex h-64 max-w-md items-center justify-center p-4">
+        <p>사이드바에서 장소를 선택해주세요.</p>
+      </main>
+    );
+  }
+
+  return (
+    <div className="bg-gray5 mx-auto flex h-screen max-w-7xl flex-col items-center gap-6 p-10">
+      <div className="border-gray10 flex w-full max-w-[1080px] flex-col gap-3 rounded-2xl border-2 bg-white p-4 shadow-[0_0_8px_2px_rgba(0,0,0,0.10)]">
+        <p>
+          {selectedLocation.name} / {selectedLocation.address}
+        </p>
+        <CurrentWeather current={data.current} />
+      </div>
+    </div>
+  );
 }
