@@ -26,14 +26,22 @@ function App() {
       }}
     >
       {/* <div className="bg-blue"> sdflsj</div> */}
-      <div className="bg-blue flex">
+      <div className="bg-gray5 flex">
         <Sidebar onAdd={handleAddLocation} />
         {/* 오른쪽에 메인 컨텐츠 자리 */}
-        <div style={{ flex: 1 }}>sdflsj</div>
+
         {isModalOpen && (
           <AddLocationModal onClose={() => setIsModalOpen(false)} />
         )}
-        <MainView />
+        {selectedLocation != null ? (
+          <MainView />
+        ) : (
+          <main className="flex w-full items-center justify-center">
+            <p className="text-7xl text-black">
+              사이드바에서 장소를 선택해주세요.
+            </p>
+          </main>
+        )}
       </div>
     </SelectedLocationContext>
   );
