@@ -1,3 +1,4 @@
+import WeatherPanelDetail from "./WeatherPanelDetail";
 import WeatherPanelMain from "./WeatherPanelMain";
 
 // WeatherPanel 컴포넌트
@@ -6,7 +7,7 @@ export default function WeatherPanel() {
     <>
       <div
         className="
-        w-[1080px] h-[328px] max-w-full 
+        w-[1080px] h-[441px] max-w-full 
         p-6 
         border-gray-100
         rounded-2xl 
@@ -19,7 +20,10 @@ export default function WeatherPanel() {
         <div className="font-bold text-[20px] text-left">
           4월 8일 롯데월드 날씨 현황
         </div>
-        <WeatherPanelMain />
+        <div className="justify-center items-center">
+          <WeatherPanelMain />
+          <WeatherPanelDetail />
+        </div>
       </div>
     </>
   );
