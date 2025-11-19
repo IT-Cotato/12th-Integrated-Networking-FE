@@ -1,4 +1,10 @@
 @layer utilities {
+  .text-h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
   .text-h2 {
     font-size: 2.25rem;
     font-weight: 700;
