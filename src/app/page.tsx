@@ -5,6 +5,7 @@ import Clouds from "@/assets/weather/clouds.svg";
 import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
+import { WeeklyWeather } from "@/components/home/WeeklyWeather";
 
 const Home = () => {
   const date = formatLocalDate();
@@ -28,7 +29,9 @@ const Home = () => {
           <WeatherSection title="시간별 현황">
             <HourlyWeather />
           </WeatherSection>
-          <WeatherSection title="주간 예보" />
+          <WeatherSection title="주간 예보">
+            <WeeklyWeather />
+          </WeatherSection>
         </>
       )}
     </div>

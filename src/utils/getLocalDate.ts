@@ -6,23 +6,25 @@ const getTodayParts = () => {
   };
 };
 
-// "11월 19일" 형식
+// 오늘 날짜 "11월 19일" 형식
 export const formatLocalDate = () => {
   const { month, day } = getTodayParts();
   return `${month}월 ${day}일`;
 };
 
 // "11.19" 형식
-export const formatLocalDateWithDot = () => {
-  const { month, day } = getTodayParts();
+export const formatLocalDateWithDot = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
   return `${month}.${day}`;
 };
 
+// 요일
 export const getKoreanDayLabel = (dateString: string) => {
   const target = new Date(dateString);
   const today = new Date();
 
-  // 날짜 비교 (연/월/일만 비교)
   const isToday =
     target.getFullYear() === today.getFullYear() &&
     target.getMonth() === today.getMonth() &&
