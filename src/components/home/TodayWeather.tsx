@@ -19,7 +19,11 @@ export const TodayWeather = () => {
     <section className="flex w-full flex-col items-center justify-center gap-3">
       <div className="flex flex-col gap-[10px]">
         <div className="flex items-center justify-center gap-[10px]">
-          <WeatherIconDisplay weather={data.weather as WeatherIconKey} />
+          <WeatherIconDisplay
+            weather={data.weather as WeatherIconKey}
+            width={160}
+            height={160}
+          />
           <div className="text-h1 text-gray-60">{data.temperature}º</div>
         </div>
 
