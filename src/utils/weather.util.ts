@@ -22,6 +22,17 @@ const TEXT_MAP: { [key: string]: string } = {
   '50': '안개/박무',
 };
 
+const WIND_DIRECTIONS: string[] = [
+  '북',
+  '북동',
+  '동',
+  '남동',
+  '남',
+  '남서',
+  '서',
+  '북서',
+];
+
 export function convertKelvinToCelsius(
   kelvinTemp: number,
   decimalPlaces: number = 1,
@@ -55,4 +66,11 @@ export function mapWeatherText(iconCode: string): string {
 
   const weatherText = `${prefix} / ${suffix}`;
   return weatherText;
+}
+
+export function getWindDirectionText(deg: number): string {
+  //북쪽 방향을 -22.5~ 22.5로
+  const index = Math.floor(((deg + 22.5) % 360) / 45);
+  const directionText = WIND_DIRECTIONS[index];
+  return directionText + '풍';
 }
