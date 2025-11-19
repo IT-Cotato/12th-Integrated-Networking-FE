@@ -2,6 +2,7 @@ import { formatLocalDate } from "src/utils/getLocalDate";
 
 import Clouds from "@/assets/weather/clouds.svg";
 
+import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
 
 const Home = () => {
@@ -20,7 +21,9 @@ const Home = () => {
         </>
       ) : (
         <>
-          <WeatherSection title={`${date} ${LOCATION} 날씨 현황`} />
+          <WeatherSection title={`${date} ${LOCATION} 날씨 현황`}>
+            <TodayWeather />
+          </WeatherSection>
           <WeatherSection title="시간별 현황" />
           <WeatherSection title="주간 예보" />
         </>
