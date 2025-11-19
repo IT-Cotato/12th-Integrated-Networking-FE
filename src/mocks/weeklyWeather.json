@@ -1,0 +1,49 @@
+{
+  "weeklyWeather": [
+    {
+      "date": "2025-11-19",
+      "dayHumidity": 55,
+      "nightHumidity": 65,
+      "dayTemp": 18,
+      "nightTemp": 10,
+      "dayWeather": "clouds",
+      "nightWeather": "clear-night"
+    },
+    {
+      "date": "2025-11-20",
+      "dayHumidity": 60,
+      "nightHumidity": 70,
+      "dayTemp": 17,
+      "nightTemp": 9,
+      "dayWeather": "clear",
+      "nightWeather": "clear-night"
+    },
+    {
+      "date": "2025-11-21",
+      "dayHumidity": 50,
+      "nightHumidity": 62,
+      "dayTemp": 19,
+      "nightTemp": 11,
+      "dayWeather": "clouds",
+      "nightWeather": "clouds-night"
+    },
+    {
+      "date": "2025-11-22",
+      "dayHumidity": 48,
+      "nightHumidity": 58,
+      "dayTemp": 20,
+      "nightTemp": 12,
+      "dayWeather": "clear",
+      "nightWeather": "clear-night"
+    },
+    {
+      "date": "2025-11-23",
+      "dayHumidity": 52,
+      "nightHumidity": 66,
+      "dayTemp": 18,
+      "nightTemp": 10,
+      "dayWeather": "rain",
+      "nightWeather": "rain-night"
+    }
+  ]
+}

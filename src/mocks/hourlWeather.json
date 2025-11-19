@@ -1,0 +1,99 @@
+{
+  "hourlyWeather": [
+    {
+      "time": "2025-11-19T06:00:00+09:00",
+      "weather": "clear",
+      "temperature": 12
+    },
+    {
+      "time": "2025-11-19T07:00:00+09:00",
+      "weather": "clear",
+      "temperature": 13
+    },
+    {
+      "time": "2025-11-19T08:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 14
+    },
+    {
+      "time": "2025-11-19T09:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 15
+    },
+    {
+      "time": "2025-11-19T10:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 16
+    },
+    {
+      "time": "2025-11-19T11:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 18
+    },
+    {
+      "time": "2025-11-19T12:00:00+09:00",
+      "weather": "clear",
+      "temperature": 19
+    },
+    {
+      "time": "2025-11-19T13:00:00+09:00",
+      "weather": "clear",
+      "temperature": 20
+    },
+    {
+      "time": "2025-11-19T14:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 19
+    },
+    {
+      "time": "2025-11-19T15:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 18
+    },
+    {
+      "time": "2025-11-19T16:00:00+09:00",
+      "weather": "clouds",
+      "temperature": 17
+    },
+    {
+      "time": "2025-11-19T17:00:00+09:00",
+      "weather": "clouds-night",
+      "temperature": 15
+    },
+    {
+      "time": "2025-11-19T18:00:00+09:00",
+      "weather": "clouds-night",
+      "temperature": 13
+    },
+    {
+      "time": "2025-11-19T19:00:00+09:00",
+      "weather": "clear-night",
+      "temperature": 12
+    },
+    {
+      "time": "2025-11-19T20:00:00+09:00",
+      "weather": "clear-night",
+      "temperature": 11
+    },
+    {
+      "time": "2025-11-19T21:00:00+09:00",
+      "weather": "clear-night",
+      "temperature": 10
+    },
+    {
+      "time": "2025-11-19T22:00:00+09:00",
+      "weather": "clouds-night",
+      "temperature": 9
+    },
+    {
+      "time": "2025-11-19T23:00:00+09:00",
+      "weather": "clouds-night",
+      "temperature": 8
+    },
+    {
+      "time": "2025-11-20T00:00:00+09:00",
+      "weather": "clear-night",
+      "temperature": 7
+    }
+  ]
+}
