@@ -1,3 +1,5 @@
+import type { AirQualityResponse } from '@/types/air-quality.types';
+
 export const mockRes = {
   lat: 33.44,
   lon: -94.04,
@@ -150,6 +152,28 @@ export const mockRes = {
       description:
         'Heavy rainfall expected. Flooding possible in low-lying areas.',
       tags: [],
+    },
+  ],
+};
+
+export const mockAirQualityRes: AirQualityResponse = {
+  coord: [127.0, 37.5], // 위도, 경도
+  list: [
+    {
+      dt: Math.floor(Date.now() / 1000), // 현재 시간의 유닉스 타임스탬프
+      main: {
+        aqi: 2, // Air Quality Index: 1=좋음, 2=보통, 3=나쁨, 4=매우 나쁨, 5=최악
+      },
+      components: {
+        co: 447.52, // 일산화탄소 (μg/m³)
+        no: 0.1, // 일산화질소 (μg/m³)
+        no2: 24.51, // 이산화질소 (μg/m³)
+        o3: 47.93, // 오존 (μg/m³)
+        so2: 4.88, // 이산화황 (μg/m³)
+        pm2_5: 18.0, // 초미세먼지 (μg/m³)
+        pm10: 38.5, // 미세먼지 (μg/m³)
+        nh3: 0.05, // 암모니아 (μg/m³)
+      },
     },
   ],
 };
