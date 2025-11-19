@@ -8,7 +8,7 @@
         "pop": 10
       },
       "pm": {
-        "weather": "clear",
+        "weather": "sun",
         "avgTemp": 10,
         "pop": 5
       }
@@ -16,12 +16,12 @@
     {
       "date": "2025-11-20",
       "am": {
-        "weather": "clear",
+        "weather": "sun",
         "avgTemp": 18,
         "pop": 0
       },
       "pm": {
-        "weather": "clear",
+        "weather": "sun",
         "avgTemp": 10,
         "pop": 5
       }
@@ -42,12 +42,12 @@
     {
       "date": "2025-11-22",
       "am": {
-        "weather": "clear",
+        "weather": "sun",
         "avgTemp": 20,
         "pop": 0
       },
       "pm": {
-        "weather": "clear",
+        "weather": "sun",
         "avgTemp": 12,
         "pop": 0
       }
