@@ -1,17 +1,5 @@
 import { getWeatherIconAM, getWeatherIconPM } from "../../utils/weatherUtils";
 
-interface DailyForecastProps {
-  //
-  amWeather: string;
-  pmWeather: string;
-  amRain: number;
-  pmRain: number;
-  amTemp: number;
-  pmTemp: number;
-  date: string;
-  day: string;
-}
-
 export default function DailyForecast({
   amWeather,
   pmWeather,
