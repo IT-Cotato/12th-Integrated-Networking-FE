@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from './contexts/selected-location-context';
 import Sidebar from './components/Sidebar';
 import MainView from './components/main/main-view';
+import { WeatherSkeleton } from './components/main/skeleton/loading';
 
 function App() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
@@ -21,7 +22,10 @@ function App() {
         <Sidebar />
 
         {selectedLocation != null ? (
-          <MainView />
+          <Suspense fallback={<WeatherSkeleton />}>
+            {' '}
+            <MainView />
+          </Suspense>
         ) : (
           <main className="flex w-full items-center justify-center">
             <p className="text-7xl text-black">
