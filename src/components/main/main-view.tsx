@@ -2,6 +2,7 @@ import { use } from 'react';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import { useWeather } from '@/hooks/use-weather';
 import CurrentWeather from './current-weather';
+import { useAirQuality } from '@/hooks/use-air-quality';
 
 export default function MainView() {
   const contextValue = use(SelectedLocationContext);
@@ -11,7 +12,9 @@ export default function MainView() {
 
   const { selectedLocation } = contextValue;
 
-  const { data } = useWeather(selectedLocation);
+  const { data: weatherData } = useWeather(selectedLocation);
+  const { data: airData } = useAirQuality(selectedLocation);
+  const airItem = airData.list[0];
   if (!selectedLocation) {
     return (
       <main className="mx-auto flex h-64 max-w-md items-center justify-center p-4">
@@ -26,7 +29,7 @@ export default function MainView() {
         <p>
           {selectedLocation.name} / {selectedLocation.address}
         </p>
-        <CurrentWeather current={data.current} />
+        <CurrentWeather current={weatherData.current} air={airItem} />
       </div>
     </div>
   );
