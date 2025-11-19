@@ -86,3 +86,9 @@ export function getPm25Level(value: number): number {
   if (value < 35) return 1;
   return 2;
 }
+
+export function getPm10Level(value: number): number {
+  if (value < 30) return 0;
+  if (value < 80) return 1;
+  return 2;
+}
