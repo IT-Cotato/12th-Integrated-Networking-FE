@@ -17,8 +17,10 @@
     "^react",
     "<THIRD_PARTY_MODULES>",
     "^@/apis/(.*)$",
+    "^@/assets/(.*)$",
     "^@/components/(.*)$",
     "^@/constants/(.*)$",
+    "^@/mocks/(.*)$",
     "^@/types/(.*)$",
     "^@/public/(.*)$",
     "^[./]"
