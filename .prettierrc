@@ -20,6 +20,7 @@
     "^@/assets/(.*)$",
     "^@/components/(.*)$",
     "^@/constants/(.*)$",
+    "^@/mocks/(.*)$",
     "^@/types/(.*)$",
     "^@/public/(.*)$",
     "^[./]"

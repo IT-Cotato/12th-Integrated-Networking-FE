@@ -22,10 +22,12 @@
     "paths": {
       "@/assets/*": ["src/assets/*"],
       "@/components/*": ["src/components/*"],
+      "@/constants/*": ["src/constants/*"],
       "@/styles/*": ["src/styles/*"],
       "@/context/*": ["src/context/*"],
       "@/apis/*": ["src/apis/*"],
-      "@/types/*": ["src/types/*"]
+      "@/types/*": ["src/types/*"],
+      "@/mocks/*": ["src/mocks/*"]
     }
   },
   "include": [
