@@ -18,7 +18,7 @@ const dummyLocations: LocationItem[] = [
 ];
 
 export default function Sidebar() {
-  const [selectedId, setSelectedId] = useState("5");
+  const [selectedId, setSelectedId] = useState<string>("");
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
 
   return (
@@ -53,7 +53,9 @@ export default function Sidebar() {
                 name={location.name}
                 selected={selectedId === location.id}
                 pinned={pinnedIds.has(location.id)}
-                onSelect={() => setSelectedId(location.id)}
+                onSelect={() => {
+                  setSelectedId(selectedId === location.id ? "" : location.id);
+                }}
                 onPin={() => {
                   setPinnedIds((prev) => {
                     const next = new Set(prev);
