@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import LocationListItem from './LocationListItem';
+import AddLocationModal from '../Modal/AddLocationModal';
 // 더미 데이터 타입
 interface LocationItem {
   id: string;
@@ -20,6 +21,7 @@ const dummyLocations: LocationItem[] = [
 export default function Sidebar() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -31,7 +33,10 @@ export default function Sidebar() {
         </div>
 
         {/* 추가하기 */}
-        <div className="flex items-center gap-4">
+        <div 
+          className="flex items-center gap-4 cursor-pointer"
+          onClick={() => setIsAddModalOpen(true)}
+        >
           <img src="/plus-front-clay.svg" className="w-10 h-10" />
           <span className="text-[#292E2E] font-bold text-xl">추가하기</span>
         </div>
@@ -72,6 +77,12 @@ export default function Sidebar() {
             ))}
         </div>
       </div>
+
+      {/* 위치 추가 모달 */}
+      <AddLocationModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+      />
     </div>
   );
 }
