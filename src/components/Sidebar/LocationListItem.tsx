@@ -13,13 +13,21 @@ interface Props {
     onDelete,
   }: Props) {
     return (
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={onSelect}
-        className={`group flex items-center gap-3 px-2 py-2 rounded-lg w-full transition-colors cursor-pointer ${
-          selected ? "bg-gray-100" : "hover:bg-gray-50"
-        }`}
+        className={`
+          group flex items-center gap-3 px-2 py-2 w-full cursor-pointer select-none transition-all
+          ${selected 
+            ? "bg-[#F2F2F2] rounded-xl shadow-[-2px_2px_2px_1px_rgba(0,0,0,0.10)]" 
+            : "rounded-lg hover:bg-gray-50"
+          }
+          outline-none focus:outline-none focus-visible:outline-none
+        `}
       >
         <img src="/pin-front-color.svg" className="w-6 h-6" />
+  
         <span 
           className="text-[#292E2E] font-semibold text-base leading-normal flex-1 text-left overflow-hidden text-ellipsis whitespace-nowrap"
           style={{ fontFamily: 'Pretendard, sans-serif' }}
@@ -27,7 +35,6 @@ interface Props {
           {name}
         </span>
   
-        {/* hover 시 보이는 삭제 버튼 */}
         <img
           src="/trash-can-front-color.svg"
           className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -36,6 +43,6 @@ interface Props {
             onDelete();
           }}
         />
-      </button>
+      </div>
     );
   }
