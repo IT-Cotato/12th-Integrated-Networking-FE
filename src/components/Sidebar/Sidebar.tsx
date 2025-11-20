@@ -19,6 +19,7 @@ const dummyLocations: LocationItem[] = [
 
 export default function Sidebar() {
   const [selectedId, setSelectedId] = useState("5");
+  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -37,16 +38,36 @@ export default function Sidebar() {
 
         {/* 리스트 */}
         <div className="flex flex-col gap-2 w-full">
-          {dummyLocations.map((location) => (
-            <LocationListItem
-              key={location.id}
-              id={location.id}
-              name={location.name}
-              selected={selectedId === location.id}
-              onSelect={() => setSelectedId(location.id)}
-              onDelete={() => console.log("삭제", location.id)}
-            />
-          ))}
+          {[...dummyLocations]
+            .sort((a, b) => {
+              const aPinned = pinnedIds.has(a.id);
+              const bPinned = pinnedIds.has(b.id);
+              if (aPinned && !bPinned) return -1;
+              if (!aPinned && bPinned) return 1;
+              return 0;
+            })
+            .map((location) => (
+              <LocationListItem
+                key={location.id}
+                id={location.id}
+                name={location.name}
+                selected={selectedId === location.id}
+                pinned={pinnedIds.has(location.id)}
+                onSelect={() => setSelectedId(location.id)}
+                onPin={() => {
+                  setPinnedIds((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(location.id)) {
+                      next.delete(location.id);
+                    } else {
+                      next.add(location.id);
+                    }
+                    return next;
+                  });
+                }}
+                onDelete={() => console.log("삭제", location.id)}
+              />
+            ))}
         </div>
       </div>
     </div>

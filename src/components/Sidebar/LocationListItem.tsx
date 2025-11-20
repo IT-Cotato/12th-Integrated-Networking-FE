@@ -2,14 +2,18 @@ interface Props {
     id: string;
     name: string;
     selected: boolean;
+    pinned: boolean;
     onSelect: () => void;
+    onPin: () => void;
     onDelete: () => void;
   }
   
   export default function LocationListItem({
     name,
     selected,
+    pinned,
     onSelect,
+    onPin,
     onDelete,
   }: Props) {
     return (
@@ -26,15 +30,26 @@ interface Props {
           outline-none focus:outline-none focus-visible:outline-none
         `}
       >
-        <img src="/pin-front-color.svg" className="w-6 h-6" />
-  
+        {/* 핀 아이콘 */}
+        <img 
+          src={pinned ? "/pin-front-color.svg" : "/pin-front-clay.svg"} 
+          className="w-6 h-6 cursor-pointer" 
+          alt="위치"
+          onClick={(e) => {
+            e.stopPropagation();
+            onPin();
+          }}
+        />
+
+        {/* 위치 이름 */}
         <span 
           className="text-[#292E2E] font-semibold text-base leading-normal flex-1 text-left overflow-hidden text-ellipsis whitespace-nowrap"
           style={{ fontFamily: 'Pretendard, sans-serif' }}
         >
           {name}
         </span>
-  
+
+        {/* hover 시 보이는 삭제 아이콘 */}
         <img
           src="/trash-can-front-color.svg"
           className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
