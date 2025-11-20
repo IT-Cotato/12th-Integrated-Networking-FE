@@ -1,9 +1,11 @@
 import './App.css'
+import Sidebar from './components/Sidebar/Sidebar'
 
 export default function App() {
   return (
-    <div className="p-10 text-3xl text-blue-500 font-bold">
-      Tailwind 동작 확인!
+    <div className="bg-[#F6F6F6]">
+      <Sidebar />
+
     </div>
   );
 }
