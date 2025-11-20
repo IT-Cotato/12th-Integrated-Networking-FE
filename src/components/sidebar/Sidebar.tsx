@@ -1,5 +1,7 @@
 "use client";
 
+import MapPin from "@/assets/icons/map-pin.svg";
+
 type SidebarProps = object;
 
 export default function Sidebar() {
@@ -7,7 +9,9 @@ export default function Sidebar() {
     <aside className="h-screen w-64 border-r border-gray-200 bg-white px-6 py-8">
       <div className="mb-8">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
-          <span className="text-red-500">📍</span>
+          <span className="text-red-500">
+            <MapPin />
+          </span>
           <span>위치 목록</span>
         </div>
 
