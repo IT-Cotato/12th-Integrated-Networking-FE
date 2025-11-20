@@ -1,5 +1,5 @@
 > 12기 COTATO 프론트엔드-백엔드 네트워킹 과제 --> 프론트엔드
-> 
+>
 > 원본 레포지토리: [[전체 레포 링크](https://github.com/IT-Cotato/12th-Integrated-Networking-FE.git)]
 
 ## 👥 팀원
@@ -73,11 +73,13 @@ src/
 ## 💻 담당 작업
 
 ### [허수빈]
+
 - [x] 프로젝트 초기 설정
 - [x] Kakao Map API 연동
 - [x] Modal 컴포넌트
 
 ### [신지예]
+
 - [x] WeatherPanel 컴포넌트
 - [x] HourlyForecast 컴포넌트
 - [x] WeeklyForecast 컴포넌트
