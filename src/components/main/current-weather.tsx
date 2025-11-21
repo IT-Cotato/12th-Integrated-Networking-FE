@@ -11,6 +11,7 @@ import {
 import WeatherStatItem from './weather-stat-item';
 import StatusBadge from './status-badge';
 import type { AirQualityItem } from '@/types/air-quality.types';
+import SectionContainer from './section-container';
 
 interface CurrentWeatherProps {
   current: CurrentWeatherType;
@@ -35,7 +36,7 @@ export default function CurrentWeather({
   const date = new Date(current.dt * 1000);
 
   return (
-    <div className="border-gray10 flex w-full max-w-[1080px] flex-col gap-3 rounded-2xl border-2 bg-white p-4 shadow-[0_0_8px_2px_rgba(0,0,0,0.10)]">
+    <SectionContainer>
       <p className="text-xl font-bold">
         {date.getMonth()}월 {date.getDate()}일 {location} 날씨 현황
       </p>
@@ -63,6 +64,6 @@ export default function CurrentWeather({
           <StatusBadge label="자외선" levelValue={uvLevel} />
         </div>
       </div>
-    </div>
+    </SectionContainer>
   );
 }
