@@ -3,6 +3,7 @@ import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import { useWeather } from '@/hooks/use-weather';
 import CurrentWeather from './current-weather';
 import { useAirQuality } from '@/hooks/use-air-quality';
+import HourlyForecast from './hourly-forecast';
 
 export default function MainView() {
   const contextValue = use(SelectedLocationContext);
@@ -30,6 +31,7 @@ export default function MainView() {
         air={airItem}
         location={selectedLocation.name}
       />
+      <HourlyForecast hourlyData={weatherData.hourly!} />
     </div>
   );
 }
