@@ -47,18 +47,32 @@ export default function Sidebar({
           const isSelected = selectedId === location.id;
 
           return (
-            <button
+            <div
               key={location.id}
-              type="button"
-              onClick={() => onSelect(location.id)}
-              className={`w-full rounded-xl px-3 py-2 text-left text-sm ${
+              className={`group flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
                 isSelected
-                  ? "bg-gray-200 text-gray-900"
-                  : "hover:bg-gray-10 bg-white text-gray-900"
+                  ? "bg-gray-10 text-gray-900"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >
-              <div className="truncate">{location.name}</div>
-            </button>
+              {/* 왼쪽: 선택 버튼 */}
+              <button
+                type="button"
+                onClick={() => onSelect(location.id)}
+                className="flex-1 text-left"
+              >
+                <div className="truncate">{location.name}</div>
+              </button>
+
+              {/* 오른쪽: hover 시 보이는 삭제 버튼 */}
+              <button
+                type="button"
+                onClick={() => onClickDelete(location.id)}
+                className="ml-2 text-[11px] text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-500"
+              >
+                삭제
+              </button>
+            </div>
           );
         })}
 

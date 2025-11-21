@@ -31,7 +31,7 @@ const INITIAL_LOCATIONS: Location[] = [
 ];
 
 const Home = () => {
-  const [locations] = useState<Location[]>(INITIAL_LOCATIONS);
+  const [locations, setLocations] = useState<Location[]>(INITIAL_LOCATIONS);
 
   const [selectedId, setSelectedId] = useState<string | null>(
     INITIAL_LOCATIONS[0]?.id ?? null,
@@ -41,6 +41,11 @@ const Home = () => {
 
   const handleSelect = (id: string) => {
     setSelectedId(prev => (prev === id ? null : id));
+  };
+
+  const handleDelete = (id: string) => {
+    setLocations(prev => prev.filter(location => location.id !== id));
+    setSelectedId(prev => (prev === id ? null : prev));
   };
 
   const selectedLocation =
@@ -55,6 +60,7 @@ const Home = () => {
         locations={locations}
         selectedId={selectedId}
         onSelect={handleSelect}
+        onClickDelete={handleDelete}
       />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}
