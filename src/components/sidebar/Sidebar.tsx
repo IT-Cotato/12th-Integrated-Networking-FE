@@ -41,8 +41,28 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* 리스트는 나중에 추가 */}
-      <nav>리스트 자리</nav>
+      {/* 리스트 뼈대 */}
+      <nav className="space-y-2">
+        {locations.map(location => (
+          <div
+            key={location.id}
+            className="rounded-xl bg-gray-50 px-3 py-2 text-sm text-gray-700"
+          >
+            <div className="truncate">{location.name}</div>
+            {location.address && (
+              <div className="text-[11px] text-gray-400">
+                {location.address}
+              </div>
+            )}
+          </div>
+        ))}
+
+        {locations.length === 0 && (
+          <div className="mt-4 text-xs text-gray-400">
+            아직 등록된 위치가 없습니다.
+          </div>
+        )}
+      </nav>
     </aside>
   );
 }
