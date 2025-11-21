@@ -34,6 +34,7 @@ export default function CurrentWeather({
   const pm10Level = getPm10Level(air.components.pm10);
   const pm25Level = getPm25Level(air.components.pm2_5);
   const date = new Date(current.dt * 1000);
+  const sunrise = new Date(current.sunrise * 1000);
 
   return (
     <SectionContainer>
@@ -62,6 +63,14 @@ export default function CurrentWeather({
           <StatusBadge label="미세먼지" levelValue={pm10Level} />
           <StatusBadge label="초미세먼지" levelValue={pm25Level} />
           <StatusBadge label="자외선" levelValue={uvLevel} />
+          <div
+            className={`bg-lime text-yellow flex w-30 flex-col items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-xs`}
+          >
+            <span className="font-medium text-black">일출</span>
+            <span className="font-bold">
+              {sunrise.getHours()}:{sunrise.getMinutes()}
+            </span>
+          </div>
         </div>
       </div>
     </SectionContainer>
