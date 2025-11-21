@@ -32,14 +32,30 @@ const INITIAL_LOCATIONS: Location[] = [
 
 const Home = () => {
   const [locations] = useState<Location[]>(INITIAL_LOCATIONS);
+
+  const [selectedId, setSelectedId] = useState<string | null>(
+    INITIAL_LOCATIONS[0]?.id ?? null,
+  );
   const date = formatLocalDate();
   // TODO: 나중에 사이드바에서 선택한 위치로 변경
-  const LOCATION = "롯데월드";
+
+  const handleSelect = (id: string) => {
+    setSelectedId(prev => (prev === id ? null : id));
+  };
+
+  const selectedLocation =
+    locations.find(location => location.id === selectedId) ?? null;
+
+  const LOCATION = selectedLocation?.name ?? "";
 
   return (
     <div className="bg-gray-5 flex min-h-screen w-full">
       {/* 왼쪽: 사이드바 */}
-      <Sidebar locations={locations} />
+      <Sidebar
+        locations={locations}
+        selectedId={selectedId}
+        onSelect={handleSelect}
+      />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
