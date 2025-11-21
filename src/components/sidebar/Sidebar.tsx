@@ -43,14 +43,24 @@ export default function Sidebar({
 
       {/* 리스트 뼈대 */}
       <nav className="space-y-2">
-        {locations.map(location => (
-          <div
-            key={location.id}
-            className="rounded-xl bg-gray-50 px-3 py-2 text-sm text-gray-700"
-          >
-            <div className="truncate">{location.name}</div>
-          </div>
-        ))}
+        {locations.map(location => {
+          const isSelected = selectedId === location.id;
+
+          return (
+            <button
+              key={location.id}
+              type="button"
+              onClick={() => onSelect(location.id)}
+              className={`w-full rounded-xl px-3 py-2 text-left text-sm ${
+                isSelected
+                  ? "bg-gray-100 text-gray-900"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              <div className="truncate">{location.name}</div>
+            </button>
+          );
+        })}
 
         {locations.length === 0 && (
           <div className="mt-4 text-xs text-gray-400">
