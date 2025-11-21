@@ -35,12 +35,10 @@ export default function CurrentWeather({
   const pm25Level = getPm25Level(air.components.pm2_5);
   const date = new Date(current.dt * 1000);
   const sunrise = new Date(current.sunrise * 1000);
+  const dateHeader = `${date.getMonth() + 1}월 ${date.getDate()}일 ${location} 날씨 현황`;
 
   return (
-    <SectionContainer>
-      <p className="text-xl font-bold">
-        {date.getMonth()}월 {date.getDate()}일 {location} 날씨 현황
-      </p>
+    <SectionContainer label={dateHeader}>
       <div className="flex w-full flex-col items-center gap-2.5 p-2.5">
         <div className="flex items-center gap-2.5">
           <img src={`/assets/${iconAsset}.svg`} className="h-40 w-40" />
