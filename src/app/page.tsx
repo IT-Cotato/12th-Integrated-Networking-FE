@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { formatLocalDate } from "src/utils/getLocalDate";
 
 import Clouds from "@/assets/weather/clouds.svg";
@@ -9,7 +11,27 @@ import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
 import Sidebar from "@/components/sidebar/Sidebar";
 
+import { Location } from "@/types/location";
+
+const INITIAL_LOCATIONS: Location[] = [
+  {
+    id: "1",
+    name: "롯데월드",
+    address: "서울 송파구",
+    lat: 37.511,
+    lng: 127.098,
+  },
+  {
+    id: "2",
+    name: "강남역 1번 출구",
+    address: "서울 강남구",
+    lat: 37.4979,
+    lng: 127.0276,
+  },
+];
+
 const Home = () => {
+  const [locations] = useState<Location[]>(INITIAL_LOCATIONS);
   const date = formatLocalDate();
   // TODO: 나중에 사이드바에서 선택한 위치로 변경
   const LOCATION = "롯데월드";
@@ -17,7 +39,7 @@ const Home = () => {
   return (
     <div className="bg-gray-5 flex min-h-screen w-full">
       {/* 왼쪽: 사이드바 */}
-      <Sidebar />
+      <Sidebar locations={locations} />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
