@@ -1,6 +1,8 @@
 "use client";
 
 import MapPin from "@/assets/icons/map-pin.svg";
+import WhitePin from "@/assets/icons/pin-white.svg";
+import TrashCan from "@/assets/icons/trash-can.svg";
 
 import { Location } from "@/types/location";
 
@@ -49,28 +51,33 @@ export default function Sidebar({
           return (
             <div
               key={location.id}
-              className={`group flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
+              className={`group flex items-center justify-between rounded-3xl px-4 py-2 text-sm ${
                 isSelected
                   ? "bg-gray-10 text-gray-900"
                   : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >
-              {/* 왼쪽: 선택 버튼 */}
+              {/* 왼쪽: 핀 + 이름 */}
               <button
                 type="button"
                 onClick={() => onSelect(location.id)}
-                className="flex-1 text-left"
+                className="flex flex-1 items-center gap-3 text-left"
               >
-                <div className="truncate">{location.name}</div>
-              </button>
+                <span className="flex h-10 w-10 items-center justify-center">
+                  <WhitePin width={40} height={40} />
+                </span>
 
+                <span className="truncate">{location.name}</span>
+              </button>
               {/* 오른쪽: hover 시 보이는 삭제 버튼 */}
               <button
                 type="button"
                 onClick={() => onClickDelete(location.id)}
-                className="ml-2 text-[11px] text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-500"
+                className="opacity-0 transition-opacity group-hover:opacity-100"
               >
-                삭제
+                <span className="flex h-8 w-8 items-center justify-center">
+                  <TrashCan width={40} height={40} />
+                </span>
               </button>
             </div>
           );
