@@ -1,8 +1,22 @@
+import { useState } from "react";
 import WeatherPanelDetail from "./WeatherPanelDetail";
 import WeatherPanelMain from "./WeatherPanelMain";
 
 // WeatherPanel 컴포넌트
 export default function WeatherPanel() {
+  const [location, setLocation] = useState("롯데월드");
+  // //임시로. 이후 위치 불러오도록 설정
+  // const handleLocation = () => {
+  //   setLocation("롯데월드");
+  // };
+  const [today, setToday] = useState("4월 8일");
+  const handleToday = () => {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const formattedDate = `${month}월 ${date}일`;
+    setToday(formattedDate);
+  }; //언제 업데이트 될 지 작성 필요
   return (
     <>
       <div
@@ -18,7 +32,7 @@ export default function WeatherPanel() {
       "
       >
         <div className="font-bold text-[20px] text-left">
-          4월 8일 롯데월드 날씨 현황
+          {today} {location} 날씨 현황
         </div>
         <div className="justify-center items-center">
           <WeatherPanelMain />
