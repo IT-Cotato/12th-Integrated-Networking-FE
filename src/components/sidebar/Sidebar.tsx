@@ -49,11 +49,6 @@ export default function Sidebar({
             className="rounded-xl bg-gray-50 px-3 py-2 text-sm text-gray-700"
           >
             <div className="truncate">{location.name}</div>
-            {location.address && (
-              <div className="text-[11px] text-gray-400">
-                {location.address}
-              </div>
-            )}
           </div>
         ))}
 
