@@ -1,7 +1,17 @@
+import SearchResultItem from './SearchResultItem';
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
+
+// 임시 더미 데이터 (추후 API 연동)
+const dummySearchResults = [
+  { name: 'KFC 광화문점', address: '서울 종로구 세종로 161-1' },
+  { name: 'KFC 부산서면점', address: '부산 부산진구 부전동 241-17' },
+  { name: 'KFC 홍익대점', address: '서울 마포구 동교동 165-8' },
+  { name: 'KFC 코테이토점', address: '서울 마포구 동교동 165-8' },
+];
 
 export default function AddLocationModal({ isOpen, onClose }: Props) {
   if (!isOpen) return null;
@@ -73,6 +83,21 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
                 />
               </button>
             </div>
+          </div>
+
+          {/* 검색 결과 리스트 */}
+          <div className="flex flex-col items-start gap-4 self-stretch h-[240px] py-2 px-4 overflow-y-auto w-full rounded-lg border border-[#A4A4A4]">
+            {dummySearchResults.map((result, index) => (
+              <SearchResultItem
+                key={index}
+                name={result.name}
+                address={result.address}
+                onClick={() => {
+                  console.log('선택:', result.name);
+                  // TODO: 위치 선택 처리
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
