@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 
 import { searchPlaces } from "@/apis/kakao";
@@ -30,6 +30,7 @@ export default function AddLocationModal({
   onClose,
   onSubmit,
 }: AddLocationModalProps) {
+  const queryClient = useQueryClient();
   const [keyword, setKeyword] = useState("");
 
   // 실제로 서버 연동되면 이 name/lat/lng 값을 사용해서 Sidebar에 추가할 예정
@@ -42,7 +43,6 @@ export default function AddLocationModal({
     data: results = [],
     refetch,
     isFetching,
-    error,
   } = useQuery<SearchResult[]>({
     queryKey: ["kakao-search", keyword],
     queryFn: () => searchPlaces(keyword),
@@ -54,6 +54,21 @@ export default function AddLocationModal({
   const handleSearch = () => {
     if (!keyword.trim()) return;
     refetch();
+  };
+
+  const resetForm = () => {
+    setKeyword("");
+    setName("");
+    setLat("");
+    setLng("");
+    setAddress("");
+  };
+
+  const handleClose = () => {
+    resetForm();
+    // 검색 결과 캐시도 같이 정리
+    queryClient.removeQueries({ queryKey: ["kakao-search"] });
+    onClose();
   };
 
   return (
@@ -69,7 +84,7 @@ export default function AddLocationModal({
           <h2 className="text-lg font-semibold">새 위치 추가</h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="text-gray-500 hover:text-gray-700"
           >
             ✕
@@ -149,7 +164,7 @@ export default function AddLocationModal({
         <div className="mt-6 flex justify-end gap-2">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
           >
             취소
@@ -178,7 +193,7 @@ export default function AddLocationModal({
                 address,
               });
 
-              onClose();
+              handleClose(); //  추가 후 모달 닫으면서 상태 초기화
             }}
           >
             추가
