@@ -1,40 +1,96 @@
-# 🛠️ 팀별 협업 가이드
+> 12기 COTATO 프론트엔드-백엔드 네트워킹 과제 --> 프론트엔드
+> 
+> 원본 레포지토리: [[전체 레포 링크](https://github.com/IT-Cotato/12th-Integrated-Networking-FE.git)]
 
-### 1. 중앙 레포지토리 Fork
+## 👥 팀원
 
-각 팀은 본 레포지토리를 **Fork**하여 팀별 저장소를 생성합니다.
+- **[신지예]** - 담당: 시간별/주간 예보
+- **[허수빈]** - 담당: 메인 UI, API 연동
 
-- ex. `12th-Integrated-Team6`  (6조의 경우)
+### 주요 기능
 
-### 2. 팀 협업 환경 구성
+- ☀️ 실시간 날씨 정보
+- 📊 시간별 날씨 예보 (24시간)
+- 📅 주간 날씨 예보 (7일)
+- 📍 위치 기반 날씨 검색
+- 🔗 카카오 로그인 기능
 
-- 팀장은 **팀원들을 Collaborator로 초대**합니다.
-- 팀원들은 팀 저장소를 **Clone**하여 로컬 개발 환경을 세팅합니다.
-- 세팅 시 필요한 패키지나 환경 변수는 팀 내에서 공유해주세요.
+## 🛠️ 기술 스택
 
-### 3. 브랜치 전략
+- **Frontend**: React, TypeScript
+- **Styling**: Tailwind CSS
+- **API**: Kakao Map API
+- **Deploy**: Vercel
+- **Package Manager**: npm
 
-- 팀별 저장소의 기본 브랜치는 `develop`입니다.
-- 각 조는 **조별 네이밍 규칙**에 맞게 기능 브랜치를 생성해 작업합니다.
-    - ex. `feat/home`, `fix/weather-error`
-    - 꼭 위 예시의 형식이 아니라도 팀별로 통일하여 작업하면 됩니다.
-- 커밋 메시지는 한눈에 기능이 파악되도록 작성해주세요.
+## 🚀 실행 방법
 
-### 4. 최종 결과물 제출
+### 1. 저장소 클론
 
-- 모든 구현이 완료되면,
-    
-    팀 저장소의 `develop` 브랜치에서 **본 레포지토리의** `develop` **브랜치**로 PR을 생성합니다.
-  > 💬 PR 시 자동으로 템플릿이 적용됩니다. 구현 내용, 트러블슈팅, 배운 점 등을 템플릿에 맞게 작성해주세요.
-    
-- PR 제목 예시:
-    
-    ```
-    [6조] 프론트엔드 통합 네트워킹 과제 제출
-    ```
-    
+```bash
+git clone [fork된 레포 주소]
+cd [프로젝트 폴더]
+```
 
-### 5. 코드 리뷰 및 병합
+### 2. 패키지 설치
 
-- 모든 팀은 **다른 팀의 PR을 확인하고 피드백**할 수 있습니다.
-- 다른 팀들의 PR을 확인하시고 리뷰나 코멘트 자유롭게 남겨주시면 좋을 것 같습니다!
+```bash
+npm install
+```
+
+### 3. 환경 변수 설정
+
+`.env` 파일을 생성하고 API 키를 입력하세요:
+
+```env
+REACT_APP_WEATHER_API_KEY=your_api_key_here
+```
+
+### 4. 개발 서버 실행
+
+```bash
+npm start
+```
+
+에서 확인할 수 있습니다.
+
+## 📂 프로젝트 구조
+
+```
+src/
+├── components/            # React 컴포넌트
+│   ├── Sidebar/           # 사이드바 메뉴
+│   ├── MainWeatherPanel/  # 메인 날씨 정보
+│   ├── HourlyForecast/    # 시간별 예보
+│   ├── WeeklyForecast/    # 주간 예보
+│   └── Modal/             # 모달 컴포넌트
+├── hooks/                 # 커스텀 훅
+├── services/              # API 서비스
+├── types/                 # TypeScript 타입
+└── utils/                 # 유틸리티 함수
+```
+
+## 💻 담당 작업
+
+### [허수빈]
+- [x] 프로젝트 초기 설정
+- [x] Kakao Map API 연동
+- [x] Modal 컴포넌트
+
+### [신지예]
+- [x] WeatherPanel 컴포넌트
+- [x] HourlyForecast 컴포넌트
+- [x] WeeklyForecast 컴포넌트
+
+## 🤝 기여 방법
+
+1. 이슈 생성
+2. 브랜치 생성 (`git checkout -b feature/AmazingFeature`)
+3. 커밋 (`git commit -m 'Add some AmazingFeature'`)
+4. 푸시 (`git push origin feature/AmazingFeature`)
+5. Pull Request 생성
+
+## 📚 참고 문서
+
+- [Vite 공식 문서](https://vitejs.dev/)
+- [Tailwind CSS v4](https://tailwindcss.com/)
