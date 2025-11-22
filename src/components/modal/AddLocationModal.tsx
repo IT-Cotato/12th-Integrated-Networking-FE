@@ -102,6 +102,7 @@ export default function AddLocationModal({
                     setName(item.name);
                     setLat(String(item.lat));
                     setLng(String(item.lng));
+                    setAddress(item.address);
                     setResults([]);
                   }}
                   className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"

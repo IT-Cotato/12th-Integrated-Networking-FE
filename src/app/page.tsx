@@ -49,6 +49,26 @@ const Home = () => {
     setSelectedId(prev => (prev === id ? null : prev));
   };
 
+  const handleAddLocation = (locationInput: {
+    name: string;
+    lat: number;
+    lng: number;
+    address?: string;
+  }) => {
+    const newId = String(Date.now()); // 간단한 유니크 id
+
+    const newLocation: Location = {
+      id: newId,
+      name: locationInput.name,
+      lat: locationInput.lat,
+      lng: locationInput.lng,
+      address: locationInput.address ?? "",
+    };
+
+    setLocations(prev => [...prev, newLocation]);
+    setSelectedId(newId); // 방금 추가한 위치를 선택 상태로
+  };
+
   const selectedLocation =
     locations.find(location => location.id === selectedId) ?? null;
 
