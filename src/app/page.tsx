@@ -10,6 +10,7 @@ import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
 import AddLocationModal from "@/components/modal/AddLocationModal";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 import { Location } from "@/types/location";
@@ -37,6 +38,7 @@ const Home = () => {
   const [selectedId, setSelectedId] = useState<string | null>(
     INITIAL_LOCATIONS[0]?.id ?? null,
   );
+  const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
   const date = formatLocalDate();
   // TODO: 나중에 사이드바에서 선택한 위치로 변경
 
@@ -44,9 +46,20 @@ const Home = () => {
     setSelectedId(prev => (prev === id ? null : id));
   };
 
-  const handleDelete = (id: string) => {
+  const handleRequestDelete = (id: string) => {
+    const target = locations.find(location => location.id === id) ?? null;
+    setDeleteTarget(target);
+  };
+
+  // 실제 삭제 핸들러
+  const handleConfirmDelete = () => {
+    if (!deleteTarget) return;
+
+    const id = deleteTarget.id;
+
     setLocations(prev => prev.filter(location => location.id !== id));
     setSelectedId(prev => (prev === id ? null : prev));
+    setDeleteTarget(null);
   };
 
   const handleAddLocation = (locationInput: {
@@ -81,7 +94,7 @@ const Home = () => {
         locations={locations}
         selectedId={selectedId}
         onSelect={handleSelect}
-        onClickDelete={handleDelete}
+        onClickDelete={handleRequestDelete}
         onClickAdd={() => setIsAddOpen(true)}
       />
 
@@ -110,6 +123,12 @@ const Home = () => {
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
         onSubmit={handleAddLocation}
+      />
+      <ConfirmDeleteModal
+        isOpen={!!deleteTarget}
+        targetName={deleteTarget?.name}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
