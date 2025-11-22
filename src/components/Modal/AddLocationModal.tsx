@@ -1,28 +1,65 @@
 import { useState } from 'react';
 import SearchResultItem from './SearchResultItem';
+import { searchPlaces } from '../../services/kakaoMap';
+import type { SearchResult } from '../../types';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// 임시 더미 데이터 (추후 API 연동)
-const dummySearchResults = [
-  { name: 'KFC 광화문점', address: '서울 종로구 세종로 161-1' },
-  { name: 'KFC 부산서면점', address: '부산 부산진구 부전동 241-17' },
-  { name: 'KFC 홍익대점', address: '서울 마포구 동교동 165-8' },
-  { name: 'KFC 코테이토점', address: '서울 마포구 동교동 165-8' },
-];
-
 export default function AddLocationModal({ isOpen, onClose }: Props) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // 검색 실행 함수
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    setSelectedIndex(null);
+
+    try {
+      const results = await searchPlaces(searchQuery);
+      setSearchResults(results);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : '검색 중 오류가 발생했습니다.';
+      setError(errorMessage);
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Enter 키 입력 시 검색
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  // 모달 닫을 때 초기화
+  const handleClose = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setSelectedIndex(null);
+    setError(null);
+    onClose();
+  };
 
   if (!isOpen) return null;
 
   return (
     <div 
       className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div 
         className="bg-white rounded-2xl w-[624px] h-[641px] shadow-[4px_4px_4px_3px_#00000040] relative"
@@ -30,7 +67,7 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
       >
         {/* 닫기 버튼 (우측 상단) - 모달 경계 기준 */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-[16.5px] right-4 w-6 h-6 !p-0 !m-0 !bg-transparent !border-none !shadow-none !outline-none !appearance-none hover:opacity-70 transition-opacity z-50 cursor-pointer"
           aria-label="닫기"
           type="button"
@@ -70,13 +107,18 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
               <input
                 type="text"
                 placeholder="장소를 입력해주세요."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="flex-1 outline-none border-none bg-transparent text-left"
                 style={{ fontFamily: 'Pretendard, sans-serif' }}
               />
               {/* 검색 아이콘 */}
               <button
                 type="button"
-                className="!w-6 !h-6 !p-0 !m-0 !bg-transparent !border-none !outline-none !rounded-none flex items-center justify-center flex-shrink-0 ml-2 cursor-pointer"
+                onClick={handleSearch}
+                disabled={isLoading}
+                className="!w-6 !h-6 !p-0 !m-0 !bg-transparent !border-none !outline-none !rounded-none flex items-center justify-center flex-shrink-0 ml-2 cursor-pointer disabled:opacity-50"
                 aria-label="검색"
               >
                 <img 
@@ -90,11 +132,26 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
 
           {/* 검색 결과 리스트 */}
           <div className="flex flex-col items-start gap-4 self-stretch h-[240px] py-2 px-4 overflow-y-auto w-full rounded-lg border border-[#A4A4A4]">
-            {dummySearchResults.map((result, index) => (
+            {isLoading && (
+              <div className="w-full text-center text-gray-500 py-8">
+                검색 중...
+              </div>
+            )}
+            {error && (
+              <div className="w-full text-center text-red-500 py-8">
+                {error}
+              </div>
+            )}
+            {!isLoading && !error && searchResults.length === 0 && searchQuery && (
+              <div className="w-full text-center text-gray-500 py-8">
+                검색 결과가 없습니다.
+              </div>
+            )}
+            {!isLoading && !error && searchResults.map((result, index) => (
               <SearchResultItem
-                key={index}
+                key={result.id}
                 name={result.name}
-                address={result.address}
+                address={result.roadAddress || result.address}
                 selected={selectedIndex === index}
                 onClick={() => {
                   setSelectedIndex(selectedIndex === index ? null : index);
@@ -110,10 +167,18 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
               className="flex justify-center items-center !py-[6px] !px-[30px] !rounded-md !bg-[#292E2E] !border-none !outline-none cursor-pointer"
               onClick={() => {
                 if (selectedIndex !== null) {
-                  console.log('확인:', dummySearchResults[selectedIndex]);
-                  // TODO: 위치 추가 처리
+                  const selectedResult = searchResults[selectedIndex];
+                  // TODO: 백엔드 API 연동 - 위치 추가 처리
+                  // 1. 백엔드 API 엔드포인트 호출 (src/services/api.ts에 함수 구현 필요)
+                  // 2. 전송할 데이터:
+                  //    - name: selectedResult.name (장소 이름)
+                  //    - address: selectedResult.address (주소)
+                  //    - latitude: selectedResult.latitude (위도)
+                  //    - longitude: selectedResult.longitude (경도)
+                  // 3. 성공 시 Sidebar의 위치 목록 업데이트
+                  // 4. 에러 처리
                 }
-                onClose();
+                handleClose();
               }}
             >
               <span 
