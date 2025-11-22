@@ -1,36 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchCurrentWeather } from "../services/api";
+import type { mainData } from "../types/mainData";
+
+//예시 위경도, 이후 location 사용
+const LAT = 37.56;
+const LON = 126.97;
+
+interface WeatherState {
+  data: mainData | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialWeatherState: WeatherState = {
+  data: null,
+  loading: true, // 컴포넌트 마운트 시 로딩 시작
+  error: null,
+};
 
 // useWeather 커스텀 훅
 export default function useWeather() {
-  const [weather, setWeather] = useState({
-    city: "Seoul",
-    temperature: 10.5,
-    description: "흐림",
-    feelTemperature: 9.0,
-    humidity: 50,
-    windSpeed: 0.4,
-    windDirection: "남동풍",
-    sunriseTime: "05:44",
-    pm10: "좋음",
-    pm25: "보통",
-    uv: "낮음",
-  });
+  const [weatherState, setWeatherState] = useState(initialWeatherState);
+  useEffect(() => {
+    const loadWeather = async () => {
+      setWeatherState((prev) => ({ ...prev, loading: true, error: null }));
+      try {
+        const weatherData = await fetchCurrentWeather(LAT, LON);
+        setWeatherState({
+          data: weatherData,
+          loading: false,
+          error: null,
+        });
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : "알 수 없는 에러가 발생했습니다.";
+        setWeatherState({
+          data: null,
+          loading: false,
+          error: errorMessage,
+        });
+      }
+    };
 
-  const handleUpdate = (location: string, time: string) => {
-    //시간이랑 위치 정보에 따라 날씨 정보 API에서 가져와 업데이트
-    setWeather({
-      city: "Seoul",
-      temperature: 10.5,
-      description: "흐림",
-      feelTemperature: 9.0,
-      humidity: 50,
-      windSpeed: 0.4,
-      windDirection: "남동풍",
-      sunriseTime: "05:44",
-      pm10: "좋음",
-      pm25: "보통",
-      uv: "낮음",
-    });
+    loadWeather();
+  }, []);
+
+  return {
+    data: weatherState.data,
+    loading: weatherState.loading,
+    error: weatherState.error,
   };
-  return { weather, handleUpdate };
 }

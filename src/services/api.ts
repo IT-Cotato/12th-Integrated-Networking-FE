@@ -41,6 +41,7 @@ export async function addLocation(
   // userId: number, // 일단 주석처리
   name: string,
   lat: number,
+<<<<<<< HEAD
   lng: number
 ): Promise<AddLocationResponse> {
   const requestData: AddLocationRequest = {
