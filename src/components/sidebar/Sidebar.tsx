@@ -1,6 +1,7 @@
 "use client";
 
 import MapPin from "@/assets/icons/map-pin.svg";
+import RedPin from "@/assets/icons/pin-red.svg";
 import WhitePin from "@/assets/icons/pin-white.svg";
 import TrashCan from "@/assets/icons/trash-can.svg";
 
@@ -12,6 +13,7 @@ type SidebarProps = {
   onSelect: (id: string) => void;
   onClickAdd: () => void;
   onClickDelete: (id: string) => void;
+  onTogglePin: (id: string) => void;
 };
 
 export default function Sidebar({
@@ -20,6 +22,7 @@ export default function Sidebar({
   onSelect,
   onClickAdd,
   onClickDelete,
+  onTogglePin,
 }: SidebarProps) {
   return (
     <aside className="h-screen w-64 border-r border-gray-200 bg-white px-6 py-8">
@@ -58,16 +61,30 @@ export default function Sidebar({
                   : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >
-              {/* 왼쪽: 핀 + 이름 */}
+              {/* 왼쪽: 핀 + 이름 (행 전체 클릭 시 선택) */}
               <button
                 type="button"
                 onClick={() => onSelect(location.id)}
                 className="flex flex-1 items-center gap-3 text-left"
               >
-                <WhitePin className="h-[20px] w-[20px]" />
+                {/* 핀 아이콘만 따로 클릭해서 고정 토글 */}
+                <span
+                  onClick={event => {
+                    event.stopPropagation(); //  행 선택 막기
+                    onTogglePin(location.id);
+                  }}
+                  className="flex items-center justify-center"
+                >
+                  {location.isPinned ? (
+                    <RedPin className="h-[20px] w-[20px]" />
+                  ) : (
+                    <WhitePin className="h-[20px] w-[20px]" />
+                  )}
+                </span>
 
                 <span className="truncate">{location.name}</span>
               </button>
+
               {/* 오른쪽: hover 시 보이는 삭제 버튼 */}
               <button
                 type="button"

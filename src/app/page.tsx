@@ -76,10 +76,28 @@ const Home = () => {
       lat: locationInput.lat,
       lng: locationInput.lng,
       address: locationInput.address ?? "",
+      isPinned: false,
     };
 
     setLocations(prev => [...prev, newLocation]);
     setSelectedId(newId); // 방금 추가한 위치를 선택 상태로
+  };
+
+  const handleTogglePin = (id: string) => {
+    setLocations(prev => {
+      const updated = prev.map(
+        location =>
+          location.id === id
+            ? { ...location, isPinned: !location.isPinned } // 누른 것만 토글
+            : location, // 나머지는 그대로
+      );
+
+      // 고정된 애들 먼저, 나머지 뒤로 보내기 (여러 개 가능)
+      const pinned = updated.filter(loc => loc.isPinned);
+      const unpinned = updated.filter(loc => !loc.isPinned);
+
+      return [...pinned, ...unpinned]; // 순서 유지하면서 pinned만 앞으로
+    });
   };
 
   const selectedLocation =
@@ -96,6 +114,7 @@ const Home = () => {
         onSelect={handleSelect}
         onClickDelete={handleRequestDelete}
         onClickAdd={() => setIsAddOpen(true)}
+        onTogglePin={handleTogglePin}
       />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}
