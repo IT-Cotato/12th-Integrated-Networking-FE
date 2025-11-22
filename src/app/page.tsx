@@ -61,6 +61,10 @@ const Home = () => {
         selectedId={selectedId}
         onSelect={handleSelect}
         onClickDelete={handleDelete}
+        onClickAdd={() => {
+          // TODO: 나중에 위치 추가 모달 열기
+          console.log("add click");
+        }}
       />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}

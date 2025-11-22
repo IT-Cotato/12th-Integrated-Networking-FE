@@ -34,6 +34,7 @@ export default function Sidebar({
 
         <button
           type="button"
+          onClick={onClickAdd}
           className="flex items-center gap-2 text-sm text-blue-500"
         >
           <span className="bg-grey-100 rounded-full px-2 py-1 text-base">
