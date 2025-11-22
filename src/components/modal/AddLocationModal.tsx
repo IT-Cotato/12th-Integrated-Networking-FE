@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+
+import { searchPlaces } from "@/apis/kakao";
 
 type SearchResult = {
   name: string;
@@ -28,7 +31,6 @@ export default function AddLocationModal({
   onSubmit,
 }: AddLocationModalProps) {
   const [keyword, setKeyword] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
 
   // 실제로 서버 연동되면 이 name/lat/lng 값을 사용해서 Sidebar에 추가할 예정
   const [name, setName] = useState("");
@@ -36,21 +38,22 @@ export default function AddLocationModal({
   const [lng, setLng] = useState("");
   const [address, setAddress] = useState("");
 
+  const {
+    data: results = [],
+    refetch,
+    isFetching,
+    error,
+  } = useQuery<SearchResult[]>({
+    queryKey: ["kakao-search", keyword],
+    queryFn: () => searchPlaces(keyword),
+    enabled: false, // 검색 버튼 눌렀을 때만 실행
+  });
+
   if (!isOpen) return null;
 
-  // TODO: 나중에 카카오 검색 API 붙일 자리 (지금은 더미)
-  const handleDummySearch = () => {
+  const handleSearch = () => {
     if (!keyword.trim()) return;
-
-    // 일단은 더미 데이터로 UI만 확인
-    setResults([
-      {
-        name: `${keyword} 예시 장소`,
-        address: "서울 어딘가",
-        lat: 37.5,
-        lng: 127.0,
-      },
-    ]);
+    refetch();
   };
 
   return (
@@ -85,10 +88,10 @@ export default function AddLocationModal({
             />
             <button
               type="button"
-              onClick={handleDummySearch}
+              onClick={handleSearch}
               className="rounded-lg bg-gray-900 px-3 py-2 text-sm text-white"
             >
-              검색
+              {isFetching ? "검색중..." : "검색"}
             </button>
           </div>
 
@@ -96,14 +99,16 @@ export default function AddLocationModal({
             <div className="max-h-40 overflow-y-auto rounded-lg border">
               {results.map(item => (
                 <button
-                  key={item.name}
+                  key={`${item.name}-${item.lat}-${item.lng}`}
                   type="button"
                   onClick={() => {
                     setName(item.name);
                     setLat(String(item.lat));
                     setLng(String(item.lng));
                     setAddress(item.address);
-                    setResults([]);
+                    // 굳이 리스트를 숨기고 싶으면:
+                    // setKeyword("");
+                    // 여기서 refetch 안 부르면 그대로 유지됨
                   }}
                   className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                 >
