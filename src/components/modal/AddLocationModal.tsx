@@ -3,16 +3,13 @@
 import { useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { motion } from "framer-motion";
 
+// 돋보기 아이콘
 import { searchPlaces } from "@/apis/kakao";
 
-type SearchResult = {
-  name: string;
-  address: string;
-  lat: number;
-  lng: number;
-};
+// 상단 아이콘 (원하는 걸로 교체)
+import SearchIcon from "@/assets/icons/search.svg";
+import SunCloud from "@/assets/weather/sun.svg";
 
 type AddLocationModalProps = {
   isOpen: boolean;
@@ -25,19 +22,26 @@ type AddLocationModalProps = {
   }) => void;
 };
 
+type SearchResult = {
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+};
+
 export default function AddLocationModal({
   isOpen,
   onClose,
   onSubmit,
 }: AddLocationModalProps) {
   const queryClient = useQueryClient();
-  const [keyword, setKeyword] = useState("");
 
-  // 실제로 서버 연동되면 이 name/lat/lng 값을 사용해서 Sidebar에 추가할 예정
+  const [keyword, setKeyword] = useState("");
   const [name, setName] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
   const [address, setAddress] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const {
     data: results = [],
@@ -46,15 +50,8 @@ export default function AddLocationModal({
   } = useQuery<SearchResult[]>({
     queryKey: ["kakao-search", keyword],
     queryFn: () => searchPlaces(keyword),
-    enabled: false, // 검색 버튼 눌렀을 때만 실행
+    enabled: false, // 검색 버튼 눌렀을 때만 호출
   });
-
-  if (!isOpen) return null;
-
-  const handleSearch = () => {
-    if (!keyword.trim()) return;
-    refetch();
-  };
 
   const resetForm = () => {
     setKeyword("");
@@ -62,144 +59,155 @@ export default function AddLocationModal({
     setLat("");
     setLng("");
     setAddress("");
+    setSelectedIndex(null);
+    queryClient.removeQueries({ queryKey: ["kakao-search"] });
   };
 
   const handleClose = () => {
     resetForm();
-    // 검색 결과 캐시도 같이 정리
-    queryClient.removeQueries({ queryKey: ["kakao-search"] });
     onClose();
   };
 
+  const handleSearch = () => {
+    if (!keyword.trim()) return;
+    refetch();
+  };
+
+  const handleConfirm = () => {
+    if (!name || !lat || !lng) return;
+
+    const latNum = Number(lat);
+    const lngNum = Number(lng);
+    if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return;
+
+    onSubmit({
+      name,
+      lat: latNum,
+      lng: lngNum,
+      address,
+    });
+
+    handleClose();
+  };
+
+  const isConfirmDisabled = !name || !lat || !lng;
+
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.96 }}
-        className="w-[380px] rounded-2xl bg-white p-6 shadow-lg"
-      >
+      <div className="w-[480px] rounded-3xl bg-white p-8 shadow-xl">
         {/* 헤더 */}
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">새 위치 추가</h2>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex-1 text-center text-lg font-semibold">
+            <div className="mb-2 flex justify-center">
+              <SunCloud className="h-[56px] w-[56px]" />
+            </div>
+            <div>날씨 위치 추가</div>
+          </div>
           <button
             type="button"
             onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-2xl leading-none text-gray-400 hover:text-gray-600"
+            aria-label="닫기"
           >
-            ✕
+            ×
           </button>
         </div>
 
-        {/* 장소 검색 영역 */}
-        <div className="mb-4 space-y-2">
-          <div className="flex gap-2">
+        {/* 입력 영역 */}
+        <div className="mb-6">
+          <div className="mb-2 text-sm font-semibold text-gray-800">
+            장소 이름
+          </div>
+          <div className="flex items-center border-b border-gray-300 pb-2">
             <input
               type="text"
               value={keyword}
               onChange={e => setKeyword(e.target.value)}
-              placeholder="장소 검색 (예: 강남역)"
-              className="flex-1 rounded-lg border px-3 py-2 text-sm"
+              placeholder="키워드를 입력하세요"
+              className="flex-1 border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
             />
             <button
               type="button"
               onClick={handleSearch}
-              className="rounded-lg bg-gray-900 px-3 py-2 text-sm text-white"
+              className="ml-2 text-gray-500 hover:text-gray-800"
             >
-              {isFetching ? "검색중..." : "검색"}
+              <SearchIcon className="h-5 w-5" />
             </button>
           </div>
+        </div>
 
-          {results.length > 0 && (
-            <div className="max-h-40 overflow-y-auto rounded-lg border">
-              {results.map(item => (
-                <button
-                  key={`${item.name}-${item.lat}-${item.lng}`}
-                  type="button"
-                  onClick={() => {
-                    setName(item.name);
-                    setLat(String(item.lat));
-                    setLng(String(item.lng));
-                    setAddress(item.address);
-                    // 굳이 리스트를 숨기고 싶으면:
-                    // setKeyword("");
-                    // 여기서 refetch 안 부르면 그대로 유지됨
-                  }}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
-                >
-                  <div className="font-medium">{item.name}</div>
-                  <div className="text-xs text-gray-500">{item.address}</div>
-                </button>
-              ))}
+        {/* 검색 결과 리스트 */}
+        <div className="mb-8">
+          {isFetching && (
+            <div className="py-4 text-center text-xs text-gray-500">
+              검색중입니다...
+            </div>
+          )}
+
+          {!isFetching && results.length === 0 && keyword && (
+            <div className="py-4 text-center text-xs text-gray-400">
+              검색 결과가 없습니다.
+            </div>
+          )}
+
+          {!isFetching && results.length > 0 && (
+            <div className="max-h-56 overflow-y-auto rounded-2xl border border-gray-200">
+              {results.map((item, index) => {
+                const isSelected = selectedIndex === index;
+
+                return (
+                  <button
+                    key={`${item.name}-${item.lat}-${item.lng}`}
+                    type="button"
+                    onClick={() => {
+                      setSelectedIndex(index);
+                      setName(item.name);
+                      setLat(String(item.lat));
+                      setLng(String(item.lng));
+                      setAddress(item.address);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm transition-colors ${
+                      isSelected
+                        ? "bg-gray-200"
+                        : "bg-white hover:bg-[#F8FAFC] active:bg-gray-200"
+                    } ${index !== results.length - 1 ? "border-b border-gray-200" : ""} `}
+                  >
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {item.name}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {item.address}
+                      </div>
+                    </div>
+                    {isSelected && (
+                      <span className="text-base text-emerald-500">✓</span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
 
-        {/* 입력 폼 영역 */}
-        <div className="space-y-3">
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="장소 이름"
-            className="w-full rounded-lg border px-3 py-2 text-sm"
-          />
-          <input
-            type="text"
-            value={lat}
-            onChange={e => setLat(e.target.value)}
-            placeholder="위도"
-            className="w-full rounded-lg border px-3 py-2 text-sm"
-          />
-          <input
-            type="text"
-            value={lng}
-            onChange={e => setLng(e.target.value)}
-            placeholder="경도"
-            className="w-full rounded-lg border px-3 py-2 text-sm"
-          />
-        </div>
-
-        {/* 하단 버튼 */}
-        <div className="mt-6 flex justify-end gap-2">
+        {/* 확인 버튼 */}
+        <div className="flex justify-end">
           <button
             type="button"
-            onClick={handleClose}
-            className="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+            onClick={handleConfirm}
+            disabled={isConfirmDisabled}
+            className={`h-10 rounded-lg px-6 text-sm font-medium text-white ${
+              isConfirmDisabled
+                ? "cursor-not-allowed bg-gray-300"
+                : "bg-gray-900 hover:bg-black"
+            }`}
           >
-            취소
-          </button>
-          <button
-            type="button"
-            className="rounded-lg bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
-            onClick={() => {
-              if (!name || !lat || !lng) {
-                alert("장소 이름, 위도, 경도를 모두 입력해주세요.");
-                return;
-              }
-
-              const latNum = Number(lat);
-              const lngNum = Number(lng);
-
-              if (Number.isNaN(latNum) || Number.isNaN(lngNum)) {
-                alert("위도와 경도는 숫자 형식이어야 합니다.");
-                return;
-              }
-
-              onSubmit({
-                name,
-                lat: latNum,
-                lng: lngNum,
-                address,
-              });
-
-              handleClose(); //  추가 후 모달 닫으면서 상태 초기화
-            }}
-          >
-            추가
+            확인
           </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
