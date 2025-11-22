@@ -14,11 +14,18 @@ type SearchResult = {
 type AddLocationModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit: (location: {
+    name: string;
+    lat: number;
+    lng: number;
+    address?: string;
+  }) => void;
 };
 
 export default function AddLocationModal({
   isOpen,
   onClose,
+  onSubmit,
 }: AddLocationModalProps) {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -27,6 +34,7 @@ export default function AddLocationModal({
   const [name, setName] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
+  const [address, setAddress] = useState("");
 
   if (!isOpen) return null;
 
@@ -144,8 +152,26 @@ export default function AddLocationModal({
             type="button"
             className="rounded-lg bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
             onClick={() => {
-              // TODO: 여기서 나중에 Home으로 위치 추가 전달
-              console.log("추가", { name, lat, lng });
+              if (!name || !lat || !lng) {
+                alert("장소 이름, 위도, 경도를 모두 입력해주세요.");
+                return;
+              }
+
+              const latNum = Number(lat);
+              const lngNum = Number(lng);
+
+              if (Number.isNaN(latNum) || Number.isNaN(lngNum)) {
+                alert("위도와 경도는 숫자 형식이어야 합니다.");
+                return;
+              }
+
+              onSubmit({
+                name,
+                lat: latNum,
+                lng: lngNum,
+                address,
+              });
+
               onClose();
             }}
           >
