@@ -9,6 +9,7 @@ import Clouds from "@/assets/weather/clouds.svg";
 import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
+import AddLocationModal from "@/components/modal/AddLocationModal";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 import { Location } from "@/types/location";
@@ -32,7 +33,7 @@ const INITIAL_LOCATIONS: Location[] = [
 
 const Home = () => {
   const [locations, setLocations] = useState<Location[]>(INITIAL_LOCATIONS);
-
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(
     INITIAL_LOCATIONS[0]?.id ?? null,
   );
@@ -64,6 +65,7 @@ const Home = () => {
         onClickAdd={() => {
           // TODO: 나중에 위치 추가 모달 열기
           console.log("add click");
+          setIsAddOpen(true);
         }}
       />
 
@@ -88,6 +90,10 @@ const Home = () => {
           </>
         )}
       </main>
+      <AddLocationModal
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+      />
     </div>
   );
 };
