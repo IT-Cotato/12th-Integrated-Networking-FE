@@ -102,6 +102,28 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
               />
             ))}
           </div>
+
+          {/* 버튼 영역 */}
+          <div className="flex justify-end items-end self-stretch">
+            <button
+              type="button"
+              className="flex justify-center items-center !py-[6px] !px-[30px] !rounded-md !bg-[#292E2E] !border-none !outline-none cursor-pointer"
+              onClick={() => {
+                if (selectedIndex !== null) {
+                  console.log('확인:', dummySearchResults[selectedIndex]);
+                  // TODO: 위치 추가 처리
+                }
+                onClose();
+              }}
+            >
+              <span 
+                className="text-white font-semibold text-xl leading-normal"
+                style={{ fontFamily: 'Pretendard, sans-serif' }}
+              >
+                확인
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
