@@ -82,11 +82,7 @@ const Home = () => {
         selectedId={selectedId}
         onSelect={handleSelect}
         onClickDelete={handleDelete}
-        onClickAdd={() => {
-          // TODO: 나중에 위치 추가 모달 열기
-          console.log("add click");
-          setIsAddOpen(true);
-        }}
+        onClickAdd={() => setIsAddOpen(true)}
       />
 
       {/* 오른쪽: 기존 Home 콘텐츠 */}
@@ -113,6 +109,7 @@ const Home = () => {
       <AddLocationModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
+        onSubmit={handleAddLocation}
       />
     </div>
   );
