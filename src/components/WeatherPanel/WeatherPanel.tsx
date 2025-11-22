@@ -9,14 +9,12 @@ export default function WeatherPanel() {
   // const handleLocation = () => {
   //   setLocation("롯데월드");
   // };
-  const [today, setToday] = useState("4월 8일");
-  const handleToday = () => {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const date = now.getDate();
-    const formattedDate = `${month}월 ${date}일`;
-    setToday(formattedDate);
-  }; //언제 업데이트 될 지 작성 필요
+
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  const today = `${month}월 ${date}일`;
+
   return (
     <>
       <div

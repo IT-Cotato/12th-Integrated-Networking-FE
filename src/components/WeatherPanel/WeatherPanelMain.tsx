@@ -4,15 +4,10 @@ import {
   getTimePeriod,
 } from "../../utils/weatherUtils";
 import useWeather from "../../hooks/useWeather";
-import { useState } from "react";
 
 export default function WeatherPanelMain() {
-  const [time, setTime] = useState("야간");
-  const handleTime = () => {
-    const currentTime = new Date().getHours();
-    const currentPeriod = getTimePeriod(currentTime);
-    setTime(currentPeriod);
-  };
+  const currentTime = new Date().getHours();
+  const time = getTimePeriod(currentTime);
 
   const { weather, handleUpdate } = useWeather();
   //업데이트 미구현
