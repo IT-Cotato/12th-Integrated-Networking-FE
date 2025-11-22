@@ -27,7 +27,7 @@ export default function Sidebar({
       <div className="mb-8">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold">
           <span className="text-red-500">
-            <MapPin />
+            <MapPin className="h-[30px] w-[30px]" />
           </span>
           <span>위치 목록</span>
         </div>
@@ -63,9 +63,7 @@ export default function Sidebar({
                 onClick={() => onSelect(location.id)}
                 className="flex flex-1 items-center gap-3 text-left"
               >
-                <span className="flex h-10 w-10 items-center justify-center">
-                  <WhitePin width={40} height={40} />
-                </span>
+                <WhitePin className="h-[20px] w-[20px]" />
 
                 <span className="truncate">{location.name}</span>
               </button>
@@ -75,9 +73,7 @@ export default function Sidebar({
                 onClick={() => onClickDelete(location.id)}
                 className="opacity-0 transition-opacity group-hover:opacity-100"
               >
-                <span className="flex h-8 w-8 items-center justify-center">
-                  <TrashCan width={40} height={40} />
-                </span>
+                <TrashCan className="h-[20px] w-[20px]" />
               </button>
             </div>
           );
