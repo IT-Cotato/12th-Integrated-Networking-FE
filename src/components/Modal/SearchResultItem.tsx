@@ -1,13 +1,14 @@
 interface Props {
   name: string;
   address: string;
+  selected?: boolean;
   onClick?: () => void;
 }
 
-export default function SearchResultItem({ name, address, onClick }: Props) {
+export default function SearchResultItem({ name, address, selected, onClick }: Props) {
   return (
     <div 
-      className="flex flex-col items-start gap-1 self-stretch py-2 px-3 border-b border-[#A4A4A4] cursor-pointer hover:bg-gray-50 transition-colors"
+      className="relative flex flex-col items-start gap-1 self-stretch py-2 px-3 border-b border-[#A4A4A4] cursor-pointer hover:bg-gray-50 transition-colors"
       onClick={onClick}
     >
       {/* 장소 이름 */}
@@ -25,6 +26,15 @@ export default function SearchResultItem({ name, address, onClick }: Props) {
       >
         {address}
       </span>
+
+      {/* 선택 체크 아이콘 */}
+      {selected && (
+        <img 
+          src="/tick-front-color.svg" 
+          alt="선택됨" 
+          className="absolute w-9 h-9 aspect-square right-2 bottom-[7.5px]"
+        />
+      )}
     </div>
   );
 }

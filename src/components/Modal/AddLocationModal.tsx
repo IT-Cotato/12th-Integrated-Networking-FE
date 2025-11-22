@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import SearchResultItem from './SearchResultItem';
 
 interface Props {
@@ -14,6 +15,8 @@ const dummySearchResults = [
 ];
 
 export default function AddLocationModal({ isOpen, onClose }: Props) {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
   if (!isOpen) return null;
 
   return (
@@ -92,9 +95,9 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
                 key={index}
                 name={result.name}
                 address={result.address}
+                selected={selectedIndex === index}
                 onClick={() => {
-                  console.log('선택:', result.name);
-                  // TODO: 위치 선택 처리
+                  setSelectedIndex(selectedIndex === index ? null : index);
                 }}
               />
             ))}
