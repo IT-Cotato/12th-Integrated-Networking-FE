@@ -120,3 +120,8 @@ export const convertUvToScore = (level: string | null | undefined): number => {
 
   return scoreMap[level] ?? 0;
 };
+
+export function getDate(): Date {
+  const date = new Date(Date.now());
+  return date;
+}
