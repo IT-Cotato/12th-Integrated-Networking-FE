@@ -29,7 +29,7 @@ export default function MainView() {
   }
   console.log(weatherData);
   return (
-    <main className="mx-auto flex h-screen w-full max-w-7xl flex-col items-center gap-6 p-10">
+    <main className="mx-auto flex h-screen max-w-7xl min-w-[400px] flex-col items-center gap-6 p-10">
       <CurrentWeather
         current={weatherData.current}
         location={selectedLocation.name}

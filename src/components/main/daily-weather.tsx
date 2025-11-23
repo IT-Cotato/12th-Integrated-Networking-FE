@@ -14,7 +14,7 @@ export default function DailyWeather({ data }: DailyWeatherProps) {
   const dayLabel = getDayLabel(data.date);
 
   return (
-    <div className="flex w-fit flex-col gap-2 rounded-2xl border-2 p-2">
+    <div className="flex w-[140px] flex-col items-center gap-2 rounded-2xl border-2 p-2 md:w-[200px]">
       <div className="flex gap-4">
         <div className="flex flex-col items-center gap-3">
           <div className="flex flex-col items-center">
