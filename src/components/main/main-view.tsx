@@ -2,7 +2,6 @@ import { use } from 'react';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import { useWeather } from '@/hooks/use-weather';
 import CurrentWeather from './current-weather';
-import { useAirQuality } from '@/hooks/use-air-quality';
 import HourlyForecast from './hourly-forecast';
 
 export default function MainView() {
@@ -14,8 +13,6 @@ export default function MainView() {
   const { selectedLocation } = contextValue;
 
   const { data: weatherData } = useWeather(selectedLocation);
-  const { data: airData } = useAirQuality(selectedLocation);
-  const airItem = airData.list[0];
   if (!selectedLocation) {
     return (
       <main className="mx-auto flex h-64 max-w-md items-center justify-center p-4">
@@ -24,11 +21,14 @@ export default function MainView() {
     );
   }
 
+  if (!weatherData) {
+    return <div>날씨정보를 불러오는데 실패했습니다</div>;
+  }
+
   return (
     <div className="mx-auto flex h-screen w-full max-w-7xl flex-col items-center gap-6 p-10">
       <CurrentWeather
         current={weatherData.current}
-        air={airItem}
         location={selectedLocation.name}
       />
       <HourlyForecast hourlyData={weatherData.hourly!} />
