@@ -10,8 +10,6 @@ import { searchPlaces } from "@/apis/kakao";
 // 상단 아이콘 (원하는 걸로 교체)
 import SearchIcon from "@/assets/icons/search.svg";
 
-import SunCloud from "../../../public/weather/sun.svg";
-
 type AddLocationModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -102,7 +100,11 @@ export default function AddLocationModal({
         <div className="mb-6 flex items-center justify-between">
           <div className="flex-1 text-center text-lg font-semibold">
             <div className="mb-2 flex justify-center">
-              <SunCloud className="h-[56px] w-[56px]" />
+              <img
+                src="/weather/sun.svg"
+                alt="sun icon"
+                className="h-[56px] w-[56px]"
+              />
             </div>
             <div>날씨 위치 추가</div>
           </div>
