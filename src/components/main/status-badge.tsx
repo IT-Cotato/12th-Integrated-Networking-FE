@@ -1,4 +1,3 @@
-const LEVEL_TEXT: string[] = ['좋음', '보통', '위험'];
 const LEVEL_STYLES: { bg: string; text: string }[] = [
   {
     bg: 'bg-skyblue',
@@ -8,6 +7,7 @@ const LEVEL_STYLES: { bg: string; text: string }[] = [
     bg: 'bg-mint',
     text: 'text-green',
   },
+  { bg: 'bg-lime', text: 'text-yellow' },
   {
     bg: 'bg-coral',
     text: 'text-red',
@@ -17,10 +17,14 @@ const LEVEL_STYLES: { bg: string; text: string }[] = [
 interface StatusBadgeProps {
   label: string;
   levelValue: number;
+  textValue: string;
 }
 
-export default function StatusBadge({ label, levelValue }: StatusBadgeProps) {
-  const levelText = LEVEL_TEXT[levelValue];
+export default function StatusBadge({
+  label,
+  levelValue,
+  textValue,
+}: StatusBadgeProps) {
   const { bg, text } = LEVEL_STYLES[levelValue];
 
   return (
@@ -28,7 +32,7 @@ export default function StatusBadge({ label, levelValue }: StatusBadgeProps) {
       className={`${bg} ${text} flex w-30 flex-col items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-xs`}
     >
       <span className="font-medium text-black">{label}</span>
-      <span className="font-bold">{levelText}</span>
+      <span className="font-bold">{textValue}</span>
     </div>
   );
 }

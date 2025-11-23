@@ -52,9 +52,21 @@ export default function CurrentWeather({
           />
         </div>
         <div className="flex gap-4">
-          <StatusBadge label="미세먼지" levelValue={pm10Score} />
-          <StatusBadge label="초미세먼지" levelValue={pm25Score} />
-          <StatusBadge label="자외선" levelValue={uvScore} />
+          <StatusBadge
+            label="미세먼지"
+            levelValue={pm10Score}
+            textValue={current.pm10Level}
+          />
+          <StatusBadge
+            label="초미세먼지"
+            levelValue={pm25Score}
+            textValue={current.pm25Level}
+          />
+          <StatusBadge
+            label="자외선"
+            levelValue={uvScore}
+            textValue={current.uvLevel}
+          />
           <div
             className={`bg-lime text-yellow flex w-30 flex-col items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-xs`}
           >
