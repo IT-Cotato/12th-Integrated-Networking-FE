@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -14,6 +14,17 @@
   --color-green: #32ff35;
   --color-mint: #ceffcc;
 
+  --color-rainblue-0: #cce8ff; /* 밝은 하늘색 */
+  --color-rainblue-10: #b3dbff;
+  --color-rainblue-20: #9acdff;
+  --color-rainblue-30: #81c0ff;
+  --color-rainblue-40: #67b2ff;
+  --color-rainblue-50: #4ea5ff;
+  --color-rainblue-60: #3597ff;
+  --color-rainblue-70: #1c8aff;
+  --color-rainblue-80: #037cff;
+  --color-rainblue-90: #0074f0;
+  --color-rainblue-100: #0068d6; /* 진하고 선명한 파랑 */
   /* Gray Scale */
   --color-gray100: #000000;
   --color-gray60: #292e2e;
