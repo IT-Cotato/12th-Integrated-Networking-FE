@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SearchResultItem from './SearchResultItem';
 import { searchPlaces } from '../../services/kakaoMap';
+import { addLocation } from '../../services/api';
 import type { SearchResult } from '../../types';
 
 interface Props {
@@ -13,6 +14,7 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 검색 실행 함수
@@ -164,28 +166,40 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
           <div className="flex justify-end items-end self-stretch">
             <button
               type="button"
-              className="flex justify-center items-center !py-[6px] !px-[30px] !rounded-md !bg-[#292E2E] !border-none !outline-none cursor-pointer"
-              onClick={() => {
-                if (selectedIndex !== null) {
-                  const selectedResult = searchResults[selectedIndex];
-                  // TODO: 백엔드 API 연동 - 위치 추가 처리
-                  // 1. 백엔드 API 엔드포인트 호출 (src/services/api.ts에 함수 구현 필요)
-                  // 2. 전송할 데이터:
-                  //    - name: selectedResult.name (장소 이름)
-                  //    - address: selectedResult.address (주소)
-                  //    - latitude: selectedResult.latitude (위도)
-                  //    - longitude: selectedResult.longitude (경도)
-                  // 3. 성공 시 Sidebar의 위치 목록 업데이트
-                  // 4. 에러 처리
+              disabled={selectedIndex === null || isSubmitting}
+              className="flex justify-center items-center !py-[6px] !px-[30px] !rounded-md !bg-[#292E2E] !border-none !outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={async () => {
+                if (selectedIndex === null) return;
+
+                const selectedResult = searchResults[selectedIndex];
+                setIsSubmitting(true);
+                setError(null);
+
+                try {
+                  // 백엔드 API 호출 - 위치 추가
+                  await addLocation(
+                    selectedResult.name,
+                    selectedResult.latitude,
+                    selectedResult.longitude
+                  );
+                  
+                  // TODO: 성공 시 Sidebar의 위치 목록 업데이트
+                  // TODO: 추후 로그인 구현 시 accessToken 헤더에 추가 필요
+                  
+                  handleClose();
+                } catch (err) {
+                  const errorMessage = err instanceof Error ? err.message : '위치 추가에 실패했습니다.';
+                  setError(errorMessage);
+                } finally {
+                  setIsSubmitting(false);
                 }
-                handleClose();
               }}
             >
               <span 
                 className="text-white font-semibold text-xl leading-normal"
                 style={{ fontFamily: 'Pretendard, sans-serif' }}
               >
-                확인
+                {isSubmitting ? '추가 중...' : '확인'}
               </span>
             </button>
           </div>

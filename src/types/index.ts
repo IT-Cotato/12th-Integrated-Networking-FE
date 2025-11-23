@@ -38,3 +38,8 @@ export interface Location {
   latitude: number;
   longitude: number;
 }
+
+// 위치 추가 API 응답 타입
+export interface AddLocationResponse {
+  locationId: number;
+}
