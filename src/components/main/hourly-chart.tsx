@@ -55,7 +55,7 @@ export function HourlyChart({ hourlyData }: Props) {
   });
 
   return (
-    <div className="w-full overflow-x-scroll overflow-y-visible">
+    <div className="scrollbar-hidden w-full overflow-x-scroll overflow-y-visible">
       <div className="w-[2000px] p-4">
         <ChartContainer
           config={chartConfig}

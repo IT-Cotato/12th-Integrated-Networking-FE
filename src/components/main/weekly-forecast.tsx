@@ -9,9 +9,11 @@ interface WeeklyForecastProps {
 export default function WeeklyForecast({ weeklyData }: WeeklyForecastProps) {
   return (
     <SectionContainer label="주간 예보">
-      <ul className="flex w-full justify-around overflow-x-scroll">
+      <ul className="scrollbar-hidden flex w-full justify-around overflow-x-scroll">
         {weeklyData.map((data) => (
-          <DailyWeather data={data} />
+          <li key={data.date}>
+            <DailyWeather data={data} />
+          </li>
         ))}
       </ul>
     </SectionContainer>
