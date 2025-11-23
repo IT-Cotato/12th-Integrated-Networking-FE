@@ -3,6 +3,7 @@ import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import { useWeather } from '@/hooks/use-weather';
 import CurrentWeather from './current-weather';
 import HourlyForecast from './hourly-forecast';
+import WeeklyForecast from './weekly-forecast';
 
 export default function MainView() {
   const contextValue = use(SelectedLocationContext);
@@ -33,7 +34,8 @@ export default function MainView() {
         current={weatherData.current}
         location={selectedLocation.name}
       />
-      <HourlyForecast hourlyData={weatherData.hourly!} />
+      <HourlyForecast hourlyData={weatherData.hourly} />
+      <WeeklyForecast weeklyData={weatherData.weekly} />
     </div>
   );
 }
