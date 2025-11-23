@@ -33,11 +33,7 @@ export interface CurrentWeather {
 
 // 전체 응답 구조
 export interface WeatherApiResponse {
-  code: string;
-  message: string;
-  data: {
-    current: CurrentWeather;
-    hourly: HourlyWeather[];
-    weekly: WeeklyWeather[];
-  };
+  current: CurrentWeather;
+  hourly: HourlyWeather[];
+  weekly: WeeklyWeather[];
 }
