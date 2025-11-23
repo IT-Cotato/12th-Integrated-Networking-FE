@@ -1,5 +1,28 @@
+import useWeeklyForecast from "../../hooks/useWeeklyForecast";
 import DailyForecast from "./DailyForecast";
 export default function WeeklyForecast() {
+  const { data, loading, error } = useWeeklyForecast();
+  if (loading) {
+    return (
+      <div className="p-10 text-center text-lg text-gray-500">
+        주간 예보를 불러오는 중입니다... 🌥️
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="p-10 text-center text-lg text-red-500">
+        주간 예보 로드 실패: {error}
+      </div>
+    );
+  }
+  if (!data || !data.dailyList || data.dailyList.length === 0) {
+    return (
+      <div className="p-10 text-center text-lg text-gray-500">
+        주간 예보 정보가 없습니다.
+      </div>
+    );
+  }
   return (
     <>
       <div
@@ -16,57 +39,19 @@ export default function WeeklyForecast() {
       >
         <div className="font-bold text-[20px] text-left">주간 예보</div>
         <div className="flex justify-center items-start gap-20">
-          {/* (임시)실제로는 API에서 받아온 날씨정보로 */}
-          <DailyForecast
-            amWeather="Rainy"
-            amRain={10}
-            amTemp={8}
-            pmWeather="Windy"
-            pmRain={10}
-            pmTemp={19}
-            date="4.26"
-            day="오늘"
-          />
-          <DailyForecast
-            amWeather="Sunny"
-            amRain={0}
-            amTemp={10}
-            pmWeather="Storm"
-            pmRain={0}
-            pmTemp={20}
-            date="4.27"
-            day="일"
-          />
-          <DailyForecast
-            amWeather="Storm"
-            amRain={10}
-            amTemp={8}
-            pmWeather="Snow"
-            pmRain={10}
-            pmTemp={19}
-            date="4.28"
-            day="월"
-          />
-          <DailyForecast
-            amWeather="Snow"
-            amRain={10}
-            amTemp={8}
-            pmWeather="Cloudy"
-            pmRain={10}
-            pmTemp={19}
-            date="4.29"
-            day="화"
-          />
-          <DailyForecast
-            amWeather="Cloudy"
-            amRain={10}
-            amTemp={8}
-            pmWeather="Windy"
-            pmRain={10}
-            pmTemp={19}
-            date="4.30"
-            day="수"
-          />
+          {data.dailyList.map((dayForecast) => (
+            <DailyForecast
+              key={dayForecast.am.description}
+              amRain={dayForecast.am.rain}
+              amTemp={dayForecast.minTemp}
+              amWeather={dayForecast.am.description}
+              pmWeather={dayForecast.pm.description}
+              pmRain={dayForecast.pm.rain}
+              pmTemp={dayForecast.maxTemp}
+              date={dayForecast.date}
+              day={dayForecast.dayOfWeek}
+            />
+          ))}
         </div>
       </div>
     </>
