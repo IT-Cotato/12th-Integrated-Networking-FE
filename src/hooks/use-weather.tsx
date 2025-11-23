@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { fetchWeather } from '@/mocks/fetch-weather';
+import { fetchWeather } from '@/api/fetch-weather';
 import { weatherKeys } from '@/queries/weatherKeys';
 import type { Location } from '@/types/location';
 
