@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import Storm from "@/assets/weather/storm.svg";
+import Storm from "../../../public/weather/storm.svg";
 
 // 번개치는 구름 아이콘 아무거나 골라서
 

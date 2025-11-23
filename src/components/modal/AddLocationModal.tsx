@@ -9,7 +9,8 @@ import { searchPlaces } from "@/apis/kakao";
 
 // 상단 아이콘 (원하는 걸로 교체)
 import SearchIcon from "@/assets/icons/search.svg";
-import SunCloud from "@/assets/weather/sun.svg";
+
+import SunCloud from "../../../public/weather/sun.svg";
 
 type AddLocationModalProps = {
   isOpen: boolean;

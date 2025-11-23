@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import Clouds from "public/weather/clouds.svg";
 import { formatLocalDate } from "src/utils/getLocalDate";
 
 import { HourlyWeather } from "@/components/home/HourlyWeather";
@@ -117,7 +116,11 @@ const Home = () => {
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
         {!LOCATION ? (
           <>
-            <Clouds className="h-80 w-80" />
+            <img
+              src="/weather/clouds.svg"
+              alt="날씨 없음"
+              className="h-80 w-80"
+            />
             <div className="text-h2 text-gray-100">
               아직 선택된 위치가 없습니다!
             </div>
