@@ -100,7 +100,7 @@ export const convertPmToScore = (level: string | null | undefined): number => {
     좋음: 0,
     보통: 1,
     나쁨: 2,
-    매우나쁨: 3,
+    '매우 나쁨': 3,
   };
 
   return scoreMap[level] ?? 0;
