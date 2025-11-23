@@ -1,10 +1,5 @@
 import { Line, LineChart, XAxis, LabelList } from 'recharts';
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
+import { type ChartConfig, ChartContainer } from '@/components/ui/chart';
 import type { HourlyWeather } from '@/types/weather.types';
 import { mapWeatherIcon } from '@/utils/weather.util';
 
@@ -47,7 +42,6 @@ const chartConfig = {
 const BASELINE_Y = 80;
 
 export function HourlyChart({ hourlyData }: Props) {
-  // [수정] 데이터 가공: '0시'를 기준으로 내일인지 판단하는 로직 추가
   const midnightIndex = hourlyData.findIndex((data) => data.time === '0시');
 
   const chartData: ChartDataPoint[] = hourlyData.map((data, index) => {
@@ -55,7 +49,7 @@ export function HourlyChart({ hourlyData }: Props) {
       time: data.time,
       temp: Number(data.temp.toFixed(1)),
       isNow: index === 0,
-      isTomorrow: midnightIndex > 0 && index >= midnightIndex, // 현재 데이터가 내일인지 표시
+      isTomorrow: midnightIndex > 0 && index >= midnightIndex,
       iconPath: mapWeatherIcon(data.weatherIcon),
     };
   });
@@ -80,11 +74,6 @@ export function HourlyChart({ hourlyData }: Props) {
               tick={(props) => (
                 <CustomTimeLabel {...props} chartData={chartData} />
               )}
-            />
-
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
             />
 
             <Line
