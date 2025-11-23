@@ -8,11 +8,12 @@ import {
 import type { HourlyWeather } from '@/types/weather.types';
 import { mapWeatherIcon } from '@/utils/weather.util';
 
-// 1. 차트 데이터 포인트의 타입 정의
+// 1. ChartDataPoint 타입에 isTomorrow 플래그 추가
 interface ChartDataPoint {
   time: string;
   temp: number;
   isNow: boolean;
+  isTomorrow: boolean; // [추가] 내일 여부
   iconPath: string;
 }
 
@@ -20,23 +21,20 @@ interface Props {
   hourlyData: HourlyWeather[];
 }
 
-// 2. CustomTimeLabel의 Props 타입 정의
 interface CustomTickProps {
   x?: number;
   y?: number;
   payload?: {
-    value: string | number; // X축의 값 (시간)
-    index: number; // 데이터 배열에서의 인덱스
+    value: string | number;
+    index: number;
   };
-  // 우리가 추가로 주입할 전체 데이터 배열
   chartData: ChartDataPoint[];
 }
 
-// 3. CustomizedDot의 Props 타입 정의
 interface CustomDotProps {
   cx?: number;
   cy?: number;
-  payload?: ChartDataPoint; // 점은 데이터 객체 자체를 payload로 받음
+  payload?: ChartDataPoint;
 }
 
 const chartConfig = {
@@ -49,13 +47,18 @@ const chartConfig = {
 const BASELINE_Y = 80;
 
 export function HourlyChart({ hourlyData }: Props) {
-  // 데이터 가공
-  const chartData: ChartDataPoint[] = hourlyData.map((data, index) => ({
-    time: data.time,
-    temp: Number(data.temp.toFixed(1)),
-    isNow: index === 0,
-    iconPath: mapWeatherIcon(data.weatherIcon),
-  }));
+  // [수정] 데이터 가공: '0시'를 기준으로 내일인지 판단하는 로직 추가
+  const midnightIndex = hourlyData.findIndex((data) => data.time === '0시');
+
+  const chartData: ChartDataPoint[] = hourlyData.map((data, index) => {
+    return {
+      time: data.time,
+      temp: Number(data.temp.toFixed(1)),
+      isNow: index === 0,
+      isTomorrow: midnightIndex > 0 && index >= midnightIndex, // 현재 데이터가 내일인지 표시
+      iconPath: mapWeatherIcon(data.weatherIcon),
+    };
+  });
 
   return (
     <div className="w-full overflow-x-scroll overflow-y-visible">
@@ -66,7 +69,7 @@ export function HourlyChart({ hourlyData }: Props) {
         >
           <LineChart
             data={chartData}
-            margin={{ top: 20, left: 20, right: 10, bottom: 50 }}
+            margin={{ top: 20, left: 20, right: 20, bottom: 50 }}
           >
             <XAxis
               dataKey="time"
@@ -74,7 +77,6 @@ export function HourlyChart({ hourlyData }: Props) {
               tickLine={false}
               interval={0}
               height={60}
-              // [핵심 수정] 화살표 함수로 chartData를 주입합니다.
               tick={(props) => (
                 <CustomTimeLabel {...props} chartData={chartData} />
               )}
@@ -112,21 +114,29 @@ export function HourlyChart({ hourlyData }: Props) {
 // --- 하단 커스텀 컴포넌트 영역 ---
 
 const CustomTimeLabel = ({ x, payload, chartData }: CustomTickProps) => {
-  // payload가 없거나 index가 없으면 렌더링하지 않음 (안전장치)
   if (!payload || typeof payload.index !== 'number') return null;
 
   const index = payload.index;
-  const data = chartData[index]; // 인덱스로 원본 데이터에 접근
+  const data = chartData[index];
 
-  // 데이터가 유효하지 않으면 렌더링하지 않음
   if (!data) return null;
+
+  // [로직 1] 텍스트 변환: "0시" -> "내일", 그 외엔 원래 시간
+  const displayTime = data.time === '0시' ? '내일' : data.time;
+
+  // [로직 2] 색상 변환: 내일 데이터면 보라색, 아니면 회색
+  // (0시인 경우 강조를 위해 font-bold도 추가했습니다)
+  const textColorClass = data.isTomorrow
+    ? 'text-[#8b5cf6] font-bold' // 내일: 보라색
+    : 'text-gray-500 font-medium'; // 오늘: 회색
 
   return (
     <g transform={`translate(${x},${BASELINE_Y})`}>
       <foreignObject x="-25" y="0" width="50" height="60">
         <div className="flex h-full flex-col items-center justify-start">
-          <span className="mb-1 text-xs font-medium text-gray-500">
-            {data.time}
+          {/* 변경된 텍스트와 색상 클래스 적용 */}
+          <span className={`mb-1 text-xs ${textColorClass}`}>
+            {displayTime}
           </span>
           <img
             src={`/assets/${data.iconPath}`}
@@ -142,10 +152,9 @@ const CustomTimeLabel = ({ x, payload, chartData }: CustomTickProps) => {
 // --- 기존 점 컴포넌트 ---
 
 const CustomizedDot = ({ cx, cy, payload }: CustomDotProps) => {
-  // Dot의 payload는 데이터 객체 그 자체입니다.
   if (!cx || !cy || !payload) return null;
 
-  const color = payload.isNow ? '#8b5cf6' : '#e2e8f0';
+  const color = payload.isNow ? '#32a1ff' : '#e2e8f0';
   const lineEndY = BASELINE_Y;
 
   return (
