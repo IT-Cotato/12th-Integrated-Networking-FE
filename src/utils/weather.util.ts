@@ -125,3 +125,22 @@ export function getDate(): Date {
   const date = new Date(Date.now());
   return date;
 }
+
+export function getDayLabel(dateStr: string): string {
+  const [monthStr, dayStr] = dateStr.split('/');
+  const targetMonth = Number(monthStr);
+  const targetDay = Number(dayStr);
+
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1; // 0-11 to 1-12
+  const currentDay = now.getDate();
+  const currentYear = now.getFullYear();
+
+  if (targetMonth === currentMonth && targetDay === currentDay) {
+    return '오늘';
+  }
+  const targetDate = new Date(currentYear, targetMonth - 1, targetDay);
+
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  return dayNames[targetDate.getDay()];
+}
