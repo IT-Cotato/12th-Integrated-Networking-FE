@@ -1,107 +1,43 @@
-export interface OneCallResponse {
-  lat: number;
-  lon: number;
-  timezone: string;
-  timezone_offset: number;
+// src/types/weather.types.ts
 
-  current: CurrentWeather;
-  minutely?: MinutelyWeather[];
-  hourly?: HourlyWeather[];
-  daily?: DailyWeather[];
-  alerts?: WeatherAlert[];
+export interface HourlyWeather {
+  time: string; // "19시"
+  temp: number; // 10.89 (섭씨)
+  weatherIcon: string; // "04n"
 }
 
-export interface Weather {
-  id: number;
-  main: string;
-  description: string;
-  icon: string;
+export interface WeeklyWeather {
+  date: string; // "11/23"
+  min: number;
+  max: number;
+  morningPop: number;
+  eveningPop: number;
+  morningIcon: string;
+  eveningIcon: string;
 }
 
 export interface CurrentWeather {
-  dt: number;
-  sunrise: number;
-  sunset: number;
-  temp: number;
-  feels_like: number;
-  pressure: number;
+  temperature: number;
+  feelsLike: number;
+  weatherDescription: string;
   humidity: number;
-  dew_point: number;
-  uvi: number;
-  clouds: number;
-  visibility: number;
-  wind_speed: number;
-  wind_deg: number;
-  wind_gust?: number;
-  weather: Weather[];
+  windDirection: string;
+  windSpeed: number;
+  pm10Level: string;
+  pm25Level: string;
+  uvLevel: string;
+  sunrise: string;
+  sunset: string;
+  day: boolean;
 }
 
-export interface MinutelyWeather {
-  dt: number;
-  precipitation: number;
-}
-
-export interface HourlyWeather {
-  dt: number;
-  temp: number;
-  feels_like: number;
-  pressure: number;
-  humidity: number;
-  dew_point: number;
-  uvi: number;
-  clouds: number;
-  visibility: number;
-  wind_speed: number;
-  wind_deg: number;
-  wind_gust?: number;
-  weather: Weather[];
-  pop: number; // Probability of precipitation
-}
-
-export interface DailyTemp {
-  day: number;
-  min: number;
-  max: number;
-  night: number;
-  eve: number;
-  morn: number;
-}
-
-export interface DailyFeelsLike {
-  day: number;
-  night: number;
-  eve: number;
-  morn: number;
-}
-
-export interface DailyWeather {
-  dt: number;
-  sunrise: number;
-  sunset: number;
-  moonrise: number;
-  moonset: number;
-  moon_phase: number;
-  summary?: string;
-  temp: DailyTemp;
-  feels_like: DailyFeelsLike;
-  pressure: number;
-  humidity: number;
-  dew_point: number;
-  wind_speed: number;
-  wind_deg: number;
-  wind_gust?: number;
-  weather: Weather[];
-  clouds: number;
-  pop: number;
-  rain?: number;
-  uvi: number;
-}
-
-export interface WeatherAlert {
-  sender_name: string;
-  event: string;
-  start: number;
-  end: number;
-  description: string;
-  tags: string[];
+// 전체 응답 구조
+export interface WeatherApiResponse {
+  code: string;
+  message: string;
+  data: {
+    current: CurrentWeather;
+    hourly: HourlyWeather[];
+    weekly: WeeklyWeather[];
+  };
 }
