@@ -92,3 +92,31 @@ export function getPm10Level(value: number): number {
   if (value < 80) return 1;
   return 2;
 }
+
+export const convertPmToScore = (level: string | null | undefined): number => {
+  if (!level) return 0;
+
+  const scoreMap: Record<string, number> = {
+    좋음: 0,
+    보통: 1,
+    나쁨: 2,
+    매우나쁨: 3,
+  };
+
+  return scoreMap[level] ?? 0;
+};
+
+export const convertUvToScore = (level: string | null | undefined): number => {
+  if (!level) return 0;
+
+  const scoreMap: Record<string, number> = {
+    낮음: 0,
+    중간: 1,
+    보통: 1,
+    높음: 2,
+    위험: 3,
+    매우높음: 3,
+  };
+
+  return scoreMap[level] ?? 0;
+};
