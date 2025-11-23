@@ -1,13 +1,13 @@
 const ICON_MAP: { [key: string]: string } = {
-  '01': '', // Clear
-  '02': '-cloud', // Clouds
-  '03': '-cloud',
-  '04': '-cloud',
-  '09': '-rain', // Rain
-  '10': '-rain',
-  '11': '-storm', // Thunderstorm
-  '13': '-snow', // Snow
-  '50': '-wind', // Mist -> wind로 매핑
+  '01': '.svg', // Clear
+  '02': '-cloud.svg', // Clouds
+  '03': '-cloud.svg',
+  '04': '-cloud.svg',
+  '09': '-rain.svg', // Rain
+  '10': '-rain.svg',
+  '11': '-storm.svg', // Thunderstorm
+  '13': '-snow.svg', // Snow
+  '50': '-wind.svg', // Mist -> wind로 매핑
 };
 
 const TEXT_MAP: { [key: string]: string } = {

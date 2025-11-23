@@ -17,7 +17,7 @@ export default function CurrentWeather({
   current,
   location,
 }: CurrentWeatherProps) {
-  const iconAsset = mapWeatherIcon('n10');
+  const iconAsset = mapWeatherIcon('10n');
   const uvScore = convertUvToScore(current.uvLevel);
   const pm10Score = convertPmToScore(current.pm10Level);
   const pm25Score = convertPmToScore(current.pm25Level);
@@ -29,7 +29,7 @@ export default function CurrentWeather({
     <SectionContainer label={dateHeader}>
       <div className="flex w-full flex-col items-center gap-2.5 p-2.5">
         <div className="flex items-center gap-2.5">
-          <img src={`/assets/${iconAsset}.svg`} className="h-40 w-40" />
+          <img src={`/assets/${iconAsset}`} className="h-40 w-40" />
           <span className="text-[80px] font-bold">{current.temperature}º</span>
         </div>
         <span className="text-xl font-semibold">
