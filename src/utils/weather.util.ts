@@ -53,7 +53,7 @@ export function mapWeatherIcon(iconCode: string): string {
   const prefix: string = isDay ? 'sun' : 'moon';
   const suffix: string = ICON_MAP[weatherCode] || '';
 
-  weatherIcon = prefix + suffix;
+  weatherIcon = '/assets/' + prefix + suffix;
   return weatherIcon;
 }
 

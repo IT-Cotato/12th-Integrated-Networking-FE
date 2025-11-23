@@ -29,7 +29,7 @@ export default function CurrentWeather({
     <SectionContainer label={dateHeader}>
       <div className="flex w-full flex-col items-center gap-2.5 p-2.5">
         <div className="flex items-center gap-2.5">
-          <img src={`/assets/${iconAsset}`} className="h-40 w-40" />
+          <img src={`${iconAsset}`} className="h-40 w-40" />
           <span className="text-[80px] font-bold">{current.temperature}º</span>
         </div>
         <span className="text-xl font-semibold">
