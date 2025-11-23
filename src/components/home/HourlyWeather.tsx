@@ -31,7 +31,7 @@ export const HourlyWeather = () => {
         ◀︎
       </button>
       {/* 날씨 아이콘 그룹 */}
-      <div className="flex w-full gap-[25px] overflow-x-auto">
+      <div className="flex w-full justify-between overflow-x-auto">
         {currentItems.map(data => {
           const hour = formatLocalHour(data.time);
           const iconKey = getWeatherIconKey({
