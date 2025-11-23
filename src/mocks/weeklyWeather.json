@@ -2,48 +2,68 @@
   "weeklyWeather": [
     {
       "date": "2025-11-19",
-      "dayHumidity": 55,
-      "nightHumidity": 65,
-      "dayTemp": 18,
-      "nightTemp": 10,
-      "dayWeather": "clouds",
-      "nightWeather": "clear-night"
+      "am": {
+        "weather": "clouds",
+        "avgTemp": 18,
+        "pop": 10
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 10,
+        "pop": 5
+      }
     },
     {
       "date": "2025-11-20",
-      "dayHumidity": 60,
-      "nightHumidity": 70,
-      "dayTemp": 17,
-      "nightTemp": 9,
-      "dayWeather": "clear",
-      "nightWeather": "clear-night"
+      "am": {
+        "weather": "sun",
+        "avgTemp": 18,
+        "pop": 0
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 10,
+        "pop": 5
+      }
     },
     {
       "date": "2025-11-21",
-      "dayHumidity": 50,
-      "nightHumidity": 62,
-      "dayTemp": 19,
-      "nightTemp": 11,
-      "dayWeather": "clouds",
-      "nightWeather": "clouds-night"
+      "am": {
+        "weather": "clouds",
+        "avgTemp": 18,
+        "pop": 10
+      },
+      "pm": {
+        "weather": "clouds",
+        "avgTemp": 11,
+        "pop": 15
+      }
     },
     {
       "date": "2025-11-22",
-      "dayHumidity": 48,
-      "nightHumidity": 58,
-      "dayTemp": 20,
-      "nightTemp": 12,
-      "dayWeather": "clear",
-      "nightWeather": "clear-night"
+      "am": {
+        "weather": "sun",
+        "avgTemp": 20,
+        "pop": 0
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 12,
+        "pop": 0
+      }
     },
     {
       "date": "2025-11-23",
-      "dayHumidity": 52,
-      "nightHumidity": 66,
-      "dayTemp": 18,
-      "nightTemp": 10,
-      "dayWeather": "rain",
-      "nightWeather": "rain-night"
+      "am": {
+        "weather": "rain",
+        "avgTemp": 18,
+        "pop": 80
+      },
+      "pm": {
+        "weather": "rain",
+        "avgTemp": 10,
+        "pop": 90
+      }
     }
   ]
 }
