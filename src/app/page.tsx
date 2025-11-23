@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
+import Clouds from "public/weather/clouds.svg";
 import { formatLocalDate } from "src/utils/getLocalDate";
-
-import Clouds from "@/assets/weather/clouds.svg";
 
 import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
+import { WeeklyWeather } from "@/components/home/WeeklyWeather";
 import AddLocationModal from "@/components/modal/AddLocationModal";
 import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import Sidebar from "@/components/sidebar/Sidebar";
@@ -39,8 +39,8 @@ const Home = () => {
     INITIAL_LOCATIONS[0]?.id ?? null,
   );
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
+
   const date = formatLocalDate();
-  // TODO: 나중에 사이드바에서 선택한 위치로 변경
 
   const handleSelect = (id: string) => {
     setSelectedId(prev => (prev === id ? null : id));
@@ -51,7 +51,6 @@ const Home = () => {
     setDeleteTarget(target);
   };
 
-  // 실제 삭제 핸들러
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
 
@@ -68,7 +67,7 @@ const Home = () => {
     lng: number;
     address?: string;
   }) => {
-    const newId = String(Date.now()); // 간단한 유니크 id
+    const newId = String(Date.now());
 
     const newLocation: Location = {
       id: newId,
@@ -80,34 +79,31 @@ const Home = () => {
     };
 
     setLocations(prev => [...prev, newLocation]);
-    setSelectedId(newId); // 방금 추가한 위치를 선택 상태로
+    setSelectedId(newId);
   };
 
   const handleTogglePin = (id: string) => {
     setLocations(prev => {
-      const updated = prev.map(
-        location =>
-          location.id === id
-            ? { ...location, isPinned: !location.isPinned } // 누른 것만 토글
-            : location, // 나머지는 그대로
+      const updated = prev.map(location =>
+        location.id === id
+          ? { ...location, isPinned: !location.isPinned }
+          : location,
       );
 
-      // 고정된 애들 먼저, 나머지 뒤로 보내기 (여러 개 가능)
       const pinned = updated.filter(loc => loc.isPinned);
       const unpinned = updated.filter(loc => !loc.isPinned);
 
-      return [...pinned, ...unpinned]; // 순서 유지하면서 pinned만 앞으로
+      return [...pinned, ...unpinned];
     });
   };
 
   const selectedLocation =
     locations.find(location => location.id === selectedId) ?? null;
-
   const LOCATION = selectedLocation?.name ?? "";
 
   return (
     <div className="bg-gray-5 flex min-h-screen w-full">
-      {/* 왼쪽: 사이드바 */}
+      {/* SIDE BAR */}
       <Sidebar
         locations={locations}
         selectedId={selectedId}
@@ -117,7 +113,7 @@ const Home = () => {
         onTogglePin={handleTogglePin}
       />
 
-      {/* 오른쪽: 기존 Home 콘텐츠 */}
+      {/* RIGHT CONTENT (팀원 코드 + 예찬 코드 통합) */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
         {!LOCATION ? (
           <>
@@ -131,18 +127,26 @@ const Home = () => {
             <WeatherSection title={`${date} ${LOCATION} 날씨 현황`}>
               <TodayWeather />
             </WeatherSection>
-            <WeatherSection title="시간별 현황">
+
+            <WeatherSection title="시간별 현황" gap={4}>
               <HourlyWeather />
             </WeatherSection>
-            <WeatherSection title="주간 예보" />
+
+            <WeatherSection title="주간 예보">
+              <WeeklyWeather />
+            </WeatherSection>
           </>
         )}
       </main>
+
+      {/* ADD LOCATION MODAL */}
       <AddLocationModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
         onSubmit={handleAddLocation}
       />
+
+      {/* DELETE CONFIRM MODAL */}
       <ConfirmDeleteModal
         isOpen={!!deleteTarget}
         targetName={deleteTarget?.name}

@@ -1,34 +1,21 @@
-import RainNight from "@/assets//weather/rain-night.svg";
-import Rain from "@/assets//weather/rain.svg";
-import SnowNight from "@/assets//weather/snow-night.svg";
-import Snow from "@/assets//weather/snow.svg";
-import StormNight from "@/assets//weather/storm-night.svg";
-import Storm from "@/assets//weather/storm.svg";
-import SunNight from "@/assets//weather/sun-night.svg";
-import Sun from "@/assets//weather/sun.svg";
-import WindNight from "@/assets//weather/wind-night.svg";
-import Wind from "@/assets//weather/wind.svg";
-import CloudsNight from "@/assets/weather/clouds-night.svg";
-import Clouds from "@/assets/weather/clouds.svg";
-
 export const WEATHER_ICON_MAP = {
-  sun: Sun,
-  "sun-night": SunNight,
+  sun: "/weather/sun.svg",
+  "sun-night": "/weather/sun-night.svg",
 
-  clouds: Clouds,
-  "clouds-night": CloudsNight,
+  clouds: "/weather/clouds.svg",
+  "clouds-night": "/weather/clouds-night.svg",
 
-  rain: Rain,
-  "rain-night": RainNight,
+  rain: "/weather/rain.svg",
+  "rain-night": "/weather/rain-night.svg",
 
-  snow: Snow,
-  "snow-night": SnowNight,
+  snow: "/weather/snow.svg",
+  "snow-night": "/weather/snow-night.svg",
 
-  storm: Storm,
-  "storm-night": StormNight,
+  storm: "/weather/storm.svg",
+  "storm-night": "/weather/storm-night.svg",
 
-  wind: Wind,
-  "wind-night": WindNight,
+  wind: "/weather/wind.svg",
+  "wind-night": "/weather/wind-night.svg",
 } as const;
 
 export type WeatherIconKey = keyof typeof WEATHER_ICON_MAP;

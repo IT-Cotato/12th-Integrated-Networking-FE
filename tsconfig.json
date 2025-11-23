@@ -27,6 +27,7 @@
       "@/context/*": ["src/context/*"],
       "@/apis/*": ["src/apis/*"],
       "@/types/*": ["src/types/*"],
+      "@/utils/*": ["src/utils/*"],
       "@/mocks/*": ["src/mocks/*"]
     }
   },
