@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { WEATHER_ICON_MAP, WeatherIconKey } from "@/constants/weatherIconMap";
 
 export const WeatherIconDisplay = ({
@@ -9,6 +11,14 @@ export const WeatherIconDisplay = ({
   width?: number;
   height?: number;
 }) => {
-  const Icon = WEATHER_ICON_MAP[weather];
-  return <Icon widht={width} height={height} />;
+  const src = WEATHER_ICON_MAP[weather];
+  return (
+    <Image
+      src={src}
+      alt={weather}
+      width={width}
+      height={height}
+      style={{ objectFit: "contain" }}
+    />
+  );
 };

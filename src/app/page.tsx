@@ -1,6 +1,5 @@
+import Clouds from "public/weather/clouds.svg";
 import { formatLocalDate } from "src/utils/getLocalDate";
-
-import Clouds from "@/assets/weather/clouds.svg";
 
 import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
