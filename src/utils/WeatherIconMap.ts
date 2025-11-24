@@ -20,6 +20,6 @@ export const WeatherIconMap: Record<
   흐림: { day: DayClouds, night: NightClouds },
   비: { day: DayRain, night: NightRain },
   눈: { day: DaySnow, night: NightSnow },
-  Storm: { day: DayStorm, night: NightStorm },
+  폭풍: { day: DayStorm, night: NightStorm },
   바람: { day: DayWind, night: NightWind },
 };

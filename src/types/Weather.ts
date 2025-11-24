@@ -1,5 +1,5 @@
 // src/types/weather.ts
-export type WeatherStatus = "맑음" | "흐림" | "비" | "눈" | "Storm" | "바람";
+export type WeatherStatus = "맑음" | "흐림" | "비" | "눈" | "폭풍" | "바람";
 
 export interface WeatherInfo {
   // 프론트 표기용(피그마용)
@@ -26,10 +26,10 @@ export interface HourlyForecast {
   temp: number; // 온도
 }
 
-export interface DailyForecast {
+export interface WeeklyForecast {
   date: string;
   forecasts: {
-    am: { rain: number; temp: number };
-    pm: { rain: number; temp: number };
+    am: { rain: number; temp: number; status: WeatherStatus };
+    pm: { rain: number; temp: number; status: WeatherStatus };
   };
 }
