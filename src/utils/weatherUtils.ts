@@ -23,15 +23,25 @@ export const getWeatherIconAM = (weather: string): string => {
   switch (weather) {
     case "맑음":
       return "/Day Sun.svg";
+    case "화창함":
+      return "/Day Sun.svg";
+    case "대체로 맑음":
+      return "/Day Sun.svg";
     case "흐림":
+      return "/Day Clouds.svg";
+    case "흐린":
+      return "/Day Clouds.svg";
+    case "구름 낀":
       return "/Day Clouds.svg";
     case "눈":
       return "/Day Snow.svg";
-    case "Storm":
+    case "태풍":
       return "/Day Storm.svg";
-    case "Windy":
+    case "바람":
       return "/Day Wind.svg";
     case "비":
+      return "/Day Rain.svg";
+    case "근처 곳곳에 비":
       return "/Day Rain.svg";
     default:
       return "/Day Sun.svg";
@@ -42,15 +52,25 @@ export const getWeatherIconPM = (weather: string): string => {
   switch (weather) {
     case "맑음":
       return "/Night Moon.svg";
+    case "화창함":
+      return "/Night Moon.svg";
+    case "대체로 맑음":
+      return "/Night Moon.svg";
     case "흐림":
+      return "/Night Clouds.svg";
+    case "흐린":
+      return "/Night Clouds.svg";
+    case "구름 낀":
       return "/Night Clouds.svg";
     case "눈":
       return "/Night Snow.svg";
-    case "Storm":
+    case "태풍":
       return "/Night Storm.svg";
-    case "Windy":
+    case "바람":
       return "/Night Wind.svg";
     case "비":
+      return "/Night Rain.svg";
+    case "근처 곳곳에 비":
       return "/Night Rain.svg";
     default:
       return "/Night Moon.svg";
