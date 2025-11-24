@@ -13,10 +13,12 @@ import DayCloud from "../assets/icons/Day_Clouds.svg";
 
 interface MainWeatherPanelProps {
   selectedWeather: WeatherInfo | null;
+  locationName?: string;
 }
 
 export default function MainWeatherPanel({
   selectedWeather,
+  locationName,
 }: MainWeatherPanelProps) {
   if (!selectedWeather) {
     return (
@@ -89,7 +91,7 @@ export default function MainWeatherPanel({
 
 "
         >
-          {weather.displayDate} {weather.location} 날씨 현황
+          {weather.displayDate} {locationName || weather.location} 날씨 현황
         </div>
 
         {/* 온도 + 아이콘 */}

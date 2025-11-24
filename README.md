@@ -87,12 +87,22 @@ src/
 ## 🤝 기여 방법
 
 1. 이슈 생성
+<<<<<<< HEAD
+2. 브랜치 생성 (`git checkout -b feature/AmazingFeature`)
+3. 커밋 (`git commit -m 'Add some AmazingFeature'`)
+4. 푸시 (`git push origin feature/AmazingFeature`)
+=======
 2. 브랜치 생성
 3. 커밋
 4. 푸시
+>>>>>>> 8f81fb55f1910b0d71aa09fd0946c0c875923203
 5. Pull Request 생성
 
 ## 📚 참고 문서
 
 - [Vite 공식 문서](https://vitejs.dev/)
+<<<<<<< HEAD
 - [Tailwind CSS v4](https://tailwindcss.com/)
+=======
+- [Tailwind CSS v4](https://tailwindcss.com/)
+>>>>>>> 8f81fb55f1910b0d71aa09fd0946c0c875923203
