@@ -49,6 +49,7 @@ const Home = () => {
     handleConfirmDelete,
     handleAddLocation,
     handleTogglePin,
+    cancelDelete,
   } = useSidebar(INITIAL_LOCATIONS);
 
   const selectedLocation =
@@ -108,7 +109,7 @@ const Home = () => {
       <ConfirmDeleteModal
         isOpen={!!deleteTarget}
         targetName={deleteTarget?.name}
-        onCancel={() => handleRequestDelete("")}
+        onCancel={cancelDelete}
         onConfirm={handleConfirmDelete}
       />
     </div>
