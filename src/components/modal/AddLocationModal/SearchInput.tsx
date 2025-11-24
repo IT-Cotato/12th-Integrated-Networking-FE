@@ -1,5 +1,7 @@
 "use client";
 
+import SearchIcon from "@/assets/icons/search.svg";
+
 type Props = {
   keyword: string;
   onChange: (value: string) => void;
@@ -15,13 +17,12 @@ export default function SearchInput({ keyword, onChange, onSearch }: Props) {
         className="flex-1 rounded-md border px-3 py-2"
         placeholder="장소 이름을 입력하세요"
       />
+
       <button
         type="button"
         onClick={onSearch}
-        className="rounded-md bg-blue-500 px-4 py-2 text-white"
-      >
-        검색
-      </button>
+        className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-2"
+      ></button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { formatLocalDate } from "src/utils/getLocalDate";
 
 import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
+import { WeatherIconDisplay } from "@/components/home/WeatherIconDisplay";
 import WeatherSection from "@/components/home/WeatherSection";
 import { WeeklyWeather } from "@/components/home/WeeklyWeather";
 import AddLocationModal from "@/components/modal/AddLocationModal/AddLocationModal";
@@ -68,15 +69,10 @@ const Home = () => {
         onTogglePin={handleTogglePin}
       />
 
-      {/* RIGHT CONTENT (팀원 코드 + 예찬 코드 통합) */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
         {!LOCATION ? (
           <>
-            <img
-              src="/weather/clouds.svg"
-              alt="날씨 없음"
-              className="h-80 w-80"
-            />
+            <WeatherIconDisplay weather="clouds" width={320} height={320} />
             <div className="text-h2 text-gray-100">
               아직 선택된 위치가 없습니다!
             </div>

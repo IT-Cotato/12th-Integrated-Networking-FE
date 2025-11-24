@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 
+import { WeatherIconDisplay } from "@/components/home/WeatherIconDisplay";
+
 type ConfirmDeleteModalProps = {
   isOpen: boolean;
   targetName?: string;
@@ -30,11 +32,8 @@ export default function ConfirmDeleteModal({
         </div>
 
         <div className="mb-6 flex flex-col items-center gap-2">
-          <img
-            src="/weather/storm-night.svg"
-            alt="날씨 없음"
-            className="h-80 w-80"
-          />
+          <WeatherIconDisplay weather="storm-night" width={80} height={80} />
+
           {targetName && (
             <div className="text-sm text-gray-600">{targetName}</div>
           )}

@@ -6,6 +6,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { searchPlaces } from "@/apis/kakao";
 
+import { WeatherIconDisplay } from "@/components/home/WeatherIconDisplay";
+
 type AddLocationModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -103,11 +105,7 @@ export default function AddLocationModal({
         <div className="mb-6 flex items-center justify-between">
           <div className="flex-1 text-center text-lg font-semibold">
             <div className="mb-2 flex justify-center">
-              <img
-                src="/weather/sun.svg"
-                alt="sun icon"
-                className="h-[56px] w-[56px]"
-              />
+              <WeatherIconDisplay weather="sun" width={56} height={56} />
             </div>
             <div>날씨 위치 추가</div>
           </div>
