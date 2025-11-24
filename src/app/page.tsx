@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { formatLocalDate } from "src/utils/getLocalDate";
 
 import { HourlyWeather } from "@/components/home/HourlyWeather";
@@ -13,6 +11,8 @@ import ConfirmDeleteModal from "@/components/modal/AddLocationModal/ConfirmDelet
 import Sidebar from "@/components/sidebar/Sidebar";
 
 import { Location } from "@/types/location";
+
+import { useSidebar } from "../hooks/useSidebar";
 
 const INITIAL_LOCATIONS: Location[] = [
   {
@@ -32,69 +32,24 @@ const INITIAL_LOCATIONS: Location[] = [
 ];
 
 const Home = () => {
-  const [locations, setLocations] = useState<Location[]>(INITIAL_LOCATIONS);
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(
-    INITIAL_LOCATIONS[0]?.id ?? null,
-  );
-  const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
-
   const date = formatLocalDate();
+  const {
+    locations,
+    selectedId,
+    deleteTarget,
+    isAddOpen,
 
-  const handleSelect = (id: string) => {
-    setSelectedId(prev => (prev === id ? null : id));
-  };
+    // modal controls
+    openAddModal,
+    closeAddModal,
 
-  const handleRequestDelete = (id: string) => {
-    const target = locations.find(location => location.id === id) ?? null;
-    setDeleteTarget(target);
-  };
-
-  const handleConfirmDelete = () => {
-    if (!deleteTarget) return;
-
-    const id = deleteTarget.id;
-
-    setLocations(prev => prev.filter(location => location.id !== id));
-    setSelectedId(prev => (prev === id ? null : prev));
-    setDeleteTarget(null);
-  };
-
-  const handleAddLocation = (locationInput: {
-    name: string;
-    lat: number;
-    lng: number;
-    address?: string;
-  }) => {
-    const newId = String(Date.now());
-
-    const newLocation: Location = {
-      id: newId,
-      name: locationInput.name,
-      lat: locationInput.lat,
-      lng: locationInput.lng,
-      address: locationInput.address ?? "",
-      isPinned: false,
-    };
-
-    setLocations(prev => [...prev, newLocation]);
-    setSelectedId(newId);
-  };
-
-  const handleTogglePin = (id: string) => {
-    setLocations(prev => {
-      const updated = prev.map(location =>
-        location.id === id
-          ? { ...location, isPinned: !location.isPinned }
-          : location,
-      );
-
-      const pinned = updated.filter(loc => loc.isPinned);
-      const unpinned = updated.filter(loc => !loc.isPinned);
-
-      return [...pinned, ...unpinned];
-    });
-  };
+    // handlers
+    handleSelect,
+    handleRequestDelete,
+    handleConfirmDelete,
+    handleAddLocation,
+    handleTogglePin,
+  } = useSidebar(INITIAL_LOCATIONS);
 
   const selectedLocation =
     locations.find(location => location.id === selectedId) ?? null;
@@ -107,8 +62,8 @@ const Home = () => {
         locations={locations}
         selectedId={selectedId}
         onSelect={handleSelect}
+        onClickAdd={openAddModal}
         onClickDelete={handleRequestDelete}
-        onClickAdd={() => setIsAddOpen(true)}
         onTogglePin={handleTogglePin}
       />
 
@@ -145,7 +100,7 @@ const Home = () => {
       {/* ADD LOCATION MODAL */}
       <AddLocationModal
         isOpen={isAddOpen}
-        onClose={() => setIsAddOpen(false)}
+        onClose={closeAddModal}
         onSubmit={handleAddLocation}
       />
 
@@ -153,7 +108,7 @@ const Home = () => {
       <ConfirmDeleteModal
         isOpen={!!deleteTarget}
         targetName={deleteTarget?.name}
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={() => handleRequestDelete("")}
         onConfirm={handleConfirmDelete}
       />
     </div>
