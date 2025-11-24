@@ -1,6 +1,11 @@
-import type { HourlyWeather } from "../../types/hourly";
 import { getWeatherIconAM, getWeatherIconPM } from "../../utils/weatherUtils";
 
+interface ChartData {
+  time: string;
+  temp: number;
+  status: string;
+  icon: string;
+}
 interface IndividualForecastProps {
   x?: number;
   y?: number;
@@ -8,7 +13,7 @@ interface IndividualForecastProps {
     value: string;
     index: number;
   };
-  allWeatherData: HourlyWeather[];
+  allWeatherData: ChartData[];
 }
 
 export const IndividualForecast: React.FC<IndividualForecastProps> = ({

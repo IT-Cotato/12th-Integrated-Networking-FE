@@ -1,45 +1,69 @@
 import { IndividualForecast } from "./IndividualForecast";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from "recharts";
-import type { HourlyWeather } from "../../types/hourly";
+import { LineChart, Line, XAxis, YAxis } from "recharts";
+import useHourlyForecast from "../../hooks/useHourlyForecast";
+import { useMemo } from "react";
+import type { WeatherItem } from "../../types/hourly";
+import { getWeatherIconAM, getWeatherIconPM } from "../../utils/weatherUtils";
 
-const weatherData: HourlyWeather[] = [
-  { time: "03시", temp: 8, status: "약간 흐림", icon: "" },
-  { time: "04시", temp: 8, status: "흐림", icon: "" },
-  { time: "05시", temp: 8, status: "흐림", icon: "" },
-  { time: "06시", temp: 8, status: "맑음", icon: "" },
-  { time: "07시", temp: 8, status: "맑음", icon: "" },
-  { time: "08시", temp: 8, status: "맑음", icon: "" },
-  { time: "09시", temp: 8, status: "맑음", icon: "" },
-  { time: "10시", temp: 8, status: "맑음", icon: "" },
-  { time: "11시", temp: 8, status: "맑음", icon: "" },
-  { time: "12시", temp: 8, status: "맑음", icon: "" },
-  { time: "13시", temp: 8, status: "맑음", icon: "" },
-  { time: "14시", temp: 8, status: "맑음", icon: "" },
-  { time: "15시", temp: 9, status: "맑음", icon: "" },
-  { time: "16시", temp: 9, status: "맑음", icon: "" },
-  { time: "17시", temp: 9, status: "맑음", icon: "" },
-  { time: "18시", temp: 7, status: "흐림", icon: "" },
-  { time: "19시", temp: 6, status: "흐림", icon: "" },
-  { time: "20시", temp: 5, status: "흐림", icon: "" },
-  { time: "21시", temp: 4, status: "흐림", icon: "" },
-  { time: "22시", temp: 4, status: "흐림", icon: "" },
-  { time: "23시", temp: 3, status: "흐림", icon: "" },
-  { time: "00시", temp: 3, status: "흐림", icon: "" },
-  { time: "01시", temp: 2, status: "흐림", icon: "" },
-  { time: "02시", temp: 2, status: "흐림", icon: "" },
-];
+interface ChartData {
+  time: string;
+  temp: number;
+  status: string;
+  icon: string;
+}
 
 const CHART_WIDTH = 80;
-const TOTAL_WIDTH = weatherData.length * CHART_WIDTH;
 
 export const HourlyForecast: React.FC = () => {
+  const { data, loading, error } = useHourlyForecast();
+
+  const transformedWeatherData: ChartData[] = useMemo(() => {
+    if (!data || !data.weatherList) {
+      return [];
+    }
+    return data.weatherList.map((item: WeatherItem) => {
+      const hourString = item.time.substring(0, 2);
+      const currentHour = parseInt(hourString, 10);
+      const isNightTime =
+        currentHour >= 18 || (currentHour >= 0 && currentHour <= 5);
+
+      const calculatedIconSrc = isNightTime
+        ? getWeatherIconPM(item.description)
+        : getWeatherIconAM(item.description);
+
+      return {
+        time: hourString + "시",
+        temp: Math.round(item.temperature),
+        status: item.description,
+        icon: calculatedIconSrc, // 💡 계산된 iconSrc 할당
+      };
+    });
+  }, [data]);
+  if (loading) {
+    return (
+      <div className="p-10 text-center text-lg text-gray-500">
+        시간별 현황 데이터를 불러오는 중입니다... ⏳
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-10 text-center text-lg text-red-500">
+        시간별 현황 로드 실패: {error}
+      </div>
+    );
+  }
+
+  if (transformedWeatherData.length === 0) {
+    return (
+      <div className="p-10 text-center text-lg text-gray-500">
+        시간별 예보 정보가 없습니다.
+      </div>
+    );
+  }
+
+  const TOTAL_WIDTH = transformedWeatherData.length * CHART_WIDTH;
   const TOTAL_HEIGHT = 136;
   const CHART_RENDER_HEIGHT = 8;
   const XAXIS_HEIGHT = TOTAL_HEIGHT - 24 - CHART_RENDER_HEIGHT;
@@ -57,7 +81,7 @@ export const HourlyForecast: React.FC = () => {
             <LineChart
               width={TOTAL_WIDTH}
               height={TOTAL_HEIGHT}
-              data={weatherData}
+              data={transformedWeatherData}
               margin={{ top: 1, right: 20, left: 20, bottom: 1 }}
             >
               <XAxis
@@ -67,7 +91,10 @@ export const HourlyForecast: React.FC = () => {
                 axisLine={false}
                 height={XAXIS_HEIGHT}
                 tick={(props) => (
-                  <IndividualForecast {...props} allWeatherData={weatherData} />
+                  <IndividualForecast
+                    {...props}
+                    allWeatherData={transformedWeatherData}
+                  />
                 )}
               />
               <YAxis
