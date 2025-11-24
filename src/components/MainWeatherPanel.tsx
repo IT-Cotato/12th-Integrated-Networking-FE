@@ -17,15 +17,15 @@ interface MainWeatherPanelProps {
 export default function MainWeatherPanel({
   selectedWeather,
 }: MainWeatherPanelProps) {
-  // if (!selectedWeather) {
-  //   return (
-  //     <div className="w-full flex justify-center">
-  //       <div className="w-[1080px] h-[441px] flex items-center justify-center bg-white rounded-[16px] border-2 border-[#F2F2F2] shadow-md text-gray-500">
-  //         위치를 선택하면 날씨 정보를 볼 수 있어요.
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!selectedWeather) {
+    return (
+      <div className="w-full flex justify-center">
+        <div className="w-[1080px] h-[441px] flex items-center justify-center bg-white rounded-[16px] border-2 border-[#F2F2F2] shadow-md text-gray-500">
+          위치를 선택하면 날씨 정보를 볼 수 있어요.
+        </div>
+      </div>
+    );
+  }
   // 선택된 위치 없을 때 mock 데이터 사용
   const weather = selectedWeather ?? mockWeather;
 
