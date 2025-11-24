@@ -1,9 +1,12 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import AddLocationModal from './AddLocationModal';
+import { useLocationList } from '@/hooks/use-location';
+import DeleteModal from './DeleteModal';
 
 export default function Sidebar() {
+  //const { data: locations } = useLocationList();
   const [locations, setLocations] = useState<Location[]>([
     {
       id: '1',
@@ -40,9 +43,11 @@ export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
 
-  // const handleDeleteConfirm = () => {
-  //   setDeleteTarget(null);
-  // };
+  const handleDelete = () => {
+    if(!deleteTarget) return;
+    // mutation 등으로 삭제 요청 (예: deleteLocationMutation.mutate(deleteTarget.id))
+    setDeleteTarget(null);
+  };
 
   return (
     <aside className="flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
@@ -77,7 +82,7 @@ export default function Sidebar() {
               key={loc.id}
               className={`relative flex w-full items-center ${
                 isSelected
-                  ? 'rounded-[8px] bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
+                  ? 'rounded-lg bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
                   : ''
               } group cursor-pointer text-gray-800 transition`}
               style={{
@@ -111,7 +116,9 @@ export default function Sidebar() {
               {/* hover 시 trash 노출 */}
               {hovered === loc.id && (
                 <button
-                  onClick={() => setDeleteTarget(loc)}
+                  onClick={e => {e.stopPropagation(); 
+                    setDeleteTarget(loc);
+                }}
                   className="absolute right-2 flex h-6 w-6 items-center justify-center"
                   tabIndex={-1}
                 >
@@ -131,6 +138,13 @@ export default function Sidebar() {
       {isModalOpen && (
         <AddLocationModal onClose={() => setIsModalOpen(false)} />
       )}
+
+      {/* DeleteModal 호출 (deleteTarget이 있을 때만 띄움) */}
+      <DeleteModal
+        open={!!deleteTarget}
+        onCancel={() => setDeleteTarget(null)}
+        onDelete={handleDelete}
+      />
     </aside>
   );
 }
