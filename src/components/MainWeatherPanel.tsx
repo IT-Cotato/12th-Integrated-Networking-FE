@@ -1,3 +1,4 @@
+import { mockWeather } from "../services/WeatherService";
 import type { WeatherInfo } from "../types/Weather";
 import {
   FineDustColor,
@@ -16,36 +17,17 @@ interface MainWeatherPanelProps {
 export default function MainWeatherPanel({
   selectedWeather,
 }: MainWeatherPanelProps) {
-  if (!selectedWeather) {
-    const testWeather: WeatherInfo = {
-      location: "롯데월드",
-      date: "4월 26일",
-      temperature: 12.2,
-      feelsLike: 9.0,
-      humidity: 48,
-      windDirection: "남동풍",
-      windSpeed: 0.4,
-      status: "흐림",
-      isDaytime: false,
-      fineDust: 5,
-      ultraFineDust: 30,
-      uvIndex: 12,
-      sunrise: "05:44",
-      sunset: "18:45", // 일출 일몰 이렇게 되는거일까?
-    };
-
-    return (
-      <div className="p-6">
-        <MainWeatherPanel selectedWeather={testWeather} />
-      </div>
-    );
-  }
-
-  // return (
-  //   <div className="flex items-center justify-center h-64 rounded-xl bg-gray-100 text-gray-500">
-  //     위치를 선택하면 날씨 정보를 볼 수 있어요
-  //   </div>
-  // );
+  // if (!selectedWeather) {
+  //   return (
+  //     <div className="w-full flex justify-center">
+  //       <div className="w-[1080px] h-[441px] flex items-center justify-center bg-white rounded-[16px] border-2 border-[#F2F2F2] shadow-md text-gray-500">
+  //         위치를 선택하면 날씨 정보를 볼 수 있어요.
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  // 선택된 위치 없을 때 mock 데이터 사용
+  const weather = selectedWeather ?? mockWeather;
 
   // 등급 변환 함수
   const getFineDustLevel = (value: number) => {
@@ -70,9 +52,9 @@ export default function MainWeatherPanel({
     return "위험";
   };
 
-  const icon = selectedWeather.isDaytime
-    ? WeatherIconMap[selectedWeather.status].day
-    : WeatherIconMap[selectedWeather.status].night;
+  const icon = weather.isDaytime
+    ? WeatherIconMap[weather.status].day
+    : WeatherIconMap[weather.status].night;
 
   return (
     <div className="w-full flex justify-center">
@@ -84,7 +66,7 @@ export default function MainWeatherPanel({
     rounded-[16px]
     border-2 border-[#F2F2F2]
     shadow-[0px_0px_8px_2px_rgba(0,0,0,0.1)]
-    flex flex-col gap-[12px]
+    flex-col gap-[12px]
   "
       >
         {/* 위치 + 날짜 */}
@@ -93,32 +75,32 @@ export default function MainWeatherPanel({
   h-[24px]
   text-black
   font-bold
-  text-[20px]
+  text-[20px] pb-8
 
 "
         >
-          {selectedWeather.date} {selectedWeather.location} 날씨 현황
+          {weather.displayDate} {weather.location} 날씨 현황
         </div>
 
         {/* 온도 + 아이콘 */}
         <div className="gap-[10px] flex items-center justify-center">
           <img src={icon} className="w-[160px] h-[160px]" />
           <div className=" w-[190px]  h-[95px] text-[80px] font-bold flex items-center justify-center">
-            {selectedWeather.temperature}°
+            {weather.temperature}°
           </div>
         </div>
 
         {/* 날씨 상태 */}
         <div className="text-black text-[20px] font-semibold mt-2 flex justify-center">
-          {selectedWeather.isDaytime ? "낮" : "야간"} / {selectedWeather.status}
+          {weather.isDaytime ? "낮" : "야간"} / {weather.status}
         </div>
 
         {/* 상세 정보 */}
-        <div className="mt-4 text-[16px] text-gray-600 flex items-center gap-[8px] flex justify-center">
+        <div className="mt-4 text-[16px] text-gray-600 flex items-center gap-[8px] justify-center">
           <p className="flex items-center">
             <span className="text-gray-400">체감:</span>
             <span className="ml-[6px] text-[#000000] font-semibold">
-              {selectedWeather.feelsLike}°
+              {weather.feelsLike}°
             </span>
           </p>
 
@@ -134,7 +116,7 @@ export default function MainWeatherPanel({
           <p className="flex items-center">
             <span className="text-gray-400">습도:</span>
             <span className="ml-[6px] text-[#000000] font-semibold">
-              {selectedWeather.humidity}%
+              {weather.humidity}%
             </span>
           </p>
           <p
@@ -147,24 +129,22 @@ export default function MainWeatherPanel({
             ●
           </p>
           <p className="flex items-center">
-            <span className="text-gray-400">
-              {selectedWeather.windDirection}
-            </span>
+            <span className="text-gray-400">{weather.windDirection}</span>
             <span className="ml-[6px] text-[#000000] font-semibold">
-              {selectedWeather.windSpeed} m/s
+              {weather.windSpeed} m/s
             </span>
           </p>
         </div>
 
         {/* 미세먼지 */}
-        <div className="mt-5 flex gap-4 flex justify-center">
+        <div className="mt-5 gap-4 flex justify-center">
           <div
             className={`
     w-[120px] h-[62px]
     pt-3 pr-6 pb-3 pl-6
     rounded-[12px]
     flex flex-col items-center justify-center
-    ${FineDustColor(selectedWeather.fineDust)} relative group
+    ${FineDustColor(weather.fineDust)} relative group
   `}
           >
             <span className="text-[12px] leading-none font-medium">
@@ -172,13 +152,13 @@ export default function MainWeatherPanel({
             </span>
             <span
               className={`text-[12px] leading-none mt-2 font-bold ${TextFineDustColor(
-                selectedWeather.fineDust
+                weather.fineDust
               )}`}
             >
-              {getFineDustLevel(selectedWeather.fineDust)}
+              {getFineDustLevel(weather.fineDust)}
             </span>
             <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs bg-black text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              {selectedWeather.fineDust} μg/m³
+              {weather.fineDust} μg/m³
             </span>
           </div>
           <div
@@ -187,7 +167,7 @@ export default function MainWeatherPanel({
     pt-3 pr-6 pb-3 pl-6
     rounded-[12px]
     flex flex-col items-center justify-center
-    ${UltraFineDustColor(selectedWeather.ultraFineDust)} relative group
+    ${UltraFineDustColor(weather.ultraFineDust)} relative group
   `}
           >
             <span className="text-[12px] leading-none font-medium">
@@ -195,13 +175,13 @@ export default function MainWeatherPanel({
             </span>
             <span
               className={`text-[12px] leading-none mt-2 font-bold ${TextUltraFineDustColor(
-                selectedWeather.ultraFineDust
+                weather.ultraFineDust
               )}`}
             >
-              {getUltraFineDustLevel(selectedWeather.ultraFineDust)}
+              {getUltraFineDustLevel(weather.ultraFineDust)}
             </span>
             <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs bg-black text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              {selectedWeather.ultraFineDust} μg/m³
+              {weather.ultraFineDust} μg/m³
             </span>
           </div>
           <div
@@ -210,19 +190,19 @@ export default function MainWeatherPanel({
     pt-3 pr-6 pb-3 pl-6
     rounded-[12px]
     flex flex-col items-center justify-center
-    ${UvIndexColor(selectedWeather.uvIndex)} relative group
+    ${UvIndexColor(weather.uvIndex)} relative group
   `}
           >
             <span className="text-[12px] leading-none font-medium">자외선</span>
             <span
               className={`text-[12px] leading-none mt-2 font-bold ${TextUvIndexColor(
-                selectedWeather.uvIndex
+                weather.uvIndex
               )}`}
             >
-              {getUVLevel(selectedWeather.uvIndex)}
+              {getUVLevel(weather.uvIndex)}
             </span>
             <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs bg-black text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              {selectedWeather.uvIndex}
+              {weather.uvIndex}
             </span>
           </div>
           <div
@@ -232,7 +212,7 @@ export default function MainWeatherPanel({
           >
             <span className="text-[12px] leading-none font-medium">일출</span>
             <span className="text-[12px] leading-none mt-2 font-bold text-yellow-400">
-              {selectedWeather.sunrise}
+              {weather.sunrise}
             </span>
           </div>
         </div>
