@@ -4,11 +4,7 @@ import { useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-// 돋보기 아이콘
 import { searchPlaces } from "@/apis/kakao";
-
-// 상단 아이콘 (원하는 걸로 교체)
-import SearchIcon from "@/assets/icons/search.svg";
 
 type AddLocationModalProps = {
   isOpen: boolean;
@@ -73,11 +69,18 @@ export default function AddLocationModal({
   };
 
   const handleConfirm = () => {
-    if (!name || !lat || !lng) return;
+    if (!name || !lat || !lng) {
+      alert("장소 이름, 위도, 경도를 모두 선택해주세요.");
+      return;
+    }
 
     const latNum = Number(lat);
     const lngNum = Number(lng);
-    if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return;
+
+    if (Number.isNaN(latNum) || Number.isNaN(lngNum)) {
+      alert("위도/경도 형식이 잘못됐어요.");
+      return;
+    }
 
     onSubmit({
       name,
@@ -96,7 +99,7 @@ export default function AddLocationModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="w-[480px] rounded-3xl bg-white p-8 shadow-xl">
-        {/* 헤더 */}
+        {/* 헤더 (해 + 제목 + X 버튼) */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex-1 text-center text-lg font-semibold">
             <div className="mb-2 flex justify-center">
@@ -118,7 +121,7 @@ export default function AddLocationModal({
           </button>
         </div>
 
-        {/* 입력 영역 */}
+        {/* 검색 인풋 영역 (밑줄 스타일) */}
         <div className="mb-6">
           <div className="mb-2 text-sm font-semibold text-gray-800">
             장소 이름
@@ -134,9 +137,9 @@ export default function AddLocationModal({
             <button
               type="button"
               onClick={handleSearch}
-              className="ml-2 text-gray-500 hover:text-gray-800"
+              className="ml-2 text-sm text-gray-500 hover:text-gray-800"
             >
-              <SearchIcon className="h-5 w-5" />
+              검색
             </button>
           </div>
         </div>
@@ -171,11 +174,15 @@ export default function AddLocationModal({
                       setLng(String(item.lng));
                       setAddress(item.address);
                     }}
-                    className={`flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm transition-colors ${
+                    className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm ${
                       isSelected
                         ? "bg-gray-200"
                         : "bg-white hover:bg-[#F8FAFC] active:bg-gray-200"
-                    } ${index !== results.length - 1 ? "border-b border-gray-200" : ""} `}
+                    } ${
+                      index !== results.length - 1
+                        ? "border-b border-gray-200"
+                        : ""
+                    }`}
                   >
                     <div>
                       <div className="font-medium text-gray-900">
@@ -195,7 +202,7 @@ export default function AddLocationModal({
           )}
         </div>
 
-        {/* 확인 버튼 */}
+        {/* 확인 버튼 (우측 정렬) */}
         <div className="flex justify-end">
           <button
             type="button"

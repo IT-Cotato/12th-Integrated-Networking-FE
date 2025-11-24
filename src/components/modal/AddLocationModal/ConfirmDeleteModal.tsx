@@ -2,10 +2,6 @@
 
 import { motion } from "framer-motion";
 
-import Storm from "../../../public/weather/storm.svg";
-
-// 번개치는 구름 아이콘 아무거나 골라서
-
 type ConfirmDeleteModalProps = {
   isOpen: boolean;
   targetName?: string;
@@ -34,7 +30,11 @@ export default function ConfirmDeleteModal({
         </div>
 
         <div className="mb-6 flex flex-col items-center gap-2">
-          <Storm className="h-[80px] w-[80px]" />
+          <img
+            src="/weather/storm-night.svg"
+            alt="날씨 없음"
+            className="h-80 w-80"
+          />
           {targetName && (
             <div className="text-sm text-gray-600">{targetName}</div>
           )}

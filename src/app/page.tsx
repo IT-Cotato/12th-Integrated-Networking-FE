@@ -8,8 +8,8 @@ import { HourlyWeather } from "@/components/home/HourlyWeather";
 import { TodayWeather } from "@/components/home/TodayWeather";
 import WeatherSection from "@/components/home/WeatherSection";
 import { WeeklyWeather } from "@/components/home/WeeklyWeather";
-import AddLocationModal from "@/components/modal/AddLocationModal";
-import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
+import AddLocationModal from "@/components/modal/AddLocationModal/AddLocationModal";
+import ConfirmDeleteModal from "@/components/modal/AddLocationModal/ConfirmDeleteModal";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 import { Location } from "@/types/location";
