@@ -14,24 +14,21 @@ export default function SearchInput({
   onSearch,
 }: SearchInputProps) {
   return (
-    <div className="mb-6">
-      <div className="mb-2 text-sm font-semibold text-gray-800">장소 이름</div>
-      <div className="flex items-center border-b border-gray-300 pb-2">
-        <input
-          type="text"
-          value={keyword}
-          onChange={e => onChange(e.target.value)}
-          placeholder="키워드를 입력하세요"
-          className="flex-1 border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
-        />
-        <button
-          type="button"
-          onClick={onSearch}
-          className="ml-2 text-sm text-gray-500 hover:text-gray-800"
-        >
-          <SearchIcon className="h-[20px] w-[20px]" />
-        </button>
-      </div>
+    <div className="border-gray-20 flex w-full items-center gap-3 border-b pb-3">
+      <input
+        value={keyword}
+        onChange={e => onChange(e.target.value)}
+        className="text-body-sm text-gray-60 placeholder:text-gray-40 flex-1 bg-transparent outline-none"
+        placeholder="키워드를 입력하세요"
+      />
+      <button
+        type="button"
+        onClick={onSearch}
+        className="text-gray-60 flex h-6 w-6 items-center justify-center hover:text-gray-100"
+        aria-label="검색"
+      >
+        <SearchIcon className="h-4 w-4" />
+      </button>
     </div>
   );
 }
