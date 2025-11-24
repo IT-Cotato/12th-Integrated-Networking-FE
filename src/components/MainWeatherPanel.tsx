@@ -9,6 +9,7 @@ import {
   UvIndexColor,
 } from "../utils/ColorMap";
 import { WeatherIconMap } from "../utils/WeatherIconMap";
+import DayCloud from "../assets/icons/Day_Clouds.svg";
 
 interface MainWeatherPanelProps {
   selectedWeather: WeatherInfo | null;
@@ -19,9 +20,18 @@ export default function MainWeatherPanel({
 }: MainWeatherPanelProps) {
   if (!selectedWeather) {
     return (
-      <div className="w-full flex justify-center">
-        <div className="w-[1080px] h-[441px] flex items-center justify-center bg-white rounded-[16px] border-2 border-[#F2F2F2] shadow-md text-gray-500">
-          위치를 선택하면 날씨 정보를 볼 수 있어요.
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <img src={DayCloud} className="w-[3220px] h-[320px] mb-6" />
+          <div
+            className="
+            text-black
+            text-[36px] font-bold
+            flex items-center justify-center
+          "
+          >
+            아직 선택된 위치가 없습니다!
+          </div>
         </div>
       </div>
     );
