@@ -7,7 +7,7 @@ type AddLocationModalProps = {
   onSelect: (place: KakaoPlace) => void; 
 };
 
-export default function AddLocationModal({ onClose}: AddLocationModalProps) {
+export default function AddLocationModal({ onClose, onSelect }: AddLocationModalProps) {
     const [keyword, setKeyword] = useState('');
     const [results, setResults] = useState<KakaoPlace[]>([]);
     const [loading, setLoading] = useState(false);
@@ -113,7 +113,7 @@ export default function AddLocationModal({ onClose}: AddLocationModalProps) {
         onClick={() => {
           const sel = results.find(p => p.id === selectedId);
           if(sel) {
-            onClose();
+            onSelect(sel);
           }
         }}
         >

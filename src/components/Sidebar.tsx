@@ -22,7 +22,30 @@ export default function Sidebar() {
     { id: '7', name: 'Osiu', address: '', x: '', y: '', isFixed: false },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleAddLocation = () => setIsModalOpen(true);
+
+  const handleAddLocation = (place: {
+    id: string;
+    place_name: string;
+    address_name: string;
+    x: string;
+    y: string;
+  }) => {
+    setLocations(prev => [
+      ...prev,
+      {
+        id: place.id,
+        name: place.place_name,
+        address: place.address_name,
+        x: place.x,
+        y: place.y,
+        isFixed: false
+      }
+    ]);
+    setIsModalOpen(false);
+  };
+
+ // const handleAddLocation = () => setIsModalOpen(true);
+
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
     setLocations((locs) =>
@@ -66,7 +89,7 @@ export default function Sidebar() {
       {/* 추가하기 버튼 */}
       <button
         className="text-gray-60 flex h-10 w-full items-center rounded bg-white text-[20px] font-normal"
-        onClick={handleAddLocation}
+        onClick={() => setIsModalOpen(true)}
       >
         <img src="/plus-front-clay.svg" alt="추가" className="mr-4 h-10 w-10" />
         <span>추가하기</span>
