@@ -10,7 +10,7 @@ export type KakaoPlace = {
 };
 
 export async function searchKakaoKeyword(query: string): Promise<KakaoPlace[]> {
-  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const url = 'https://dapi.kakao.com/v2/local/search/keyword.json';
   const headers = {
     Authorization: `KakaoAK ${REST_API_KEY}`

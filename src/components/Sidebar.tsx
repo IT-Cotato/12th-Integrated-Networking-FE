@@ -2,11 +2,9 @@ import { useContext, useState } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import AddLocationModal from './AddLocationModal';
-import { useLocationList } from '@/hooks/use-location';
 import DeleteModal from './DeleteModal';
 
 export default function Sidebar() {
-  //const { data: locations } = useLocationList();
   const [locations, setLocations] = useState<Location[]>([
     {
       id: '1',
@@ -44,9 +42,9 @@ export default function Sidebar() {
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
 
   const handleDelete = () => {
-    if(!deleteTarget) return;
-    // mutation 등으로 삭제 요청 (예: deleteLocationMutation.mutate(deleteTarget.id))
-    setDeleteTarget(null);
+    if (!deleteTarget) return;
+    setLocations(prev => prev.filter(loc => loc.id !== deleteTarget.id));
+    setDeleteTarget(null); // 모달 닫기
   };
 
   return (
@@ -136,7 +134,8 @@ export default function Sidebar() {
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
       {isModalOpen && (
-        <AddLocationModal onClose={() => setIsModalOpen(false)} />
+        <AddLocationModal onClose={() => setIsModalOpen(false)}
+        onSelect={handleAddLocation} />
       )}
 
       {/* DeleteModal 호출 (deleteTarget이 있을 때만 띄움) */}

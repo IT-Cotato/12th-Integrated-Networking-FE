@@ -4,6 +4,7 @@ import type { KakaoPlace } from '@/api/kakao';
 
 type AddLocationModalProps = {
   onClose: () => void;
+  onSelect: (place: KakaoPlace) => void; 
 };
 
 export default function AddLocationModal({ onClose}: AddLocationModalProps) {
@@ -14,7 +15,6 @@ export default function AddLocationModal({ onClose}: AddLocationModalProps) {
 
     // 검색 함수 (API 요청)
   const handleSearch = async () => {
-    console.log('KAKAO KEY:', import.meta.env.VITE_KAKAO_REST_API_KEY);
     if (!keyword.trim()) return;
     setLoading(true);
     try {
