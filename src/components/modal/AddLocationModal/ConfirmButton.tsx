@@ -1,19 +1,28 @@
 "use client";
 
-type Props = {
-  onSubmit: () => void;
-  disabled?: boolean;
+type ConfirmButtonProps = {
+  disabled: boolean;
+  onClick: () => void;
 };
 
-export default function ConfirmButton({ onSubmit, disabled }: Props) {
+export default function ConfirmButton({
+  disabled,
+  onClick,
+}: ConfirmButtonProps) {
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onSubmit}
-      className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-white disabled:bg-gray-300"
-    >
-      위치 추가하기
-    </button>
+    <div className="flex justify-end">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled}
+        className={`h-10 rounded-lg px-6 text-sm font-medium text-white ${
+          disabled
+            ? "cursor-not-allowed bg-gray-300"
+            : "bg-gray-900 hover:bg-black"
+        }`}
+      >
+        확인
+      </button>
+    </div>
   );
 }

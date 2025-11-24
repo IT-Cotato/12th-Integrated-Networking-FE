@@ -8,7 +8,7 @@ import { WeatherIconDisplay } from "@/components/home/WeatherIconDisplay";
 import WeatherSection from "@/components/home/WeatherSection";
 import { WeeklyWeather } from "@/components/home/WeeklyWeather";
 import AddLocationModal from "@/components/modal/AddLocationModal/AddLocationModal";
-import ConfirmDeleteModal from "@/components/modal/AddLocationModal/ConfirmDeleteModal";
+import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 import { Location } from "@/types/location";
