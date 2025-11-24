@@ -13,15 +13,9 @@ export default function App() {
   const handleLocationSelect = (locationData: LocationData) => {
     setLocation(locationData);
   };
-
-  const [isShow, setIsShow] = useState(true);
-
   return (
     <div className="App">
-      <div className="bg-[#F6F6F6]">
-        <Sidebar />
-      </div>
-      {isShow ? (
+      {location ? (
         <>
           <WeatherPanel onLocationSelect={handleLocationSelect} />
           {/* <HourlyForecast location={location} />
