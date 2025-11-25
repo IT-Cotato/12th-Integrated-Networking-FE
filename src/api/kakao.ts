@@ -26,3 +26,4 @@ export async function searchKakaoKeyword(query: string): Promise<KakaoPlace[]> {
     y: doc.y
   }));
 }
+

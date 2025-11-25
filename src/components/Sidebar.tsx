@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import AddLocationModal from './AddLocationModal';
+import DeleteModal from './DeleteModal';
 
 export default function Sidebar() {
   const [locations, setLocations] = useState<Location[]>([
@@ -21,7 +22,30 @@ export default function Sidebar() {
     { id: '7', name: 'Osiu', address: '', x: '', y: '', isFixed: false },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleAddLocation = () => setIsModalOpen(true);
+
+  const handleAddLocation = (place: {
+    id: string;
+    place_name: string;
+    address_name: string;
+    x: string;
+    y: string;
+  }) => {
+    setLocations(prev => [
+      ...prev,
+      {
+        id: place.id,
+        name: place.place_name,
+        address: place.address_name,
+        x: place.x,
+        y: place.y,
+        isFixed: false
+      }
+    ]);
+    setIsModalOpen(false);
+  };
+
+ // const handleAddLocation = () => setIsModalOpen(true);
+
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
     setLocations((locs) =>
@@ -40,9 +64,11 @@ export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
 
-  // const handleDeleteConfirm = () => {
-  //   setDeleteTarget(null);
-  // };
+  const handleDelete = () => {
+    if (!deleteTarget) return;
+    setLocations(prev => prev.filter(loc => loc.id !== deleteTarget.id));
+    setDeleteTarget(null); // 모달 닫기
+  };
 
   return (
     <aside className="flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
@@ -63,7 +89,7 @@ export default function Sidebar() {
       {/* 추가하기 버튼 */}
       <button
         className="text-gray-60 flex h-10 w-full items-center rounded bg-white text-[20px] font-normal"
-        onClick={handleAddLocation}
+        onClick={() => setIsModalOpen(true)}
       >
         <img src="/plus-front-clay.svg" alt="추가" className="mr-4 h-10 w-10" />
         <span>추가하기</span>
@@ -77,7 +103,7 @@ export default function Sidebar() {
               key={loc.id}
               className={`relative flex w-full items-center ${
                 isSelected
-                  ? 'rounded-[8px] bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
+                  ? 'rounded-lg bg-gray-100 shadow-[0_3px_3px_0_rgba(0,0,0,0.10)]'
                   : ''
               } group cursor-pointer text-gray-800 transition`}
               style={{
@@ -111,7 +137,9 @@ export default function Sidebar() {
               {/* hover 시 trash 노출 */}
               {hovered === loc.id && (
                 <button
-                  onClick={() => setDeleteTarget(loc)}
+                  onClick={e => {e.stopPropagation(); 
+                    setDeleteTarget(loc);
+                }}
                   className="absolute right-2 flex h-6 w-6 items-center justify-center"
                   tabIndex={-1}
                 >
@@ -129,8 +157,16 @@ export default function Sidebar() {
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
       {isModalOpen && (
-        <AddLocationModal onClose={() => setIsModalOpen(false)} />
+        <AddLocationModal onClose={() => setIsModalOpen(false)}
+        onSelect={handleAddLocation} />
       )}
+
+      {/* DeleteModal 호출 (deleteTarget이 있을 때만 띄움) */}
+      <DeleteModal
+        open={!!deleteTarget}
+        onCancel={() => setDeleteTarget(null)}
+        onDelete={handleDelete}
+      />
     </aside>
   );
 }
