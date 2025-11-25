@@ -57,3 +57,16 @@ export interface GetLocationsResponse {
   data: LocationResponseItem[];
   timestamp: string;
 }
+
+// 핀 상태 변경 API 응답 데이터 타입
+export interface PinLocationResponseData {
+  locationId: number;
+  pinned: boolean;
+}
+
+// 핀 상태 변경 API 응답 타입
+export interface PinLocationResponse {
+  status: string;
+  data: PinLocationResponseData;
+  timestamp: string;
+}
