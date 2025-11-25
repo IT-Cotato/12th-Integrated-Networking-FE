@@ -43,3 +43,17 @@ export interface Location {
 export interface AddLocationResponse {
   locationId: number;
 }
+
+// 위치 목록 조회 API 응답 항목 타입
+export interface LocationResponseItem {
+  locationId: number;
+  name: string;
+  pinned: boolean;
+}
+
+// 위치 목록 조회 API 응답 타입
+export interface GetLocationsResponse {
+  status: string;
+  data: LocationResponseItem[];
+  timestamp: string;
+}
