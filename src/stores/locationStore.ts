@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getLocations } from '../services/api';
+import { getLocations, updateLocationPin } from '../services/api';
 import type { LocationResponseItem } from '../types';
 
 interface LocationStore {
@@ -11,7 +11,7 @@ interface LocationStore {
 
   // 액션
   fetchLocations: () => Promise<void>;
-  updateLocationPin: (locationId: number, pinned: boolean) => void;
+  updateLocationPin: (locationId: number, pinned: boolean) => Promise<void>;
   selectLocation: (locationId: string | null) => void;
   getLocationCoordinates: (locationId: number) => { lat: number; lng: number } | null;
   addLocation: (location: LocationResponseItem) => void;
@@ -46,15 +46,34 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
     set({ selectedLocationId: locationId });
   },
 
-  // 핀 상태 업데이트 (로컬 상태만 업데이트, 추후 서버 API 연동 필요)
-  updateLocationPin: (locationId: number, pinned: boolean) => {
+  // 핀 상태 업데이트
+  updateLocationPin: async (locationId: number, pinned: boolean) => {
+    //먼저 UI 업데이트
     set((state) => ({
       locations: state.locations.map((loc) =>
         loc.locationId === locationId ? { ...loc, pinned } : loc
       ),
     }));
-    // TODO: 백엔드 API 연동 - 핀 상태 변경 API 호출
-    // await updatePinStatus(locationId, pinned);
+
+    try {
+      // 서버에 핀 상태 변경 요청
+      const response = await updateLocationPin(TEMP_USER_ID, locationId);
+      // 서버 응답으로 최종 상태 업데이트
+      set((state) => ({
+        locations: state.locations.map((loc) =>
+          loc.locationId === locationId ? { ...loc, pinned: response.data.pinned } : loc
+        ),
+      }));
+    } catch (error) {
+      // 에러 발생 시 이전 상태로 롤백
+      set((state) => ({
+        locations: state.locations.map((loc) =>
+          loc.locationId === locationId ? { ...loc, pinned: !pinned } : loc
+        ),
+        error: error instanceof Error ? error.message : '핀 상태 변경에 실패했습니다.',
+      }));
+      console.error('핀 상태 변경 실패:', error);
+    }
   },
 
   // 위치의 위도/경도 가져오기
