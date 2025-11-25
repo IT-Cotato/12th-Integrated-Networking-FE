@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { fetchCurrentWeather } from "../services/api";
 import type { mainData } from "../types/mainData";
+// import { useLocationStore } from "../stores/locationStore"; (위치 관련)
 
-//예시 위경도, 이후 location 사용
+//예시 위경도
 const LAT = 37.56;
-const LON = 126.97;
+const LON = 125.97;
 
 interface WeatherState {
   data: mainData | null;
@@ -14,13 +15,18 @@ interface WeatherState {
 
 const initialWeatherState: WeatherState = {
   data: null,
-  loading: true, // 컴포넌트 마운트 시 로딩 시작
+  loading: true,
   error: null,
 };
 
 // useWeather 커스텀 훅
 export default function useWeather() {
   const [weatherState, setWeatherState] = useState(initialWeatherState);
+
+  // const selectedLocationId = useLocationStore((state) => state.selectedLocationId);
+  // const selectedLocation = useLocationStore((state) => state.getSelectedLocation());
+  //(위치 관련)
+
   useEffect(() => {
     const loadWeather = async () => {
       setWeatherState((prev) => ({ ...prev, loading: true, error: null }));
