@@ -29,6 +29,7 @@ export interface CurrentWeather {
   sunrise: string;
   sunset: string;
   day: boolean;
+  weatherIcon: string;
 }
 
 // 전체 응답 구조
