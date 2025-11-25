@@ -8,7 +8,7 @@ export default function WeatherStatItem({
   value,
 }: WeatherStatItemProps) {
   return (
-    <div>
+    <div className="text-base text-black">
       <span className="text-gray40 font-medium">{label}</span>{' '}
       <span className="font-medium">{value}</span>
     </div>

@@ -2,6 +2,8 @@ import { use } from 'react';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import { useWeather } from '@/hooks/use-weather';
 import CurrentWeather from './current-weather';
+import HourlyForecast from './hourly-forecast';
+import WeeklyForecast from './weekly-forecast';
 
 export default function MainView() {
   const contextValue = use(SelectedLocationContext);
@@ -20,14 +22,20 @@ export default function MainView() {
     );
   }
 
+  const weatherData = data?.data;
+
+  if (!weatherData) {
+    return <div>날씨정보를 불러오는데 실패했습니다</div>;
+  }
+  console.log(weatherData);
   return (
-    <div className="mx-auto flex h-screen w-full max-w-7xl flex-col items-center gap-6 p-10">
-      <div className="border-gray10 flex w-full max-w-[1080px] flex-col gap-3 rounded-2xl border-2 bg-white p-4 shadow-[0_0_8px_2px_rgba(0,0,0,0.10)]">
-        <p>
-          {selectedLocation.name} / {selectedLocation.address}
-        </p>
-        <CurrentWeather current={data.current} />
-      </div>
-    </div>
+    <main className="mx-auto flex h-screen max-w-7xl min-w-[400px] flex-col items-center gap-6 p-10">
+      <CurrentWeather
+        current={weatherData.current}
+        location={selectedLocation.name}
+      />
+      <HourlyForecast hourlyData={weatherData.hourly} />
+      <WeeklyForecast weeklyData={weatherData.weekly} />
+    </main>
   );
 }

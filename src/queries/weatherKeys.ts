@@ -13,3 +13,11 @@ export const weatherKeys = {
   byLocation: (location: Location | null) =>
     [...weatherKeys.all, location] as const,
 };
+
+export const airQualityKeys = {
+  all: ['air-quality'] as const,
+
+  // Air Quality API (PM10, PM2.5, UVI 등)
+  byLocation: (location: Location | null) =>
+    [...airQualityKeys.all, location] as const,
+};

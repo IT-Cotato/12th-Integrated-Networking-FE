@@ -7,7 +7,7 @@ export function WeatherSkeleton() {
 
   return (
     // MainView와 동일한 레이아웃 (max-w, gap 등)
-    <div className="mx-auto flex max-w-md flex-col gap-6 p-4">
+    <div className="mx-auto flex max-w-md min-w-[400px] flex-col gap-6 p-4">
       {/* ===== 1. 현재 날씨 스켈레톤 ===== */}
       <div className="flex flex-col gap-4 rounded-lg bg-white p-4 shadow-md">
         {/* 상단: 아이콘 + 온도 */}
