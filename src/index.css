@@ -162,3 +162,16 @@
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
+
+.recharts-surface {
+  z-index: 0 !important;
+  position: relative !important;
+}
+
+.recharts-wrapper {
+  /* 1. z-index를 명시적으로 낮춤 (0이나 1, 상황에 따라 조절) */
+  z-index: 0 !important;
+
+  /* 2. (선택사항) 만약 그래도 안 되면 isolation 사용 */
+  isolation: isolate;
+}
