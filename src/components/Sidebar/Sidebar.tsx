@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import LocationListItem from './LocationListItem';
 import AddLocationModal from '../Modal/AddLocationModal';
+import DeleteLocationModal from '../Modal/DeleteLocationModal';
 
 // TODO: 백엔드 API 연동 - 실제 Location 타입으로 변경 필요
 // 현재는 UI 구성용 더미 데이터
@@ -27,6 +28,7 @@ export default function Sidebar() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -78,12 +80,7 @@ export default function Sidebar() {
                   });
                 }}
                 onDelete={() => {
-                  // TODO: 백엔드 API 연동 - 위치 삭제 처리
-                  // 1. 삭제 확인 모달 표시 (DeleteLocationModal 사용)
-                  // 2. 확인 시 백엔드 API 호출 (src/services/api.ts의 deleteLocation 함수 사용)
-                  // 3. 성공 시 위치 목록에서 제거
-                  // 4. 에러 처리
-                  console.log("삭제", location.id);
+                  setIsDeleteModalOpen(true);
                 }}
               />
             ))}
@@ -94,6 +91,12 @@ export default function Sidebar() {
       <AddLocationModal 
         isOpen={isAddModalOpen} 
         onClose={() => setIsAddModalOpen(false)} 
+      />
+
+      {/* 위치 삭제 모달 */}
+      <DeleteLocationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
       />
     </div>
   );
