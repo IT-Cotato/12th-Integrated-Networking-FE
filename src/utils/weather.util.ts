@@ -19,7 +19,7 @@ const TEXT_MAP: { [key: string]: string } = {
   '10': '비',
   '11': '천둥번개',
   '13': '눈',
-  '50': '안개/박무',
+  '50': '안개',
 };
 
 const WIND_DIRECTIONS: string[] = [

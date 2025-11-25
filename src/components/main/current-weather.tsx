@@ -4,6 +4,7 @@ import {
   convertPmToScore,
   convertUvToScore,
   getDate,
+  mapWeatherText,
 } from '@/utils/weather.util';
 import WeatherStatItem from './weather-stat-item';
 import StatusBadge from './status-badge';
@@ -18,10 +19,11 @@ export default function CurrentWeather({
   current,
   location,
 }: CurrentWeatherProps) {
-  const iconAsset = mapWeatherIcon('10n');
+  const iconAsset = mapWeatherIcon(current.weatherIcon);
   const uvScore = convertUvToScore(current.uvLevel);
   const pm10Score = convertPmToScore(current.pm10Level);
   const pm25Score = convertPmToScore(current.pm25Level);
+  const weatherText = mapWeatherText(current.weatherIcon);
   const date = getDate();
 
   const dateHeader = `${date.getMonth() + 1}월 ${date.getDate()}일 ${location} 날씨 현황`;
@@ -44,9 +46,7 @@ export default function CurrentWeather({
         </div>
 
         {/* 2. 날씨 설명 */}
-        <span className="text-lg font-semibold md:text-xl">
-          {current.weatherDescription}
-        </span>
+        <span className="text-lg font-semibold md:text-xl">{weatherText}</span>
 
         {/* 3. 상세 스탯 (체감, 습도, 풍향) */}
         {/* 모바일: text-xs, 데스크탑: text-sm (기존 text-[8px]는 너무 작아서 키웠습니다) */}
@@ -88,7 +88,7 @@ export default function CurrentWeather({
 
           {/* 일출 뱃지 (커스텀 스타일) */}
           {/* sm:w-auto로 설정하여 데스크탑에서는 내용물 크기만큼만 차지하게 함 */}
-          <div className="bg-lime text-yellow flex flex-col items-center justify-center gap-1 rounded-xl px-4 py-3 text-xs shadow-sm sm:w-auto md:gap-2.5 md:px-6">
+          <div className="bg-lime text-yellow flex w-30 flex-col items-center justify-center gap-1 rounded-xl px-4 py-3 text-xs shadow-sm md:gap-2.5 md:px-6">
             <span className="font-medium text-black">일출</span>
             <span className="font-bold">{current.sunrise}</span>
           </div>
