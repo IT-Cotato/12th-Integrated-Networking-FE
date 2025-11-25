@@ -3,11 +3,11 @@ import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import AddLocationModal from './AddLocationModal';
 import DeleteModal from './DeleteModal';
+import { createPortal } from 'react-dom';
 
 export default function Sidebar() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleAddLocation = (place: {
     id: string;
     place_name: string;
@@ -142,19 +142,24 @@ export default function Sidebar() {
       </ul>
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
-      {isModalOpen && (
-        <AddLocationModal
-          onClose={() => setIsModalOpen(false)}
-          onSelect={handleAddLocation}
-        />
-      )}
+      {isModalOpen &&
+        createPortal(
+          <AddLocationModal
+            onClose={() => setIsModalOpen(false)}
+            onSelect={handleAddLocation}
+          />,
+          document.body,
+        )}
 
       {/* DeleteModal 호출 (deleteTarget이 있을 때만 띄움) */}
-      <DeleteModal
-        open={!!deleteTarget}
-        onCancel={() => setDeleteTarget(null)}
-        onDelete={handleDelete}
-      />
+      {createPortal(
+        <DeleteModal
+          open={!!deleteTarget}
+          onCancel={() => setDeleteTarget(null)}
+          onDelete={handleDelete}
+        />,
+        document.body,
+      )}
     </aside>
   );
 }
