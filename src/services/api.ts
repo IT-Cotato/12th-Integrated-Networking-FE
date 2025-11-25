@@ -1,6 +1,6 @@
 // API 서비스
 import axios from 'axios';
-import type { AddLocationResponse, GetLocationsResponse } from '../types';
+import type { AddLocationResponse, GetLocationsResponse, PinLocationResponse } from '../types';
 
 // 개발 환경에서는 프록시를 통해 요청하므로 빈 문자열 사용
 // 프로덕션 환경에서는 VITE_API_BASE_URL 환경 변수 사용
@@ -86,6 +86,35 @@ export async function getLocations(
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || '위치 목록 조회에 실패했습니다.');
+    }
+    throw error;
+  }
+}
+
+/**
+ * 위치 핀 상태 변경 API 함수
+ * @param userId 사용자 ID
+ * @param locationId 위치 ID
+ * @returns 핀 상태 변경된 위치 정보
+ */
+export async function updateLocationPin(
+  userId: number,
+  locationId: number
+): Promise<PinLocationResponse> {
+  try {
+    const response = await apiClient.patch<PinLocationResponse>(
+      `/api/locations/${locationId}/pin`,
+      {},
+      {
+        params: {
+          userId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || '핀 상태 변경에 실패했습니다.');
     }
     throw error;
   }
