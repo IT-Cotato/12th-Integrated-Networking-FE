@@ -14,6 +14,7 @@ interface LocationStore {
   updateLocationPin: (locationId: number, pinned: boolean) => Promise<void>;
   selectLocation: (locationId: string | null) => void;
   getLocationCoordinates: (locationId: number) => { lat: number; lng: number } | null;
+  getSelectedLocation: () => LocationResponseItem | null;
   addLocation: (location: LocationResponseItem) => void;
   removeLocation: (locationId: number) => void;
 }
@@ -86,6 +87,13 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
     // 임시로 경고 방지용
     void location;
     return null;
+  },
+
+  // 선택된 위치 정보 가져오기 (WeatherPanel에서 사용)
+  getSelectedLocation: () => {
+    const { selectedLocationId, locations } = get();
+    if (!selectedLocationId) return null;
+    return locations.find((loc) => loc.locationId === Number(selectedLocationId)) || null;
   },
 
   // 위치 추가 (추가 모달에서 사용)
