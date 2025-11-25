@@ -124,7 +124,7 @@ export default function Sidebar() {
                   className="mr-3 ml-2 h-6 w-6"
                 />
               </button>
-              <span className="flex-1 text-[16px] leading-5 font-medium">
+              <span className="truncate w-[120px] bloc flex-1 text-[16px] leading-5 font-medium">
                 {loc.name}
               </span>
               {/* hover 시 trash 노출 */}
