@@ -1,34 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LocationListItem from './LocationListItem';
 import AddLocationModal from '../Modal/AddLocationModal';
 import DeleteLocationModal from '../Modal/DeleteLocationModal';
-
-// TODO: 백엔드 API 연동 - 실제 Location 타입으로 변경 필요
-// 현재는 UI 구성용 더미 데이터
-interface LocationItem {
-  id: string;
-  name: string;
-}
-
-// TODO: 백엔드 API 연동 - 실제 위치 목록을 API에서 가져오도록 수정
-// 1. 위치 목록 조회 API 호출 (src/services/api.ts의 getLocations 함수 사용)
-// 2. useEffect로 컴포넌트 마운트 시 위치 목록 불러오기
-// 3. 더미 데이터 제거
-const dummyLocations: LocationItem[] = [
-  { id: '1', name: '강남역 1번 출구'},
-  { id: '2', name: 'RATTHAT' },
-  { id: '3', name: '파이홀'},
-  { id: '4', name: '청수당공명' },
-  { id: '5', name: '롯데월드'},
-  { id: '6', name: '구관'},
-  { id: '7', name: 'Osiu' },
-];
+import { getLocations } from '../../services/api';
+import type { LocationResponseItem } from '../../types';
 
 export default function Sidebar() {
   const [selectedId, setSelectedId] = useState<string>("");
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
+  const [locations, setLocations] = useState<LocationResponseItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  // 위치 목록 조회
+  useEffect(() => {
+    const fetchLocations = async () => {
+      setIsLoading(true);
+      try {
+        // TODO: 추후 로그인 구현 시 userId를 실제 사용자 ID로 변경 필요
+        const userId = 1; // 임시 사용자 ID
+        const response = await getLocations(userId);
+        setLocations(response.data);
+      } catch (error) {
+        console.error('위치 목록 조회 실패:', error);
+        // 에러 발생 시 빈 배열로 설정
+        setLocations([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -50,40 +53,38 @@ export default function Sidebar() {
 
         {/* 리스트 */}
         <div className="flex flex-col gap-2 w-full">
-          {[...dummyLocations]
-            .sort((a, b) => {
-              const aPinned = pinnedIds.has(a.id);
-              const bPinned = pinnedIds.has(b.id);
-              if (aPinned && !bPinned) return -1;
-              if (!aPinned && bPinned) return 1;
-              return 0;
-            })
-            .map((location) => (
+          {isLoading ? (
+            <div className="text-center text-gray-500 py-4">로딩 중...</div>
+          ) : locations.length === 0 ? (
+            <div className="text-center text-gray-500 py-4">위치 목록이 없습니다.</div>
+          ) : (
+            locations.map((location) => (
               <LocationListItem
-                key={location.id}
-                id={location.id}
+                key={location.locationId}
+                id={String(location.locationId)}
                 name={location.name}
-                selected={selectedId === location.id}
-                pinned={pinnedIds.has(location.id)}
+                selected={selectedId === String(location.locationId)}
+                pinned={location.pinned}
                 onSelect={() => {
-                  setSelectedId(selectedId === location.id ? "" : location.id);
+                  setSelectedId(selectedId === String(location.locationId) ? "" : String(location.locationId));
                 }}
                 onPin={() => {
-                  setPinnedIds((prev) => {
-                    const next = new Set(prev);
-                    if (next.has(location.id)) {
-                      next.delete(location.id);
-                    } else {
-                      next.add(location.id);
-                    }
-                    return next;
-                  });
+                  // TODO: 백엔드 API 연동 - 핀 상태 변경 API 호출
+                  // 현재는 로컬 상태만 업데이트 (서버와 동기화 필요)
+                  setLocations((prev) =>
+                    prev.map((loc) =>
+                      loc.locationId === location.locationId
+                        ? { ...loc, pinned: !loc.pinned }
+                        : loc
+                    )
+                  );
                 }}
                 onDelete={() => {
                   setIsDeleteModalOpen(true);
                 }}
               />
-            ))}
+            ))
+          )}
         </div>
       </div>
 
