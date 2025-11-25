@@ -25,10 +25,13 @@ import AddLocationModal from "./components/Modal/AddLocationModal";
 import DeleteConfirmModal from "./components/Modal/DeleteConfirmModal";
 import { type KakaoPlace } from "./types";
 import "pretendard/dist/web/static/pretendard.css";
-import MainWeatherPanel from "./components/MainWeatherPanel"; //추가
+
 import type { WeatherInfo } from "./types/Weather"; //추가
-import { mockWeather, mockWeekly } from "./services/WeatherService"; //추가
-import WeeklyForecastPanel from "./components/WeeklyForecast"; //추가
+import { mockHourly, mockWeather, mockWeekly } from "./services/WeatherService"; //추가
+//추가
+import MainWeatherPanel from "./components/MainWeatherPanel/MainWeatherPanel"; // 추가
+import WeeklyForecastPanel from "./components/WeeklyForecast/WeeklyForecast"; // 추가
+import HourlyWeatherPanel from "./components/HourlyForecast/HourlyForecast";
 
 interface Location {
   id: string;
@@ -108,7 +111,7 @@ export default function App() {
                   locations.find((loc) => loc.id === selectedLocation)?.name
                 }
               />
-
+              <HourlyWeatherPanel hourly={mockHourly} />
               <WeeklyForecastPanel weekly={mockWeekly} />
             </div>{" "}
             {/* 추가 */}

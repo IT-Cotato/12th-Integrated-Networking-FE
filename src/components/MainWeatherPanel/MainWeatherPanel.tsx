@@ -1,5 +1,5 @@
-import { mockWeather } from "../services/WeatherService";
-import type { WeatherInfo } from "../types/Weather";
+import { mockWeather } from "../../services/WeatherService";
+import type { WeatherInfo } from "../../types/Weather";
 import {
   FineDustColor,
   TextFineDustColor,
@@ -7,9 +7,9 @@ import {
   TextUvIndexColor,
   UltraFineDustColor,
   UvIndexColor,
-} from "../utils/ColorMap";
-import { WeatherIconMap } from "../utils/WeatherIconMap";
-import DayCloud from "../assets/icons/Day_Clouds.svg";
+} from "../../utils/ColorMap";
+import { WeatherIconMap } from "../../utils/WeatherIconMap";
+import DayCloud from "../../assets/icons/Day_Clouds.svg";
 
 interface MainWeatherPanelProps {
   selectedWeather: WeatherInfo | null;

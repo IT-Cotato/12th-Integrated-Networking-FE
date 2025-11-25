@@ -1,6 +1,6 @@
 import React from "react";
-import type { WeeklyForecast } from "../types/Weather";
-import { getWeatherIcon } from "../utils/GetWeatherIcon";
+import type { WeeklyForecast } from "../../types/Weather";
+import { getWeatherIcon } from "../../utils/GetWeatherIcon";
 
 // --- Component ---
 interface Props {

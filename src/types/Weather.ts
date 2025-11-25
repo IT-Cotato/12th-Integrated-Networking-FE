@@ -24,6 +24,8 @@ export interface WeatherInfo {
 export interface HourlyForecast {
   time: string; // 시간
   temp: number; // 온도
+  status: WeatherStatus; // 날씨 상태
+  isDaytime: boolean; // 낮/야간 여부
 }
 
 export interface WeeklyForecast {
