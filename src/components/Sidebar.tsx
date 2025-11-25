@@ -29,16 +29,24 @@ export default function Sidebar() {
     setIsModalOpen(false);
   };
 
-  // const handleAddLocation = () => setIsModalOpen(true);
-
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
-    setLocations((locs) =>
-      locs.map((loc) =>
-        loc.id === id ? { ...loc, isFixed: !loc.isFixed } : loc,
-      ),
+  setLocations((locs) => {
+    const updated = locs.map((loc) =>
+      loc.id === id ? { ...loc, isFixed: !loc.isFixed } : loc
     );
-  };
+
+  const sorted = [...updated].sort((a,b) =>{
+    if(a.isFixed === b.isFixed){
+      return a.name.localeCompare(b.name);
+    }
+    return a.isFixed? -1:1;
+  });
+
+  return sorted;
+});
+};
+
   // useContext 훅은 컴포넌트 함수 안에서 실행!
   const ctx = useContext(SelectedLocationContext);
 
