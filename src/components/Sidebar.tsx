@@ -5,22 +5,7 @@ import AddLocationModal from './AddLocationModal';
 import DeleteModal from './DeleteModal';
 
 export default function Sidebar() {
-  const [locations, setLocations] = useState<Location[]>([
-    {
-      id: '1',
-      name: '강남역 1번 출구',
-      address: '',
-      x: '',
-      y: '',
-      isFixed: true,
-    },
-    { id: '2', name: 'RATTHAT', address: '', x: '', y: '', isFixed: false },
-    { id: '3', name: '파이홀', address: '', x: '', y: '', isFixed: false },
-    { id: '4', name: '청수당공명', address: '', x: '', y: '', isFixed: false },
-    { id: '5', name: '롯데월드', address: '', x: '', y: '', isFixed: false },
-    { id: '6', name: '구관', address: '', x: '', y: '', isFixed: false },
-    { id: '7', name: 'Osiu', address: '', x: '', y: '', isFixed: false },
-  ]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddLocation = (place: {
@@ -30,7 +15,7 @@ export default function Sidebar() {
     x: string;
     y: string;
   }) => {
-    setLocations(prev => [
+    setLocations((prev) => [
       ...prev,
       {
         id: place.id,
@@ -38,13 +23,13 @@ export default function Sidebar() {
         address: place.address_name,
         x: place.x,
         y: place.y,
-        isFixed: false
-      }
+        isFixed: false,
+      },
     ]);
     setIsModalOpen(false);
   };
 
- // const handleAddLocation = () => setIsModalOpen(true);
+  // const handleAddLocation = () => setIsModalOpen(true);
 
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
@@ -66,7 +51,7 @@ export default function Sidebar() {
 
   const handleDelete = () => {
     if (!deleteTarget) return;
-    setLocations(prev => prev.filter(loc => loc.id !== deleteTarget.id));
+    setLocations((prev) => prev.filter((loc) => loc.id !== deleteTarget.id));
     setDeleteTarget(null); // 모달 닫기
   };
 
@@ -137,9 +122,10 @@ export default function Sidebar() {
               {/* hover 시 trash 노출 */}
               {hovered === loc.id && (
                 <button
-                  onClick={e => {e.stopPropagation(); 
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setDeleteTarget(loc);
-                }}
+                  }}
                   className="absolute right-2 flex h-6 w-6 items-center justify-center"
                   tabIndex={-1}
                 >
@@ -157,8 +143,10 @@ export default function Sidebar() {
       {/* 아래 영역(48px 마진) */}
       <div style={{ height: '48px' }} />
       {isModalOpen && (
-        <AddLocationModal onClose={() => setIsModalOpen(false)}
-        onSelect={handleAddLocation} />
+        <AddLocationModal
+          onClose={() => setIsModalOpen(false)}
+          onSelect={handleAddLocation}
+        />
       )}
 
       {/* DeleteModal 호출 (deleteTarget이 있을 때만 띄움) */}

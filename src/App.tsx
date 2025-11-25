@@ -18,7 +18,7 @@ function App() {
       }}
     >
       {/* <div className="bg-blue"> sdflsj</div> */}
-      <div className="bg-gray5 flex">
+      <div className="bg-gray5 flex overflow-y-auto">
         <Sidebar />
 
         {selectedLocation != null ? (
