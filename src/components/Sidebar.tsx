@@ -56,7 +56,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
+    <aside className="sticky top-0 flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
       {/* 헤더: 아이콘 + 타이틀 */}
       <div className="mb-0 flex h-10 items-center">
         <img
