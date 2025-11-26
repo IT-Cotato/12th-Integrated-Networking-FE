@@ -19,8 +19,7 @@ export default function AddLocationModal({
   const [searchResults, setSearchResults] = useState<KakaoPlace[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<KakaoPlace | null>(null);
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
-  const [hoveredPlaceId, setHoveredPlaceId] = useState<string | null>(null); // hover 상태 추가
-
+  const [hoveredPlaceId, setHoveredPlaceId] = useState<string | null>(null);
 
   // 카카오맵 API 로드 확인
   useEffect(() => {
