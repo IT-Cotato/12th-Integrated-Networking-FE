@@ -31,9 +31,9 @@ export default async function handler(
       }
     });
     const query = queryString.toString();
-    // pathString에 이미 'api'가 포함되어 있으면 제거
-    const cleanPath = pathString.startsWith('api/') ? pathString.substring(4) : pathString;
-    const targetUrl = `${API_BASE_URL}/api/${cleanPath}${query ? `?${query}` : ''}`;
+    // pathString이 이미 'api'로 시작하면 그대로 사용, 아니면 'api' 추가
+    const cleanPath = pathString.startsWith('api/') ? pathString : `api/${pathString}`;
+    const targetUrl = `${API_BASE_URL}/${cleanPath}${query ? `?${query}` : ''}`;
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
