@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getLocations, updateLocationPin } from '../services/api';
+import { getLocations, updateLocationPin, deleteLocation as deleteLocationAPI } from '../services/api';
 import type { LocationResponseItem } from '../types';
 
 interface LocationStore {
@@ -17,6 +17,7 @@ interface LocationStore {
   getSelectedLocation: () => LocationResponseItem | null;
   addLocation: (location: LocationResponseItem) => void;
   removeLocation: (locationId: number) => void;
+  deleteLocation: (locationId: number) => Promise<void>;
 }
 
 // TODO: 추후 로그인 구현 시 userId를 실제 사용자 ID로 변경 필요
@@ -136,6 +137,28 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
       selectedLocationId:
         state.selectedLocationId === String(locationId) ? null : state.selectedLocationId,
     }));
+  },
+
+  // 위치 삭제 API 호출
+  deleteLocation: async (locationId: number) => {
+    try {
+      // 먼저 UI에서 제거 (낙관적 업데이트)
+      set((state) => ({
+        locations: state.locations.filter((loc) => loc.locationId !== locationId),
+        selectedLocationId:
+          state.selectedLocationId === String(locationId) ? null : state.selectedLocationId,
+      }));
+
+      // 서버에 삭제 요청
+      await deleteLocationAPI(locationId);
+    } catch (error) {
+      // 에러 발생 시 목록 새로고침하여 원래 상태로 복구
+      await get().fetchLocations();
+      const errorMessage = error instanceof Error ? error.message : '위치 삭제에 실패했습니다.';
+      set({ error: errorMessage });
+      console.error('위치 삭제 실패:', error);
+      throw error;
+    }
   },
 }));
 
