@@ -34,7 +34,13 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await getLocations(TEMP_USER_ID);
-      set({ locations: response.data, isLoading: false });
+      // pinned=true가 위로 오도록 정렬
+      const sortedLocations = [...response.data].sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return 0;
+      });
+      set({ locations: sortedLocations, isLoading: false });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '위치 목록 조회에 실패했습니다.';
       console.error('위치 목록 조회 실패:', error);
@@ -49,30 +55,53 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
 
   // 핀 상태 업데이트
   updateLocationPin: async (locationId: number, pinned: boolean) => {
-    //먼저 UI 업데이트
-    set((state) => ({
-      locations: state.locations.map((loc) =>
+    //먼저 UI 업데이트 및 정렬
+    set((state) => {
+      const updatedLocations = state.locations.map((loc) =>
         loc.locationId === locationId ? { ...loc, pinned } : loc
-      ),
-    }));
+      );
+      // pinned=true가 위로 오도록 정렬
+      const sortedLocations = [...updatedLocations].sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return 0;
+      });
+      return { locations: sortedLocations };
+    });
 
     try {
       // 서버에 핀 상태 변경 요청
       const response = await updateLocationPin(TEMP_USER_ID, locationId);
-      // 서버 응답으로 최종 상태 업데이트
-      set((state) => ({
-        locations: state.locations.map((loc) =>
+      // 서버 응답으로 최종 상태 업데이트 및 정렬
+      set((state) => {
+        const updatedLocations = state.locations.map((loc) =>
           loc.locationId === locationId ? { ...loc, pinned: response.data.pinned } : loc
-        ),
-      }));
+        );
+        // pinned=true가 위로 오도록 정렬
+        const sortedLocations = [...updatedLocations].sort((a, b) => {
+          if (a.pinned && !b.pinned) return -1;
+          if (!a.pinned && b.pinned) return 1;
+          return 0;
+        });
+        return { locations: sortedLocations };
+      });
     } catch (error) {
-      // 에러 발생 시 이전 상태로 롤백
-      set((state) => ({
-        locations: state.locations.map((loc) =>
+      // 에러 발생 시 이전 상태로 롤백 및 정렬
+      set((state) => {
+        const updatedLocations = state.locations.map((loc) =>
           loc.locationId === locationId ? { ...loc, pinned: !pinned } : loc
-        ),
-        error: error instanceof Error ? error.message : '핀 상태 변경에 실패했습니다.',
-      }));
+        );
+        // pinned=true가 위로 오도록 정렬
+        const sortedLocations = [...updatedLocations].sort((a, b) => {
+          if (a.pinned && !b.pinned) return -1;
+          if (!a.pinned && b.pinned) return 1;
+          return 0;
+        });
+        return {
+          locations: sortedLocations,
+          error: error instanceof Error ? error.message : '핀 상태 변경에 실패했습니다.',
+        };
+      });
       console.error('핀 상태 변경 실패:', error);
     }
   },
