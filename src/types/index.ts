@@ -72,3 +72,10 @@ export interface PinLocationResponse {
   data: PinLocationResponseData;
   timestamp: string;
 }
+
+// 위치 삭제 API 응답 타입
+export interface DeleteLocationResponse {
+  status: string;
+  data: string;
+  timestamp: string;
+}
