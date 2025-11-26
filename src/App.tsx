@@ -1,11 +1,37 @@
-'use client';
+// import { useState } from "react";
+// import MainWeatherPanel from "./components/MainWeatherPanel";
+// import type { WeatherInfo } from "./types/Weather";
+// import { mockWeather, mockWeekly } from "./services/WeatherService";
+// import WeeklyForecastPanel from "./components/WeeklyForecast";
 
-import { useState } from 'react';
-import Sidebar from './components/Sidebar/Sidebar';
-import AddLocationModal from './components/Modal/AddLocationModal';
-import DeleteConfirmModal from './components/Modal/DeleteConfirmModal';
-import { type KakaoPlace } from './types';
-import 'pretendard/dist/web/static/pretendard.css';
+// function App() {
+//   const [selectedWeather] = useState<WeatherInfo | null>(mockWeather); //(null)로 다시 바꾸기
+
+//   return (
+//     <div className="w-full min-h-screen bg-[#F6F6F6] pl-[248px] flex flex-col gap-6 p-10">
+//       <MainWeatherPanel selectedWeather={selectedWeather} />
+//       <WeeklyForecastPanel weekly={mockWeekly} />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+"use client";
+
+import { useState } from "react";
+import Sidebar from "./components/Sidebar/Sidebar";
+import AddLocationModal from "./components/Modal/AddLocationModal";
+import DeleteConfirmModal from "./components/Modal/DeleteConfirmModal";
+import { type KakaoPlace } from "./types";
+import "pretendard/dist/web/static/pretendard.css";
+
+import type { WeatherInfo } from "./types/Weather"; //추가
+import { mockHourly, mockWeather, mockWeekly } from "./services/WeatherService"; //추가
+//추가
+import MainWeatherPanel from "./components/MainWeatherPanel/MainWeatherPanel"; // 추가
+import WeeklyForecastPanel from "./components/WeeklyForecast/WeeklyForecast"; // 추가
+import HourlyWeatherPanel from "./components/HourlyForecast/HourlyForecast";
 
 interface Location {
   id: string;
@@ -20,6 +46,7 @@ export default function App() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [locationToDelete, setLocationToDelete] = useState<string | null>(null);
+  const [selectedWeather] = useState<WeatherInfo | null>(mockWeather); //(null)로 다시 바꾸기 //추가
 
   // 위치 선택/해제
   const handleLocationClick = (id: string) => {
@@ -73,14 +100,28 @@ export default function App() {
         {selectedLocation ? (
           <div>
             <h1 className="text-3xl font-bold mb-4">
-              {locations.find((loc) => loc.id === selectedLocation)?.name}의 날씨
+              {locations.find((loc) => loc.id === selectedLocation)?.name}의
+              날씨
             </h1>
             {/* 여기에 날씨 정보 컴포넌트 추가 */}
+            <div className="w-full min-h-screen pl-[248px] flex flex-col gap-6 p-10">
+              <MainWeatherPanel
+                selectedWeather={selectedWeather}
+                locationName={
+                  locations.find((loc) => loc.id === selectedLocation)?.name
+                }
+              />
+              <HourlyWeatherPanel hourly={mockHourly} />
+              <WeeklyForecastPanel weekly={mockWeekly} />
+            </div>{" "}
+            {/* 추가 */}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-black">
-            <img src='/Day Clouds.svg' width='240px' height='240px'/>
-            <p className="text-xl text-bold text-[36px]">아직 선택된 위치가 없습니다!</p>
+            <img src="/Day Clouds.svg" width="240px" height="240px" />
+            <p className="text-xl text-bold text-[36px]">
+              아직 선택된 위치가 없습니다!
+            </p>
           </div>
         )}
       </main>
@@ -97,7 +138,7 @@ export default function App() {
         onClose={() => setShowDeleteModal(false)}
         onConfirm={confirmDelete}
         locationName={
-          locations.find((loc) => loc.id === locationToDelete)?.name || ''
+          locations.find((loc) => loc.id === locationToDelete)?.name || ""
         }
       />
     </div>

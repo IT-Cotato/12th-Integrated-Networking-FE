@@ -1,4 +1,6 @@
-body {
+@import "tailwindcss";
+/*수정*/
+/* body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -50,4 +52,4 @@ body {
 
 .read-the-docs {
   color: #888;
-}
+}*/
