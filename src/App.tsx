@@ -76,7 +76,7 @@ export default function App() {
     setUser(null);
     setLocations([]);
     setSelectedLocation(null);
-    console.log('로그아웃');
+    console.log("로그아웃");
   };
 
   const handleLocationClick = (id: string) => {
@@ -136,7 +136,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       {/* 사이드바 */}
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
         {user ? ( // ✅ 추가: 로그인 상태에 따라 다른 레이아웃
@@ -180,7 +180,12 @@ export default function App() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-black">
-            <img src="/Day Clouds.svg" width="240px" height="240px" alt="구름" />
+            <img
+              src="/Day Clouds.svg"
+              width="240px"
+              height="240px"
+              alt="구름"
+            />
             <p className="text-[36px] font-bold">
               아직 선택된 위치가 없습니다!
             </p>
@@ -211,3 +216,4 @@ export default function App() {
     </div>
   );
 }
+
