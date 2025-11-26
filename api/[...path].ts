@@ -31,7 +31,8 @@ export default async function handler(
       }
     });
     const query = queryString.toString();
-    // pathString이 이미 'api'로 시작하면 그대로 사용, 아니면 'api' 추가
+    // pathString에 이미 'api'가 포함되어 있으므로 그대로 사용
+    // 예: pathString = 'locations/save' -> cleanPath = 'api/locations/save'
     const cleanPath = pathString.startsWith('api/') ? pathString : `api/${pathString}`;
     const targetUrl = `${API_BASE_URL}/${cleanPath}${query ? `?${query}` : ''}`;
 
