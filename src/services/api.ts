@@ -65,20 +65,19 @@ export async function addLocation(
 
 /**
  * 위치 목록 조회 API 함수
- * @param userId 사용자 ID
  * @returns 위치 목록 (pinned=true가 상단, pinned=false가 하단에 정렬됨)
  */
 export async function getLocations(
-  userId: number
+  // userId: number, // 일단 주석처리
 ): Promise<GetLocationsResponse> {
   try {
     const response = await apiClient.get<GetLocationsResponse>(
-      '/api/locations',
-      {
-        params: {
-          userId,
-        },
-      }
+      '/api/locations'
+      // {
+      //   params: {
+      //     userId,
+      //   },
+      // }
     );
     return response.data;
   } catch (error) {
@@ -91,23 +90,22 @@ export async function getLocations(
 
 /**
  * 위치 핀 상태 변경 API 함수
- * @param userId 사용자 ID
  * @param locationId 위치 ID
  * @returns 핀 상태 변경된 위치 정보
  */
 export async function updateLocationPin(
-  userId: number,
+  // userId: number, // 일단 주석처리
   locationId: number
 ): Promise<PinLocationResponse> {
   try {
     const response = await apiClient.patch<PinLocationResponse>(
       `/api/locations/${locationId}/pin`,
-      {},
-      {
-        params: {
-          userId,
-        },
-      }
+      {}
+      // {
+      //   params: {
+      //     userId,
+      //   },
+      // }
     );
     return response.data;
   } catch (error) {

@@ -21,7 +21,7 @@ interface LocationStore {
 }
 
 // TODO: 추후 로그인 구현 시 userId를 실제 사용자 ID로 변경 필요
-const TEMP_USER_ID = 1;
+// const TEMP_USER_ID = 1; // 일단 주석처리
 
 export const useLocationStore = create<LocationStore>((set, get) => ({
   // 초기 상태
@@ -34,7 +34,7 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
   fetchLocations: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await getLocations(TEMP_USER_ID);
+      const response = await getLocations(/* TEMP_USER_ID */);
       // pinned=true가 위로 오도록 정렬
       const sortedLocations = [...response.data].sort((a, b) => {
         if (a.pinned && !b.pinned) return -1;
@@ -72,7 +72,7 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
 
     try {
       // 서버에 핀 상태 변경 요청
-      const response = await updateLocationPin(TEMP_USER_ID, locationId);
+      const response = await updateLocationPin(/* TEMP_USER_ID, */ locationId);
       // 서버 응답으로 최종 상태 업데이트 및 정렬
       set((state) => {
         const updatedLocations = state.locations.map((loc) =>
