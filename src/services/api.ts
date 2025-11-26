@@ -1,6 +1,6 @@
 // API 서비스
 import axios from 'axios';
-import type { AddLocationResponse, GetLocationsResponse, PinLocationResponse } from '../types';
+import type { AddLocationResponse, GetLocationsResponse, PinLocationResponse, DeleteLocationResponse } from '../types';
 
 // 개발 환경에서는 프록시를 통해 요청하므로 빈 문자열 사용
 // 프로덕션 환경에서는 VITE_API_BASE_URL 환경 변수 사용
@@ -120,8 +120,23 @@ export async function updateLocationPin(
   }
 }
 
-// TODO: 백엔드 API 연동
-
-// 3. 위치 삭제 API 함수 구현
-//    - 엔드포인트: DELETE /locations/:id (예상)
-//
+/**
+ * 위치 삭제 API 함수
+ * @param locationId 위치 ID
+ * @returns 삭제 응답
+ */
+export async function deleteLocation(
+  locationId: number
+): Promise<DeleteLocationResponse> {
+  try {
+    const response = await apiClient.delete<DeleteLocationResponse>(
+      `/api/locations/${locationId}`
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || '위치 삭제에 실패했습니다.');
+    }
+    throw error;
+  }
+}
