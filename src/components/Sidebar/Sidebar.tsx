@@ -12,9 +12,11 @@ export default function Sidebar() {
     fetchLocations,
     selectLocation,
     updateLocationPin,
+    deleteLocation,
   } = useLocationStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [locationIdToDelete, setLocationIdToDelete] = useState<number | null>(null);
 
   // 위치 목록 조회
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function Sidebar() {
                   updateLocationPin(location.locationId, !location.pinned);
                 }}
                 onDelete={() => {
+                  setLocationIdToDelete(location.locationId);
                   setIsDeleteModalOpen(true);
                 }}
               />
@@ -81,7 +84,22 @@ export default function Sidebar() {
       {/* 위치 삭제 모달 */}
       <DeleteLocationModal
         isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
+        locationId={locationIdToDelete}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setLocationIdToDelete(null);
+        }}
+        onDelete={async () => {
+          if (locationIdToDelete !== null) {
+            try {
+              await deleteLocation(locationIdToDelete);
+              setIsDeleteModalOpen(false);
+              setLocationIdToDelete(null);
+            } catch (error) {
+              // 에러는 store에서 처리됨
+            }
+          }
+        }}
       />
     </div>
   );
