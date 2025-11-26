@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import LocationListItem from './LocationListItem';
-// 더미 데이터 타입
+import AddLocationModal from '../Modal/AddLocationModal';
+
+// TODO: 백엔드 API 연동 - 실제 Location 타입으로 변경 필요
+// 현재는 UI 구성용 더미 데이터
 interface LocationItem {
   id: string;
   name: string;
 }
 
-// API 연동 전, 화면 구성을 위한 더미 데이터
+// TODO: 백엔드 API 연동 - 실제 위치 목록을 API에서 가져오도록 수정
+// 1. 위치 목록 조회 API 호출 (src/services/api.ts의 getLocations 함수 사용)
+// 2. useEffect로 컴포넌트 마운트 시 위치 목록 불러오기
+// 3. 더미 데이터 제거
 const dummyLocations: LocationItem[] = [
   { id: '1', name: '강남역 1번 출구'},
   { id: '2', name: 'RATTHAT' },
@@ -20,6 +26,7 @@ const dummyLocations: LocationItem[] = [
 export default function Sidebar() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -31,7 +38,10 @@ export default function Sidebar() {
         </div>
 
         {/* 추가하기 */}
-        <div className="flex items-center gap-4">
+        <div 
+          className="flex items-center gap-4 cursor-pointer"
+          onClick={() => setIsAddModalOpen(true)}
+        >
           <img src="/plus-front-clay.svg" className="w-10 h-10" />
           <span className="text-[#292E2E] font-bold text-xl">추가하기</span>
         </div>
@@ -67,11 +77,24 @@ export default function Sidebar() {
                     return next;
                   });
                 }}
-                onDelete={() => console.log("삭제", location.id)}
+                onDelete={() => {
+                  // TODO: 백엔드 API 연동 - 위치 삭제 처리
+                  // 1. 삭제 확인 모달 표시 (DeleteLocationModal 사용)
+                  // 2. 확인 시 백엔드 API 호출 (src/services/api.ts의 deleteLocation 함수 사용)
+                  // 3. 성공 시 위치 목록에서 제거
+                  // 4. 에러 처리
+                  console.log("삭제", location.id);
+                }}
               />
             ))}
         </div>
       </div>
+
+      {/* 위치 추가 모달 */}
+      <AddLocationModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+      />
     </div>
   );
 }
