@@ -6,7 +6,7 @@ import AddLocationModal from "./components/Modal/AddLocationModal";
 import DeleteConfirmModal from "./components/Modal/DeleteConfirmModal";
 import KakaoLogin from "./components/KakaoLogin/KakaoLogin";
 import { type KakaoPlace } from "./types";
-import { type KakaoUserInfo } from "./types/Login";
+import { type User } from "./types/Login"; // ✅ 변경: KakaoUserInfo → User
 import "pretendard/dist/web/static/pretendard.css";
 
 import type { WeatherInfo } from "./types/Weather";
@@ -14,6 +14,14 @@ import { mockHourly, mockWeather, mockWeekly } from "./services/WeatherService";
 import MainWeatherPanel from "./components/MainWeatherPanel/MainWeatherPanel";
 import WeeklyForecastPanel from "./components/WeeklyForecast/WeeklyForecast";
 import HourlyWeatherPanel from "./components/HourlyForecast/HourlyForecast";
+
+// ✅ 추가: 백엔드 연동 import
+import { 
+  getLocations, 
+  addLocation as addLocationToBackend, 
+  deleteLocation as deleteLocationFromBackend,
+  type BackendLocation 
+} from "./services/AuthService";
 
 interface Location {
   id: string;
@@ -30,82 +38,131 @@ export default function App() {
   const [locationToDelete, setLocationToDelete] = useState<string | null>(null);
   const [selectedWeather] = useState<WeatherInfo | null>(mockWeather);
   
-  // 카카오 로그인 상태
-  const [user, setUser] = useState<KakaoUserInfo | null>(null);
+  const [user, setUser] = useState<User | null>(null); // ✅ 변경: KakaoUserInfo → User
+  const [isLoadingLocations, setIsLoadingLocations] = useState(false); // ✅ 추가
 
-  // 카카오 로그인 핸들러
-  const handleLogin = (userData: KakaoUserInfo) => {
-    setUser(userData);
-    console.log('로그인 성공:', userData);
-    // TODO: 여기서 사용자별 위치 목록을 서버에서 불러올 수 있습니다
+  // ✅ 추가: 백엔드 Location 변환 함수
+  const convertBackendLocation = (backendLoc: BackendLocation): Location => ({
+    id: String(backendLoc.id),
+    name: backendLoc.placeName,
+    lat: backendLoc.latitude,
+    lng: backendLoc.longitude,
+  });
+
+  // ✅ 추가: 위치 목록 불러오기 함수
+  const loadUserLocations = async () => {
+    setIsLoadingLocations(true);
+    try {
+      const backendLocations = await getLocations();
+      const convertedLocations = backendLocations.map(convertBackendLocation);
+      setLocations(convertedLocations);
+      console.log('위치 목록 불러오기 성공:', convertedLocations);
+    } catch (error) {
+      console.error('위치 목록 불러오기 실패:', error);
+      alert('위치 목록을 불러오는데 실패했습니다.');
+    } finally {
+      setIsLoadingLocations(false);
+    }
   };
 
-  // 카카오 로그아웃 핸들러
+  // ✅ 수정: 로그인 시 위치 목록 불러오기
+  const handleLogin = (userData: User) => {
+    setUser(userData);
+    console.log('로그인 성공:', userData);
+    void loadUserLocations();
+  };
+
   const handleLogout = () => {
     setUser(null);
-    setLocations([]); // 로그아웃 시 위치 목록 초기화
+    setLocations([]);
     setSelectedLocation(null);
     console.log('로그아웃');
   };
 
-  // 위치 선택/해제
   const handleLocationClick = (id: string) => {
     setSelectedLocation(selectedLocation === id ? null : id);
   };
 
-  // 위치 삭제 시작
   const handleDeleteClick = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setLocationToDelete(id);
     setShowDeleteModal(true);
   };
 
-  // 위치 삭제 확인
-  const confirmDelete = () => {
-    if (locationToDelete) {
-      setLocations(locations.filter((loc) => loc.id !== locationToDelete));
-      if (selectedLocation === locationToDelete) {
-        setSelectedLocation(null);
+  // ✅ 수정: 백엔드에서 삭제
+  const confirmDelete = async () => {
+    if (locationToDelete && user) {
+      try {
+        await deleteLocationFromBackend(Number(locationToDelete));
+        setLocations(locations.filter((loc) => loc.id !== locationToDelete));
+        if (selectedLocation === locationToDelete) {
+          setSelectedLocation(null);
+        }
+        console.log('위치 삭제 성공');
+      } catch (error) {
+        console.error('위치 삭제 실패:', error);
+        alert('위치 삭제에 실패했습니다.');
       }
     }
     setShowDeleteModal(false);
     setLocationToDelete(null);
   };
 
-  // 위치 추가
-  const handleAddLocation = (place: KakaoPlace) => {
-    const newLocation: Location = {
-      id: place.id,
-      name: place.place_name,
-      lat: parseFloat(place.y),
-      lng: parseFloat(place.x),
-    };
-    setLocations([...locations, newLocation]);
-    setShowAddModal(false);
-    
-    // TODO: 로그인한 사용자의 경우 서버에 위치 저장
-    if (user) {
-      console.log('사용자 위치 저장:', user.id, newLocation);
+  // ✅ 수정: 백엔드에 저장
+  const handleAddLocation = async (place: KakaoPlace) => {
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
+      const backendLocation = await addLocationToBackend({
+        placeName: place.place_name,
+        latitude: parseFloat(place.y),
+        longitude: parseFloat(place.x),
+        address: place.road_address_name || place.address_name,
+        isPinned: false,
+      });
+
+      const newLocation = convertBackendLocation(backendLocation);
+      setLocations([...locations, newLocation]);
+      
+      console.log('위치 추가 성공:', newLocation);
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('위치 추가 실패:', error);
+      alert('위치 추가에 실패했습니다.');
     }
   };
 
   return (
     <div className="flex h-screen bg-gray-50">
       {/* 사이드바 */}
-      <div className="w-64 bg-white border-r border-gray-200 flex flex-col items-center">
-        {/* 카카오 로그인 헤더 */}
-        <div className="p-4 border-b border-gray-200">
-          <KakaoLogin onLogin={handleLogin} onLogout={handleLogout} />
-        </div>
-
-        {/* 사이드바 내용 */}
-        <Sidebar
-          locations={locations}
-          selectedLocation={selectedLocation}
-          onLocationClick={handleLocationClick}
-          onAddClick={() => setShowAddModal(true)}
-          onDeleteClick={handleDeleteClick}
-        />
+      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+        {user ? ( // ✅ 추가: 로그인 상태에 따라 다른 레이아웃
+          <>
+            <div className="p-4 border-b border-gray-200">
+              <KakaoLogin onLogin={handleLogin} onLogout={handleLogout} />
+            </div>
+            {isLoadingLocations ? ( // ✅ 추가: 로딩 상태 표시
+              <div className="flex items-center justify-center flex-1">
+                <div className="text-sm text-gray-500">위치 불러오는 중...</div>
+              </div>
+            ) : (
+              <Sidebar
+                locations={locations}
+                selectedLocation={selectedLocation}
+                onLocationClick={handleLocationClick}
+                onAddClick={() => setShowAddModal(true)}
+                onDeleteClick={handleDeleteClick}
+              />
+            )}
+          </>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <KakaoLogin onLogin={handleLogin} onLogout={handleLogout} />
+          </div>
+        )}
       </div>
 
       {/* 메인 콘텐츠 */}

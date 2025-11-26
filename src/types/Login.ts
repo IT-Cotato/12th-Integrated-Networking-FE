@@ -77,3 +77,32 @@ declare global {
     Kakao: KakaoSDK;
   }
 }
+
+// 기존 카카오 사용자 정보 (카카오 API 응답)
+export interface KakaoUserInfo {
+  id: number;
+  kakao_account: {
+    profile: {
+      nickname: string;
+      profile_image_url?: string;
+      thumbnail_image_url?: string;
+    };
+    email?: string;
+    age_range?: string;
+    birthday?: string;
+    gender?: 'male' | 'female';
+  };
+  properties?: {
+    nickname?: string;
+    profile_image?: string;
+    thumbnail_image?: string;
+  };
+}
+
+// 백엔드 사용자 정보 (우리 서버 응답)
+export interface User {
+  memberId: number;
+  nickname: string;
+  profileImageUrl: string;
+  isNewUser: boolean;
+}
