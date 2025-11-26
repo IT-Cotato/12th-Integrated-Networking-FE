@@ -3,8 +3,10 @@ import axios from 'axios';
 import type { AddLocationResponse, GetLocationsResponse, PinLocationResponse, DeleteLocationResponse } from '../types';
 
 // 개발 환경: Vite 프록시 사용
-// 프로덕션 환경: Vercel 서버리스 함수 프록시 사용 (api/[...path].ts)
-const API_BASE_URL = '';  // 빈 문자열로 상대 경로 사용
+// 프로덕션 환경: Vercel 서버리스 함수 프록시 사용 (api/proxy/[...path].ts)
+const API_BASE_URL = import.meta.env.PROD 
+  ? '/api/proxy'  // 프로덕션에서는 서버리스 함수 경로 사용
+  : '';  // 개발 환경에서는 Vite 프록시 사용
 
 // axios 인스턴스 생성
 // TODO: 추후 로그인 구현 시 accessToken 헤더에 추가 필요
