@@ -43,3 +43,39 @@ export interface Location {
 export interface AddLocationResponse {
   locationId: number;
 }
+
+// 위치 목록 조회 API 응답 항목 타입
+export interface LocationResponseItem {
+  locationId: number;
+  name: string;
+  lat: number; // 위도
+  lng: number; // 경도
+  pinned: boolean;
+}
+
+// 위치 목록 조회 API 응답 타입
+export interface GetLocationsResponse {
+  status: string;
+  data: LocationResponseItem[];
+  timestamp: string;
+}
+
+// 핀 상태 변경 API 응답 데이터 타입
+export interface PinLocationResponseData {
+  locationId: number;
+  pinned: boolean;
+}
+
+// 핀 상태 변경 API 응답 타입
+export interface PinLocationResponse {
+  status: string;
+  data: PinLocationResponseData;
+  timestamp: string;
+}
+
+// 위치 삭제 API 응답 타입
+export interface DeleteLocationResponse {
+  status: string;
+  data: string;
+  timestamp: string;
+}

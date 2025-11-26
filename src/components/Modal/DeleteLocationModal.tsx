@@ -1,9 +1,11 @@
 interface Props {
   isOpen: boolean;
+  locationId: number | null;
   onClose: () => void;
+  onDelete: () => void;
 }
 
-export default function DeleteLocationModal({ isOpen, onClose }: Props) {
+export default function DeleteLocationModal({ isOpen, locationId, onClose, onDelete }: Props) {
   if (!isOpen) return null;
 
   return (
@@ -46,7 +48,11 @@ export default function DeleteLocationModal({ isOpen, onClose }: Props) {
                 취소하기
               </span>
             </button>
-            <button className="!flex !py-[6px] !px-6 !justify-center !items-center !w-[118px] !h-[36px] !rounded-md !bg-[#292E2E] !border-none !p-0 !m-0 !font-inherit !cursor-pointer whitespace-nowrap">
+            <button 
+              onClick={onDelete}
+              disabled={locationId === null}
+              className="!flex !py-[6px] !px-6 !justify-center !items-center !w-[118px] !h-[36px] !rounded-md !bg-[#292E2E] !border-none !p-0 !m-0 !font-inherit !cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <span
                 className="font-semibold text-[20px] text-white whitespace-nowrap"
                 style={{ fontFamily: 'Pretendard, sans-serif', lineHeight: 'normal' }}

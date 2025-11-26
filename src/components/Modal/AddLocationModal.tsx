@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SearchResultItem from './SearchResultItem';
 import { searchPlaces } from '../../services/kakaoMap';
 import { addLocation } from '../../services/api';
+import { useLocationStore } from '../../stores/locationStore';
 import type { SearchResult } from '../../types';
 
 interface Props {
@@ -16,6 +17,7 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { fetchLocations } = useLocationStore();
 
   // 검색 실행 함수
   const handleSearch = async () => {
@@ -178,16 +180,16 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
                 try {
                   // 백엔드 API 호출 - 위치 추가
                   // TODO: 추후 로그인 구현 시 userId를 실제 사용자 ID로 변경 필요
-                  const userId = 1; // 임시 사용자 ID
+                  // const userId = 1; // 임시 사용자 ID - 일단 주석처리
                   await addLocation(
-                    userId,
+                    // userId,
                     selectedResult.name,
                     selectedResult.latitude,
                     selectedResult.longitude
                   );
                   
-                  // TODO: 성공 시 Sidebar의 위치 목록 업데이트
-                  // TODO: 추후 로그인 구현 시 accessToken 헤더에 추가 필요
+                  // 위치 목록 새로고침
+                  await fetchLocations();
                   
                   handleClose();
                 } catch (err) {

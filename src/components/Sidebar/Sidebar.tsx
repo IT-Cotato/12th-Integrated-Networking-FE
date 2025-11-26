@@ -1,32 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LocationListItem from './LocationListItem';
 import AddLocationModal from '../Modal/AddLocationModal';
-
-// TODO: 백엔드 API 연동 - 실제 Location 타입으로 변경 필요
-// 현재는 UI 구성용 더미 데이터
-interface LocationItem {
-  id: string;
-  name: string;
-}
-
-// TODO: 백엔드 API 연동 - 실제 위치 목록을 API에서 가져오도록 수정
-// 1. 위치 목록 조회 API 호출 (src/services/api.ts의 getLocations 함수 사용)
-// 2. useEffect로 컴포넌트 마운트 시 위치 목록 불러오기
-// 3. 더미 데이터 제거
-const dummyLocations: LocationItem[] = [
-  { id: '1', name: '강남역 1번 출구'},
-  { id: '2', name: 'RATTHAT' },
-  { id: '3', name: '파이홀'},
-  { id: '4', name: '청수당공명' },
-  { id: '5', name: '롯데월드'},
-  { id: '6', name: '구관'},
-  { id: '7', name: 'Osiu' },
-];
+import DeleteLocationModal from '../Modal/DeleteLocationModal';
+import { useLocationStore } from '../../stores/locationStore';
 
 export default function Sidebar() {
-  const [selectedId, setSelectedId] = useState<string>("");
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(new Set());
+  const {
+    locations,
+    isLoading,
+    selectedLocationId,
+    fetchLocations,
+    selectLocation,
+    updateLocationPin,
+    deleteLocation,
+  } = useLocationStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [locationIdToDelete, setLocationIdToDelete] = useState<number | null>(null);
+
+  // 위치 목록 조회
+  useEffect(() => {
+    fetchLocations();
+  }, [fetchLocations]);
 
   return (
     <div className="fixed left-0 top-0 w-[248px] h-[1200px] flex flex-col items-start rounded-r-[48px] bg-white shadow-[2px_0_4px_rgba(0,0,0,0.10)]">
@@ -48,45 +43,35 @@ export default function Sidebar() {
 
         {/* 리스트 */}
         <div className="flex flex-col gap-2 w-full">
-          {[...dummyLocations]
-            .sort((a, b) => {
-              const aPinned = pinnedIds.has(a.id);
-              const bPinned = pinnedIds.has(b.id);
-              if (aPinned && !bPinned) return -1;
-              if (!aPinned && bPinned) return 1;
-              return 0;
-            })
-            .map((location) => (
+          {isLoading ? (
+            <div className="text-center text-gray-500 py-4">로딩 중...</div>
+          ) : locations.length === 0 ? (
+            <div className="text-center text-gray-500 py-4">위치 목록이 없습니다.</div>
+          ) : (
+            locations.map((location) => (
               <LocationListItem
-                key={location.id}
-                id={location.id}
+                key={location.locationId}
+                id={String(location.locationId)}
                 name={location.name}
-                selected={selectedId === location.id}
-                pinned={pinnedIds.has(location.id)}
+                selected={selectedLocationId === String(location.locationId)}
+                pinned={location.pinned}
                 onSelect={() => {
-                  setSelectedId(selectedId === location.id ? "" : location.id);
+                  const newSelectedId =
+                    selectedLocationId === String(location.locationId)
+                      ? null
+                      : String(location.locationId);
+                  selectLocation(newSelectedId);
                 }}
                 onPin={() => {
-                  setPinnedIds((prev) => {
-                    const next = new Set(prev);
-                    if (next.has(location.id)) {
-                      next.delete(location.id);
-                    } else {
-                      next.add(location.id);
-                    }
-                    return next;
-                  });
+                  updateLocationPin(location.locationId, !location.pinned);
                 }}
                 onDelete={() => {
-                  // TODO: 백엔드 API 연동 - 위치 삭제 처리
-                  // 1. 삭제 확인 모달 표시 (DeleteLocationModal 사용)
-                  // 2. 확인 시 백엔드 API 호출 (src/services/api.ts의 deleteLocation 함수 사용)
-                  // 3. 성공 시 위치 목록에서 제거
-                  // 4. 에러 처리
-                  console.log("삭제", location.id);
+                  setLocationIdToDelete(location.locationId);
+                  setIsDeleteModalOpen(true);
                 }}
               />
-            ))}
+            ))
+          )}
         </div>
       </div>
 
@@ -94,6 +79,27 @@ export default function Sidebar() {
       <AddLocationModal 
         isOpen={isAddModalOpen} 
         onClose={() => setIsAddModalOpen(false)} 
+      />
+
+      {/* 위치 삭제 모달 */}
+      <DeleteLocationModal
+        isOpen={isDeleteModalOpen}
+        locationId={locationIdToDelete}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setLocationIdToDelete(null);
+        }}
+        onDelete={async () => {
+          if (locationIdToDelete !== null) {
+            try {
+              await deleteLocation(locationIdToDelete);
+              setIsDeleteModalOpen(false);
+              setLocationIdToDelete(null);
+            } catch (error) {
+              // 에러는 store에서 처리됨
+            }
+          }
+        }}
       />
     </div>
   );
