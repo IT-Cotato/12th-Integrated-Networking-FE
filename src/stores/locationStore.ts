@@ -109,12 +109,9 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
   // 위치의 위도/경도 가져오기
   getLocationCoordinates: (locationId: number) => {
     const location = get().locations.find((loc) => loc.locationId === locationId);
-    // TODO: 백엔드에서 위도/경도가 포함된 응답이 오면 아래 주석 해제
-    // if (location && 'latitude' in location && 'longitude' in location) {
-    //   return { lat: location.latitude, lng: location.longitude };
-    // }
-    // 임시로 경고 방지용
-    void location;
+    if (location && 'lat' in location && 'lng' in location) {
+      return { lat: location.lat, lng: location.lng };
+    }
     return null;
   },
 

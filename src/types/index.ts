@@ -48,6 +48,8 @@ export interface AddLocationResponse {
 export interface LocationResponseItem {
   locationId: number;
   name: string;
+  lat: number; // 위도
+  lng: number; // 경도
   pinned: boolean;
 }
 
