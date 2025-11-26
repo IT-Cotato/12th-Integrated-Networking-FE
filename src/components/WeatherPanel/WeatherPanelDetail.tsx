@@ -1,14 +1,15 @@
 import useWeather from "../../hooks/useWeather";
 // 상태에 따라 색상 클래스를 반환하는 함수
+// getColorClasses 함수 개선 제안
 const getColorClasses = (status: string) => {
   switch (status) {
     case "좋음":
       return { bg: "bg-blue-200", text: "text-blue-600" };
     case "보통":
+    case "낮음":
       return { bg: "bg-green-200", text: "text-green-600" };
     case "나쁨":
-    case "낮음":
-      return { bg: "bg-blue-200", text: "text-blue-600" };
+      return { bg: "bg-orange-200", text: "text-orange-600" };
     case "높음":
     case "매우나쁨":
       return { bg: "bg-red-200", text: "text-red-600" };
@@ -16,6 +17,7 @@ const getColorClasses = (status: string) => {
       return { bg: "bg-gray-200", text: "text-gray-600" };
   }
 };
+
 export default function WeatherPanelDetail() {
   const { data, loading, error } = useWeather();
 
