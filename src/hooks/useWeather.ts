@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchCurrentWeather } from "../services/api";
+import { fetchCurrentWeather } from "../services/mainWeatherApi";
 import type { mainData } from "../types/mainData";
-// import { useLocationStore } from "../stores/locationStore"; (위치 관련)
-
-//예시 위경도
-const LAT = 37.56;
-const LON = 125.97;
+import { useLocationStore } from "../stores/locationStore";
 
 interface WeatherState {
   data: mainData | null;
@@ -19,29 +15,55 @@ const initialWeatherState: WeatherState = {
   error: null,
 };
 
-// useWeather 커스텀 훅
 export default function useWeather() {
   const [weatherState, setWeatherState] = useState(initialWeatherState);
 
-  // const selectedLocationId = useLocationStore((state) => state.selectedLocationId);
-  // const selectedLocation = useLocationStore((state) => state.getSelectedLocation());
-  //(위치 관련)
+  const selectedLocation = useLocationStore((state) =>
+    state.getSelectedLocation()
+  );
 
   useEffect(() => {
+    console.log("[useWeather] Selected Location Check:", selectedLocation);
+    if (
+      !selectedLocation ||
+      selectedLocation.lat == null ||
+      selectedLocation.lng == null
+    ) {
+      console.log("[useWeather] API call blocked: No valid location selected.");
+      setWeatherState({
+        data: null,
+        loading: false,
+        error: "표시할 위치 정보가 없습니다.",
+      });
+      return;
+    }
+
+    const { lat, lng } = selectedLocation;
+    console.log(`[useWeather] Valid location found: Lat=${lat}, Lng=${lng}`);
+
     const loadWeather = async () => {
       setWeatherState((prev) => ({ ...prev, loading: true, error: null }));
+
       try {
-        const weatherData = await fetchCurrentWeather(LAT, LON);
+        console.log(`[useWeather] Starting API call for (${lat}, ${lng})...`);
+
+        const apiResponse = await fetchCurrentWeather(lat, lng);
+        console.log("[useWeather] API raw response:", apiResponse);
+
+        const actualWeatherData = apiResponse.data;
+
         setWeatherState({
-          data: weatherData,
+          data: actualWeatherData, // { temperature, humidity, ... }
           loading: false,
           error: null,
         });
       } catch (err) {
+        console.error("[useWeather] API call failed:", err);
         const errorMessage =
           err instanceof Error
             ? err.message
             : "알 수 없는 에러가 발생했습니다.";
+
         setWeatherState({
           data: null,
           loading: false,
@@ -51,7 +73,7 @@ export default function useWeather() {
     };
 
     loadWeather();
-  }, []);
+  }, [selectedLocation]);
 
   return {
     data: weatherState.data,
