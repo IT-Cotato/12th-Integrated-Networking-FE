@@ -1,7 +1,8 @@
 import "./App.css";
-import Sidebar from "./components/Sidebar/Sidebar"; // 경로 유지
-import WeatherPanel from "./components/WeatherPanel/WeatherPanel"; // 경로 유지
-import { useLocationStore } from "./stores/locationStore"; // 경로 유지
+import Sidebar from "./components/Sidebar/Sidebar";
+import WeatherPanel from "./components/WeatherPanel/WeatherPanel";
+import { useLocationStore } from "./stores/locationStore";
+import { HourlyForecast } from "./components/HourlyForecast/HourlyForecast";
 
 export default function App() {
   const selectedLocation = useLocationStore((state) =>
@@ -11,10 +12,11 @@ export default function App() {
   return (
     <div className="App flex">
       <Sidebar />
-      <main className="flex-grow p-8">
+      <main className="flex-grow p-8 flex flex-col gap-3">
         {isLocationSelected ? (
           <>
             <WeatherPanel />
+            <HourlyForecast />
           </>
         ) : (
           <div className="flex flex-col items-center justify-center h-full pt-20">

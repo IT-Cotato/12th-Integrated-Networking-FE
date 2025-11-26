@@ -2,15 +2,13 @@
 import { useState, useEffect } from "react";
 import { fetchHourlyForecast } from "../services/hourly";
 import type { HourlyWeather } from "../types/hourly";
+import { useLocationStore } from "../stores/locationStore";
 
 interface HourlyForecastState {
   data: HourlyWeather | null;
   loading: boolean;
   error: string | null;
 }
-
-const LAT = 37.56;
-const LON = 126.97;
 
 const initialForecastState: HourlyForecastState = {
   data: null,
@@ -22,7 +20,26 @@ export default function useHourlyForecast() {
   const [forecastState, setForecastState] =
     useState<HourlyForecastState>(initialForecastState);
 
+  const selectedLocation = useLocationStore((state) =>
+    state.getSelectedLocation()
+  );
   useEffect(() => {
+    if (
+      !selectedLocation ||
+      selectedLocation.lat == null ||
+      selectedLocation.lng == null
+    ) {
+      // 위치 정보가 없으면 로딩 종료 후 에러/정보 없음 상태 설정
+      setForecastState({
+        data: null,
+        loading: false,
+        error: "표시할 위치 정보가 없습니다.",
+      });
+      return;
+    }
+
+    const { lat, lng } = selectedLocation;
+
     const loadForecast = async () => {
       setForecastState((prev) => ({
         ...prev,
@@ -31,7 +48,7 @@ export default function useHourlyForecast() {
       }));
 
       try {
-        const forecastData = await fetchHourlyForecast(LAT, LON);
+        const forecastData = await fetchHourlyForecast(lat, lng);
         setForecastState({
           data: forecastData,
           loading: false,
@@ -52,7 +69,7 @@ export default function useHourlyForecast() {
     };
 
     loadForecast();
-  }, []);
+  }, [selectedLocation]);
 
   return {
     data: forecastState.data,
