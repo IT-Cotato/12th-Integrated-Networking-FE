@@ -15,6 +15,7 @@ const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'accept': '*/*',
     // TODO: Authorization: `Bearer ${accessToken}` 헤더 추가 예정
   },
 });
@@ -28,14 +29,13 @@ interface AddLocationRequest {
 
 /**
  * 위치 추가 API 함수
- * @param userId 사용자 ID
  * @param name 장소 이름
  * @param lat 위도
  * @param lng 경도
  * @returns 추가된 위치 ID
  */
 export async function addLocation(
-  userId: number,
+  // userId: number, // 일단 주석처리
   name: string,
   lat: number,
   lng: number
@@ -49,12 +49,12 @@ export async function addLocation(
   try {
     const response = await apiClient.post<AddLocationResponse>(
       '/api/locations/save',
-      requestData,
-      {
-        params: {
-          userId,
-        },
-      }
+      requestData
+      // {
+      //   params: {
+      //     userId,
+      //   },
+      // }
     );
     return response.data;
   } catch (error) {

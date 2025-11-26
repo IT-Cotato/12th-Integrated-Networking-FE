@@ -180,9 +180,9 @@ export default function AddLocationModal({ isOpen, onClose }: Props) {
                 try {
                   // 백엔드 API 호출 - 위치 추가
                   // TODO: 추후 로그인 구현 시 userId를 실제 사용자 ID로 변경 필요
-                  const userId = 1; // 임시 사용자 ID
+                  // const userId = 1; // 임시 사용자 ID - 일단 주석처리
                   await addLocation(
-                    userId,
+                    // userId,
                     selectedResult.name,
                     selectedResult.latitude,
                     selectedResult.longitude
