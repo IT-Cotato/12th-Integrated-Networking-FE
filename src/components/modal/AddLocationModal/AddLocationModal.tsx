@@ -42,35 +42,37 @@ export default function AddLocationModal({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[rgba(41,46,46,0.40)]">
-      <div className="bg-gray-0 section-shadow relative flex w-[624px] flex-col items-start gap-12 rounded-2xl px-[72px] py-9 py-18">
+      {/* 모달 컨테이너: 624 x 641 / padding 36 72 / gap 48 / bg = gray-0 / radius 16 / shadow util */}
+      <div className="section-shadow bg-gray-0 relative flex w-[624px] flex-col items-start gap-12 rounded-2xl px-[72px] py-9">
+        {/* 닫기 버튼 (fixed 느낌, 우측 상단) */}
         <button
           type="button"
           onClick={handleClose}
           className="absolute top-9 right-9"
           aria-label="닫기"
         >
-          <CloseIcon className="h-6 w-6" />
+          <CloseIcon className="text-gray-60 h-6 w-6" />
         </button>
 
-        {/* 헤더 영역 : 해 아이콘 + 제목 */}
-        <div className="flex w-full flex-col items-start gap-3">
-          <WeatherIconDisplay weather="sun" width={56} height={56} />
-          <p className="text-[20px] font-semibold text-gray-100">
+        {/* 헤더 영역 : 아이콘 + 텍스트 한 줄 */}
+        <div className="flex w-[480px] items-center gap-4">
+          {/* 아이콘 컨테이너: 80 x 80, 가운데 정렬 */}
+          <div className="flex h-[80px] w-[80px] shrink-0 items-center justify-center">
+            <WeatherIconDisplay weather="sun" width={80} height={80} />
+          </div>
+
+          {/* 타이틀 텍스트: 32px, bold, gray-60 */}
+          <p className="text-gray-60 text-[32px] leading-none font-bold">
             날씨 위치 추가
           </p>
         </div>
 
-        {/* 입력 + 라벨 영역 */}
-        <div className="w-full">
-          <div className="mb-2 text-sm font-semibold text-gray-100">
-            장소 이름
-          </div>
-          <SearchInput
-            keyword={keyword}
-            onChange={setKeyword}
-            onSearch={handleSearch}
-          />
-        </div>
+        {/* 검색 인풋 + 라벨 영역 */}
+        <SearchInput
+          keyword={keyword}
+          onChange={setKeyword}
+          onSearch={handleSearch}
+        />
 
         {/* 검색 결과 리스트 영역 */}
         <div className="w-full">

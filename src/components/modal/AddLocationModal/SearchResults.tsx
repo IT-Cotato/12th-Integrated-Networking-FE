@@ -1,5 +1,7 @@
 "use client";
 
+import CheckIcon from "@/assets/icons/check.svg";
+
 type SearchResult = {
   name: string;
   address: string;
@@ -19,7 +21,7 @@ export default function SearchResults({
   onSelect,
 }: SearchResultsProps) {
   return (
-    <div className="max-h-56 overflow-y-auto rounded-2xl border border-gray-200">
+    <div className="border-gray-40 flex h-[240px] w-full flex-col items-start gap-4 overflow-y-auto rounded-lg border px-4 py-2">
       {results.map((item, index) => {
         const isSelected = selectedIndex === index;
 
@@ -28,21 +30,20 @@ export default function SearchResults({
             key={`${item.name}-${item.lat}-${item.lng}`}
             type="button"
             onClick={() => onSelect(index, item)}
-            className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm ${
-              isSelected
-                ? "bg-gray-200"
-                : "bg-white hover:bg-[#F8FAFC] active:bg-gray-200"
-            } ${
-              index !== results.length - 1 ? "border-b border-gray-200" : ""
-            }`}
+            className={`flex w-full flex-col items-start gap-1 px-3 py-2 text-left text-sm transition-colors ${index !== results.length - 1 ? "border-gray-40 border-b" : ""} `}
           >
-            <div>
-              <div className="font-medium text-gray-900">{item.name}</div>
-              <div className="text-xs text-gray-500">{item.address}</div>
+            <div className="flex w-full items-center justify-between">
+              <div>
+                <div className="text-gray-60 font-medium">{item.name}</div>
+                <div className="text-gray-40 text-xs">{item.address}</div>
+              </div>
+
+              {isSelected && (
+                <span className="text-base text-emerald-500">
+                  <CheckIcon />
+                </span>
+              )}
             </div>
-            {isSelected && (
-              <span className="text-base text-emerald-500">✓</span>
-            )}
           </button>
         );
       })}
