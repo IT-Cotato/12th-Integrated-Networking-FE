@@ -63,7 +63,8 @@ src/
 │   ├── MainWeatherPanel/  # 메인 날씨 정보
 │   ├── HourlyForecast/    # 시간별 예보
 │   ├── WeeklyForecast/    # 주간 예보
-│   └── Modal/             # 모달 컴포넌트
+│   ├── Modal/             # 모달 컴포넌트
+│   └── KakaoLogin/        # 카카오 로그인
 ├── hooks/                 # 커스텀 훅
 ├── services/              # API 서비스
 ├── types/                 # TypeScript 타입
