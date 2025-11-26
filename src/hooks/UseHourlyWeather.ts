@@ -3,7 +3,7 @@ import axios from "axios";
 import type { HourlyForecast, HourlyApiResponse } from "../types/Weather";
 import { iconCodeMap } from "../utils/IconCodeMap";
 
-const BASE_URL = "https://your-backend.com";
+const BASE_URL = 'http://43.200.174.15:8080';
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
 export const useHourlyWeather = (lat: number, lng: number) => {

@@ -26,7 +26,7 @@ export default function KakaoLogin({ onLogin, onLogout }: KakaoLoginProps) {
           
           if (!window.Kakao.isInitialized()) {
             try {
-              window.Kakao.init('efbfb54eb0fcb13d68691167ca312399');
+              window.Kakao.init('0a7e24209d21f9136432d2defd7ac84a');
               console.log('Kakao SDK 초기화 완료');
             } catch (error) {
               console.error('Kakao 초기화 실패:', error);

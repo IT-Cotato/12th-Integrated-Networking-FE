@@ -22,7 +22,7 @@ interface ApiDaily {
   pmPrecipitationProb: string;
 }
 
-const BASE_URL = "https://your-backend.com";
+const BASE_URL = 'http://43.200.174.15:8080';
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
 const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {

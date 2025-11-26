@@ -21,7 +21,7 @@ interface Props {
   locationName?: string;
 }
 
-const BASE_URL = "https://your-backend.com"; // 백엔드 URL
+const BASE_URL ="http://43.200.174.15:8080";
 
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 

@@ -137,7 +137,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-full bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       {/* 사이드바 */}
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
         {user ? ( // ✅ 추가: 로그인 상태에 따라 다른 레이아웃
