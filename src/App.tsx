@@ -29,14 +29,14 @@ export default function App() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [locationToDelete, setLocationToDelete] = useState<string | null>(null);
   const [selectedWeather] = useState<WeatherInfo | null>(mockWeather);
-  
+
   // 카카오 로그인 상태
   const [user, setUser] = useState<KakaoUserInfo | null>(null);
 
   // 카카오 로그인 핸들러
   const handleLogin = (userData: KakaoUserInfo) => {
     setUser(userData);
-    console.log('로그인 성공:', userData);
+    console.log("로그인 성공:", userData);
     // TODO: 여기서 사용자별 위치 목록을 서버에서 불러올 수 있습니다
   };
 
@@ -45,7 +45,7 @@ export default function App() {
     setUser(null);
     setLocations([]); // 로그아웃 시 위치 목록 초기화
     setSelectedLocation(null);
-    console.log('로그아웃');
+    console.log("로그아웃");
   };
 
   // 위치 선택/해제
@@ -82,15 +82,15 @@ export default function App() {
     };
     setLocations([...locations, newLocation]);
     setShowAddModal(false);
-    
+
     // TODO: 로그인한 사용자의 경우 서버에 위치 저장
     if (user) {
-      console.log('사용자 위치 저장:', user.id, newLocation);
+      console.log("사용자 위치 저장:", user.id, newLocation);
     }
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       {/* 사이드바 */}
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col items-center">
         {/* 카카오 로그인 헤더 */}
@@ -123,7 +123,12 @@ export default function App() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-black">
-            <img src="/Day Clouds.svg" width="240px" height="240px" alt="구름" />
+            <img
+              src="/Day Clouds.svg"
+              width="240px"
+              height="240px"
+              alt="구름"
+            />
             <p className="text-[36px] font-bold">
               아직 선택된 위치가 없습니다!
             </p>
