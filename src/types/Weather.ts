@@ -28,6 +28,21 @@ export interface HourlyForecast {
   isDaytime: boolean; // 낮/야간 여부
 }
 
+export interface HourlyForecast {
+  time: string; // "14시"
+  temp: number; // 온도
+  status: WeatherStatus; // 날씨 상태
+  isDaytime: boolean; // 낮/밤 여부
+}
+
+// 백엔드 API 응답용 타입
+export interface HourlyApiResponse {
+  time: string; // "14시"
+  iconCode: string; // "04d"
+  iconUrl: string; // 이미지 URL
+  temperature: string; // "10°"
+}
+
 export interface WeeklyForecast {
   date: string;
   forecasts: {
