@@ -58,7 +58,7 @@ export default function AddLocationModal({
         <div className="flex w-[480px] items-center gap-4">
           {/* 아이콘 컨테이너: 80 x 80, 가운데 정렬 */}
           <div className="flex h-[80px] w-[80px] shrink-0 items-center justify-center">
-            <WeatherIconDisplay weather="sun" width={80} height={80} />
+            <WeatherIconDisplay weather="clouds" width={80} height={80} />
           </div>
 
           {/* 타이틀 텍스트: 32px, bold, gray-60 */}
