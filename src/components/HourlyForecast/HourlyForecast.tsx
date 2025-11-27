@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis } from "recharts";
 
 import type { HourlyForecast } from "../../types/Weather";
 import { WeatherIconMap } from "../../utils/WeatherIconMap";
-import { useHourlyWeather } from "../../Hooks/UseHourlyWeather";
+import { useHourlyWeather } from "../../hooks/UseHourlyWeather";
 
 interface Props {
   lat: number;
