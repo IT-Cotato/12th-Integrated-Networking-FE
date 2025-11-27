@@ -1,5 +1,8 @@
 import type { mainData } from "../types/mainData";
 
+// 개발 환경과 프로덕션 환경 모두 HTTPS 백엔드 서버로 직접 호출 (CORS 허용 필요)
+// .env 파일(로컬) 또는 Vercel 환경 변수(프로덕션)에 VITE_API_BASE_URL 설정 필요
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 const API_BASE_PATH = import.meta.env.VITE_API_PATH || "/api/v1";
 const API_ENDPOINT = `${API_BASE_PATH}/weather`;
 
@@ -13,7 +16,7 @@ export const fetchCurrentWeather = async (
   lat: number,
   lon: number
 ): Promise<ApiResponse> => {
-  const url = `${API_ENDPOINT}?lat=${lat}&lon=${lon}`;
+  const url = `${API_BASE_URL}${API_ENDPOINT}?lat=${lat}&lon=${lon}`;
   console.log("[API] Requesting URL:", url);
   try {
     const response = await fetch(url);
