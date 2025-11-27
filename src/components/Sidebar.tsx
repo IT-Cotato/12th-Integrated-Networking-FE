@@ -1,33 +1,89 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import type { Location } from '@/types/location';
 import { SelectedLocationContext } from '@/contexts/selected-location-context';
 import AddLocationModal from './AddLocationModal';
 import DeleteModal from './DeleteModal';
 import { createPortal } from 'react-dom';
+import { fetchLocation, fetchLocations, deleteLocation, createLocation } from '@/api/location';
 
 export default function Sidebar() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleAddLocation = (place: {
+
+  const userId = 1;
+
+   useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchLocations(userId);
+
+        // API 모델 
+        const mapped: Location[] = data.map((item) => ({
+          id: String(item.id),
+          name: item.name,
+          address: '',        
+          x: String(item.longitude),
+          y: String(item.latitude),
+          isFixed: false,   
+        }));
+
+        setLocations(mapped);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    load();
+  }, [userId]);
+
+  const handleAddLocation = async (place: {
     id: string;
     place_name: string;
     address_name: string;
-    x: string;
-    y: string;
+    x: string; // longitude
+    y: string; // latitude
   }) => {
+    try {
+    const created = await createLocation(userId, {
+      name: place.place_name,
+      latitude: Number(place.y),
+      longitude: Number(place.x),
+    });
+    
     setLocations((prev) => [
       ...prev,
       {
-        id: place.id,
-        name: place.place_name,
+        id: String(created.id),
+        name: created.name,
         address: place.address_name,
-        x: place.x,
-        y: place.y,
+        x: String(created.longitude),
+        y: String(created.latitude),
         isFixed: false,
       },
     ]);
+
     setIsModalOpen(false);
+    } catch(e){
+      console.error(e);
+    }
   };
+
+  //위치 단건 조회
+  const handleSelectLocation = async (id: string) => {
+  try {
+    const detail = await fetchLocation(userId, Number(id));
+    selectLocation({
+      id: String(detail.id),
+      name: detail.name,
+      address: '',
+      x: String(detail.longitude),
+      y: String(detail.latitude),
+      isFixed: false,
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
@@ -57,11 +113,16 @@ export default function Sidebar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Location | null>(null);
 
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    setLocations((prev) => prev.filter((loc) => loc.id !== deleteTarget.id));
-    setDeleteTarget(null); // 모달 닫기
-  };
+  const handleDelete = async () => {
+  if (!deleteTarget) return;
+  try {
+    await deleteLocation(userId, Number(deleteTarget.id));
+    setLocations(prev => prev.filter(loc => loc.id !== deleteTarget.id));
+    setDeleteTarget(null);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
   return (
     <aside className="sticky top-0 flex h-screen w-[248px] flex-col items-start gap-10 rounded-r-[48px] bg-white px-4 pt-12 pb-12 shadow-[2px_0_4px_0_rgba(0,0,0,0.1)]">
@@ -106,7 +167,7 @@ export default function Sidebar() {
               }}
               onMouseEnter={() => setHovered(loc.id)}
               onMouseLeave={() => setHovered(null)}
-              onClick={() => selectLocation(loc)}
+              onClick={() => handleSelectLocation(loc.id)}
             >
               <button
                 onClick={(e) => {
