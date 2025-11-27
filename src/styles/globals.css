@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@theme {
+  --color-red: #ff3232;
+  --color-coral: #ffcccc;
+  --color-blue: #32a1ff;
+  --color-skyblue: #cce8ff;
+  --color-yellow: #ffc532;
+  --color-lime: #f6ffcc;
+  --color-green: #32ff35;
+  --color-mint: #ceffcc;
+
+  --color-gray-100: #000000;
+  --color-gray-60: #292e2e;
+  --color-gray-40: #a4a4a4;
+  --color-gray-20: #d6d6d6;
+  --color-gray-10: #f2f2f2;
+  --color-gray-5: #f6f6f6;
+  --color-gray-0: #ffffff;
+}
+
+@layer utilities {
+  .section-shadow {
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+  }
+}

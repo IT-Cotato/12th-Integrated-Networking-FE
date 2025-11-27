@@ -1,0 +1,80 @@
+@layer utilities {
+  .text-h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-body-lg {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-body-md {
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-lab-lg {
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-lab-md {
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-lab-sm {
+    font-size: 1rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-lab-xs {
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-cap-lg {
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-cap-md {
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-cap-sm {
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+  }
+  .text-cap-xs {
+    font-size: 0.5rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+  }
+}

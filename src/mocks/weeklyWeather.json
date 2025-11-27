@@ -1,0 +1,69 @@
+{
+  "weeklyWeather": [
+    {
+      "date": "2025-11-19",
+      "am": {
+        "weather": "clouds",
+        "avgTemp": 18,
+        "pop": 10
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 10,
+        "pop": 5
+      }
+    },
+    {
+      "date": "2025-11-20",
+      "am": {
+        "weather": "sun",
+        "avgTemp": 18,
+        "pop": 0
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 10,
+        "pop": 5
+      }
+    },
+    {
+      "date": "2025-11-21",
+      "am": {
+        "weather": "clouds",
+        "avgTemp": 18,
+        "pop": 10
+      },
+      "pm": {
+        "weather": "clouds",
+        "avgTemp": 11,
+        "pop": 15
+      }
+    },
+    {
+      "date": "2025-11-22",
+      "am": {
+        "weather": "sun",
+        "avgTemp": 20,
+        "pop": 0
+      },
+      "pm": {
+        "weather": "sun",
+        "avgTemp": 12,
+        "pop": 0
+      }
+    },
+    {
+      "date": "2025-11-23",
+      "am": {
+        "weather": "rain",
+        "avgTemp": 18,
+        "pop": 80
+      },
+      "pm": {
+        "weather": "rain",
+        "avgTemp": 10,
+        "pop": 90
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "currentWeather": {
+    "temperature": 18,
+    "feelsLike": 17,
+    "humidity": 55,
+    "fineDust": "normal",
+    "ultraFineDust": "fine",
+    "uvIndex": "danger",
+    "windDirection": "NW",
+    "windSpeed": 3.2,
+    "weather": "clouds",
+    "sunrise": "2025-11-19T07:01:00+09:00",
+    "sunsetTime": "2025-11-19T17:15:00+09:00",
+    "timestamp": "2025-11-19T11:00:00+09:00"
+  }
+}
