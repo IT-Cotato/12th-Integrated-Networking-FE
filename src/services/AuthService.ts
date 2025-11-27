@@ -125,6 +125,41 @@ export const deleteLocation = async (locationId: number): Promise<void> => {
   await api.delete(`/cotato/backend/place/locations/${locationId}`);
 };
 
+// ========== 날씨 관련 API ========== ⭐ 추가
+
+export const getWeather = async (latitude: number, longitude: number) => {
+  try {
+    console.log("🌤️ 날씨 조회 시작");
+    console.log("위도:", latitude);
+    console.log("경도:", longitude);
+
+    const response = await api.get("/api/weather", {
+      params: { latitude, longitude },
+    });
+
+    console.log("✅ 날씨 조회 성공:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ 날씨 조회 실패:", error);
+
+    if (axios.isAxiosError(error)) {
+      console.error("상태 코드:", error.response?.status);
+      console.error("에러 데이터:", error.response?.data);
+
+      // ERR_CONNECTION_REFUSED 등 네트워크 에러
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("서버에 연결할 수 없습니다.");
+      }
+
+      if (error.response?.status === 500) {
+        throw new Error("서버에서 오류가 발생했습니다.");
+      }
+    }
+
+    throw error;
+  }
+};
+
 // ========== 토큰 관련 ==========
 
 export const saveTokens = (accessToken: string, refreshToken: string) => {

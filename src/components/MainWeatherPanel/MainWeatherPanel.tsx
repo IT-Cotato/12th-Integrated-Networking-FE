@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import type { WeatherInfo } from "../../types/Weather";
 import {
   FineDustColor,
@@ -14,6 +13,7 @@ import {
 } from "../../utils/ColorMap";
 import { WeatherIconMap } from "../../utils/WeatherIconMap";
 import DayCloud from "../../assets/icons/Day_Clouds.svg";
+import { getWeather } from "../../services/AuthService"; // ⭐ 추가
 
 interface Props {
   lat: number;
@@ -21,19 +21,11 @@ interface Props {
   locationName?: string;
 }
 
-const BASE_URL ="http://43.200.174.15:8080";
-
-const getAccessToken = () => localStorage.getItem("accessToken") || "";
-
-// 백엔드 API 호출 및 WeatherInfo 형태로 변환
+// ⭐ AuthService 사용으로 변경
 const fetchWeather = async (lat: number, lng: number): Promise<WeatherInfo> => {
-  const token = getAccessToken();
-  const res = await axios.get(`${BASE_URL}/api/weather`, {
-    params: { latitude: lat, longitude: lng },
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await getWeather(lat, lng);
 
-  const current = res.data.current;
+  const current = res.current;
 
   // API Response → WeatherInfo 매핑
   return {
@@ -78,6 +70,7 @@ export default function MainWeatherPanel({ lat, lng, locationName }: Props) {
     queryKey: ["weather", lat, lng],
     queryFn: () => fetchWeather(lat, lng),
     staleTime: 1000 * 60 * 5,
+    retry: 2, // ⭐ 재시도 추가
   });
 
   if (isLoading)
@@ -87,7 +80,25 @@ export default function MainWeatherPanel({ lat, lng, locationName }: Props) {
       </div>
     );
 
-  if (error || !weather)
+  // ⭐ 에러 처리 개선
+  if (error)
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <img src={DayCloud} className="w-[322px] h-[320px] mb-6" />
+          <div className="text-black text-[36px] font-bold mb-4">
+            날씨 정보를 불러올 수 없습니다
+          </div>
+          <div className="text-gray-500 text-[16px]">
+            {error instanceof Error
+              ? error.message
+              : "서버 상태를 확인해주세요."}
+          </div>
+        </div>
+      </div>
+    );
+
+  if (!weather)
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <div className="flex flex-col items-center justify-center">
