@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { fetchWeeklyForecast } from "../services/weeklyApi";
 import type { WeeklyForecastData } from "../types/weeklyData";
-
+import { useLocationStore } from "../stores/locationStore";
 interface WeeklyForecastState {
   data: WeeklyForecastData | null;
   loading: boolean;
   error: string | null;
 }
 
-const LAT = 37.56;
-const LON = 126.97; //임시. {location.id}
 const initialForecastState: WeeklyForecastState = {
   data: null,
   loading: true,
@@ -19,8 +17,25 @@ const initialForecastState: WeeklyForecastState = {
 export default function useWeeklyForecast() {
   const [forecastState, setForecastState] =
     useState<WeeklyForecastState>(initialForecastState);
-
+  const selectedLocation = useLocationStore((state) =>
+    state.getSelectedLocation()
+  );
   useEffect(() => {
+    if (
+      !selectedLocation ||
+      selectedLocation.lat == null ||
+      selectedLocation.lng == null
+    ) {
+      setForecastState({
+        data: null,
+        loading: false,
+        error: "표시할 위치 정보가 없습니다.",
+      });
+      return;
+    }
+
+    const { lat, lng } = selectedLocation;
+
     const loadForecast = async () => {
       setForecastState((prev) => ({
         ...prev,
@@ -29,7 +44,7 @@ export default function useWeeklyForecast() {
       }));
 
       try {
-        const forecastData = await fetchWeeklyForecast(LAT, LON);
+        const forecastData = await fetchWeeklyForecast(lat, lng);
 
         setForecastState({
           data: forecastData,
@@ -51,7 +66,7 @@ export default function useWeeklyForecast() {
     };
 
     loadForecast();
-  }, []);
+  }, [selectedLocation]);
 
   return {
     data: forecastState.data,

@@ -1,27 +1,27 @@
-// api.ts (새로운 함수 추가)
 import axios from "axios";
-// 새로 정의한 타입 (ForecastApiResponse)을 import 합니다.
 import type {
   ForecastApiResponse,
   WeeklyForecastData,
 } from "../types/weeklyData.ts";
 
-const WEEKLY_API_BASE_URL = "http://15.16.104.156:8080/api/v1/forecast/hourly";
+const API_BASE_PATH = import.meta.env.VITE_API_PATH || "/api/v1";
+const WEEKLY_API_ENDPOINT = `${API_BASE_PATH}/forecast/weekly`;
 
 export const fetchWeeklyForecast = async (
   lat: number,
   lon: number
 ): Promise<WeeklyForecastData> => {
-  // 반환 타입은 data 내부의 HourlyForecastData입니다.
+  const requestUrl = `${WEEKLY_API_ENDPOINT}?lat=${lat}&lon=${lon}`;
+  console.log("[Weekly API] Requesting URL:", requestUrl);
   try {
-    const response = await axios.get<ForecastApiResponse>(WEEKLY_API_BASE_URL, {
+    const response = await axios.get<ForecastApiResponse>(WEEKLY_API_ENDPOINT, {
       params: {
         lat: lat,
         lon: lon,
       },
     });
+    console.log("[Weekly API] Response Status:", response.status);
 
-    // 💡 핵심: 응답 데이터 내부의 'data' 필드(HourlyForecastData)를 반환합니다.
     if (response.data.status !== "OK") {
       throw new Error(`API 응답 실패: ${response.data.status}`);
     }
@@ -30,6 +30,7 @@ export const fetchWeeklyForecast = async (
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const errorMessage = `주간 예보 정보를 불러오는 데 실패했습니다. Status: ${error.response.status}`;
+      console.error("[Weekly API] Axios Error:", errorMessage, error.toJSON());
       throw new Error(errorMessage);
     }
 

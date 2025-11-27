@@ -38,7 +38,7 @@ export default function WeeklyForecast() {
       "
       >
         <div className="font-bold text-[20px] text-left">주간 예보</div>
-        <div className="flex justify-center items-start gap-20">
+        <div className="flex flex-wrap justify-center items-start gap-7">
           {data.dailyList.map((dayForecast) => (
             <DailyForecast
               key={dayForecast.am.description}
