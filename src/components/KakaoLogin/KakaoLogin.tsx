@@ -1,167 +1,36 @@
-import { useEffect, useState } from 'react';
-import type { KakaoError, User } from '../../types/Login';
+import { type User } from '../../types/Login';
 import { 
-  loginWithKakao, 
-  saveTokens, 
   logoutFromBackend,
   clearTokens 
 } from '../../services/AuthService';
 
 interface KakaoLoginProps {
-  onLogin: (user: User) => void;
+  user: User | null;
   onLogout: () => void;
 }
 
-export default function KakaoLogin({ onLogin, onLogout }: KakaoLoginProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [sdkError, setSdkError] = useState(false);
+export default function KakaoLogin({ user, onLogout }: KakaoLoginProps) {
+  const handleLogin = () => {
+  const KAKAO_REST_API_KEY = '9bfed80dcead19c576f1dfbb138a508b';
+  const REDIRECT_URI = 'http://localhost:5173/oauth/callback'; // ✅ 정확히 일치
+  
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  window.location.href = kakaoAuthUrl;
+};
 
-  useEffect(() => {
-    const initializeKakao = () => {
-      const checkKakaoLoaded = setInterval(() => {
-        if (window.Kakao) {
-          clearInterval(checkKakaoLoaded);
-          
-          if (!window.Kakao.isInitialized()) {
-            try {
-              window.Kakao.init('0a7e24209d21f9136432d2defd7ac84a');
-              console.log('Kakao SDK 초기화 완료');
-            } catch (error) {
-              console.error('Kakao 초기화 실패:', error);
-              setSdkError(true);
-              setIsLoading(false);
-              return;
-            }
-          }
-          
-          setIsInitialized(true);
-          setIsLoading(false);
-        }
-      }, 100);
-
-      setTimeout(() => {
-        if (!window.Kakao) {
-          clearInterval(checkKakaoLoaded);
-          console.error('Kakao SDK 로드 타임아웃');
-          setSdkError(true);
-          setIsLoading(false);
-        }
-      }, 5000);
-    };
-
-    initializeKakao();
-  }, []);
-
-  const handleLogin = async () => {
-    if (!window.Kakao || !window.Kakao.Auth || !window.Kakao.Auth.login) {
-      console.error('Kakao.Auth.login이 없습니다.');
-      alert('카카오 로그인 기능을 사용할 수 없습니다. 페이지를 새로고침해주세요.');
-      return;
-    }
-
-    try {
-      window.Kakao.Auth.login({
-        success: async () => {
-          console.log('카카오 로그인 성공');
-          
-          const kakaoAccessToken = window.Kakao.Auth.getAccessToken();
-          
-          if (!kakaoAccessToken) {
-            alert('카카오 토큰을 가져올 수 없습니다.');
-            return;
-          }
-
-          try {
-            const response = await loginWithKakao(kakaoAccessToken);
-            
-            saveTokens(response.accessToken, response.refreshToken);
-            
-            const userData: User = {
-              memberId: response.memberId,
-              nickname: response.nickname,
-              profileImageUrl: response.profileImageUrl,
-              isNewUser: response.isNewUser,
-            };
-            
-            setUser(userData);
-            onLogin(userData);
-            
-            if (response.isNewUser) {
-              console.log('신규 사용자입니다!');
-            }
-          } catch (error) {
-            console.error('백엔드 로그인 실패:', error);
-            alert('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
-          }
-        },
-        fail: (error: KakaoError) => {
-          console.error('카카오 로그인 실패:', error);
-          alert('로그인에 실패했습니다. 다시 시도해주세요.');
-        },
-      });
-    } catch (error) {
-      console.error('로그인 호출 중 에러:', error);
-      alert('로그인 중 오류가 발생했습니다.');
-    }
-  };
 
   const handleLogout = async () => {
-    if (!window.Kakao || !window.Kakao.Auth) {
-      return;
-    }
-
     try {
-      // 1. 백엔드 로그아웃 API 호출
       await logoutFromBackend();
-      
-      // 2. 카카오 SDK 로그아웃
-      window.Kakao.Auth.logout(() => {
-        console.log('카카오 로그아웃 완료');
-      });
-      
-      // 3. 로컬 스토리지에서 JWT 토큰 삭제
       clearTokens();
-      
-      // 4. 상태 초기화
-      setUser(null);
       onLogout();
-      
       console.log('로그아웃 완료');
     } catch (error) {
       console.error('로그아웃 실패:', error);
-      
-      // 에러가 나도 로컬 정보는 삭제
       clearTokens();
-      setUser(null);
       onLogout();
-      
-      alert('로그아웃 처리 중 오류가 발생했습니다.');
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-4">
-        <div className="text-sm text-gray-500">로딩 중...</div>
-      </div>
-    );
-  }
-
-  if (sdkError || !isInitialized) {
-    return (
-      <div className="flex flex-col items-center justify-center p-4 gap-2">
-        <div className="text-sm text-red-500">카카오 SDK 로드 실패</div>
-        <button
-          onClick={() => window.location.reload()}
-          className="text-xs text-blue-500 underline"
-        >
-          새로고침
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col items-center gap-4 w-full px-4">

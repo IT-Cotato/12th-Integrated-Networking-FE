@@ -13,7 +13,6 @@ export interface BackendLoginResponse {
   profileImageUrl: string;
 }
 
-// 백엔드 장소 정보
 export interface BackendLocation {
   id: number;
   placeName: string;
@@ -25,13 +24,11 @@ export interface BackendLocation {
   modifiedAt: string;
 }
 
-// ✅ 추가: 장소 목록 조회 응답
 export interface GetLocationsResponse {
   places: BackendLocation[];
   count: number;
 }
 
-// 장소 추가 요청 데이터
 export interface AddLocationRequest {
   placeName: string;
   latitude: number;
@@ -42,10 +39,19 @@ export interface AddLocationRequest {
 
 // ========== 인증 관련 API ==========
 
-// 카카오 로그인
-export const loginWithKakao = async (kakaoAccessToken: string): Promise<BackendLoginResponse> => {
+// ✅ 수정: Authorization Code로 로그인
+export const loginWithKakaoCode = async (
+  authorizationCode: string,
+  redirectUri: string
+): Promise<BackendLoginResponse> => {
+  console.log('=== 백엔드로 전송할 데이터 ===');
+  console.log('authorizationCode:', authorizationCode);
+  console.log('redirectUri:', redirectUri);
+  console.log('API baseURL:', api.defaults.baseURL);
+  
   const response = await api.post('/api/auth/kakao/login', {
-    accessToken: kakaoAccessToken,
+    authorizationCode,
+    redirectUri,
   });
   return response.data;
 };
@@ -57,19 +63,16 @@ export const logoutFromBackend = async (): Promise<void> => {
 
 // ========== 장소 관련 API ==========
 
-// ✅ 수정: 장소 목록 조회 - places 배열 반환
 export const getLocations = async (): Promise<BackendLocation[]> => {
   const response = await api.get<GetLocationsResponse>('/api/locations');
-  return response.data.places; // places 배열만 반환
+  return response.data.places;
 };
 
-// 장소 추가
 export const addLocation = async (locationData: AddLocationRequest): Promise<BackendLocation> => {
   const response = await api.post('/api/locations', locationData);
   return response.data;
 };
 
-// 장소 삭제
 export const deleteLocation = async (locationId: number): Promise<void> => {
   await api.delete(`/api/locations/${locationId}`);
 };

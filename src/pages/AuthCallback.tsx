@@ -1,11 +1,8 @@
-import { StrictMode, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import './index.css';
-import App from './App.tsx';
-import { loginWithKakaoCode, saveTokens } from './services/AuthService';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginWithKakaoCode, saveTokens } from '../services/AuthService';
 
-function AuthCallback() {
+export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,12 +17,8 @@ function AuthCallback() {
       }
 
       try {
-        // 고정된 redirectUri 사용
+        // 직접 값 사용
         const redirectUri = 'http://localhost:5173/oauth/callback';
-        
-        console.log('Code:', code);
-        console.log('Redirect URI:', redirectUri);
-        
         const response = await loginWithKakaoCode(code, redirectUri);
 
         saveTokens(response.accessToken, response.refreshToken);
@@ -47,22 +40,3 @@ function AuthCallback() {
     </div>
   );
 }
-
-export function Root() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/oauth/callback" element={<AuthCallback />} />
-        <Route path="/oauth/kakao/callback" element={<AuthCallback />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Root />
-  </StrictMode>,
-);
