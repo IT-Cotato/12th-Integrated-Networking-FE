@@ -13,7 +13,7 @@ export default function App() {
   return (
     <div className="App flex">
       <Sidebar />
-      <main className="flex-grow p-8 flex flex-col gap-3">
+      <main className="pl-[200px] h-screen grow p-8 flex flex-col gap-3">
         {isLocationSelected ? (
           <>
             <WeatherPanel />
@@ -25,7 +25,7 @@ export default function App() {
             <img
               src="/Day Clouds.svg"
               alt="선택된 위치 없음"
-              className="w-[320px] h-[320px] mb-6"
+              className="w-[320px] h-80 mb-6"
             />
             <div className="font-bold text-[36px] text-gray-700">
               아직 선택된 위치가 없습니다!

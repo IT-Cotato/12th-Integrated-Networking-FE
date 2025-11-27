@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import LocationListItem from './LocationListItem';
-import AddLocationModal from '../Modal/AddLocationModal';
-import DeleteLocationModal from '../Modal/DeleteLocationModal';
-import { useLocationStore } from '../../stores/locationStore';
+import { useState, useEffect } from "react";
+import LocationListItem from "./LocationListItem";
+import AddLocationModal from "../Modal/AddLocationModal";
+import DeleteLocationModal from "../Modal/DeleteLocationModal";
+import { useLocationStore } from "../../stores/locationStore";
 
 export default function Sidebar() {
   const {
@@ -16,7 +16,9 @@ export default function Sidebar() {
   } = useLocationStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [locationIdToDelete, setLocationIdToDelete] = useState<number | null>(null);
+  const [locationIdToDelete, setLocationIdToDelete] = useState<number | null>(
+    null
+  );
 
   // 위치 목록 조회
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Sidebar() {
         </div>
 
         {/* 추가하기 */}
-        <div 
+        <div
           className="flex items-center gap-4 cursor-pointer"
           onClick={() => setIsAddModalOpen(true)}
         >
@@ -46,7 +48,9 @@ export default function Sidebar() {
           {isLoading ? (
             <div className="text-center text-gray-500 py-4">로딩 중...</div>
           ) : locations.length === 0 ? (
-            <div className="text-center text-gray-500 py-4">위치 목록이 없습니다.</div>
+            <div className="text-center text-gray-500 py-4">
+              위치 목록이 없습니다.
+            </div>
           ) : (
             locations.map((location) => (
               <LocationListItem
@@ -76,9 +80,9 @@ export default function Sidebar() {
       </div>
 
       {/* 위치 추가 모달 */}
-      <AddLocationModal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
+      <AddLocationModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
       />
 
       {/* 위치 삭제 모달 */}
