@@ -2,12 +2,7 @@
 
 import CheckIcon from "@/assets/icons/check.svg";
 
-type SearchResult = {
-  name: string;
-  address: string;
-  lat: number;
-  lng: number;
-};
+import type { SearchResult } from "@/types/search";
 
 type SearchResultsProps = {
   results: SearchResult[];
@@ -30,19 +25,15 @@ export default function SearchResults({
             key={`${item.name}-${item.lat}-${item.lng}`}
             type="button"
             onClick={() => onSelect(index, item)}
-            className={`flex w-full flex-col items-start gap-1 px-3 py-2 text-left text-sm transition-colors ${index !== results.length - 1 ? "border-gray-40 border-b" : ""} `}
+            className="border-gray-40 w-full border-b px-4 py-3 text-left"
           >
-            <div className="flex w-full items-center justify-between">
+            <div className="flex items-center justify-between">
               <div>
                 <div className="text-gray-60 font-medium">{item.name}</div>
                 <div className="text-gray-40 text-xs">{item.address}</div>
               </div>
 
-              {isSelected && (
-                <span className="text-base text-emerald-500">
-                  <CheckIcon />
-                </span>
-              )}
+              {isSelected && <CheckIcon className="text-gray-60 h-4 w-4" />}
             </div>
           </button>
         );

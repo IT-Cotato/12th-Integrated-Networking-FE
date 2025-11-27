@@ -6,12 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { searchPlaces } from "@/apis/kakao";
 
-export type SearchResult = {
-  name: string;
-  address: string;
-  lat: number;
-  lng: number;
-};
+import type { SearchResult } from "@/types/search";
 
 export function useAddLocationModal(
   onSubmit: (location: {
