@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import WeatherPanel from "./components/WeatherPanel/WeatherPanel";
 import { useLocationStore } from "./stores/locationStore";
 import { HourlyForecast } from "./components/HourlyForecast/HourlyForecast";
+import WeeklyForecast from "./components/WeeklyForecast/WeeklyForecast";
 
 export default function App() {
   const selectedLocation = useLocationStore((state) =>
@@ -17,6 +18,7 @@ export default function App() {
           <>
             <WeatherPanel />
             <HourlyForecast />
+            <WeeklyForecast />
           </>
         ) : (
           <div className="flex flex-col items-center justify-center h-full pt-20">
