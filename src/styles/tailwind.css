@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-red: #ff3232;
+  --color-coral: #ffcccc;
+  --color-blue: #32a1ff;
+  --color-skyblue: #cce8ff;
+  --color-yellow: #ffc532;
+  --color-lime: #f6ffcc;
+  --color-green: #32ff35;
+  --color-mint: #ceffcc;
+  --color-purple: #7645e6;
+  --color-gray-100: #000000;
+  --color-gray-60: #292e2e;
+  --color-gray-40: #a4a4a4;
+  --color-gray-20: #d6d6d6;
+  --color-gray-10: #f2f2f2;
+  --color-gray-5: #f6f6f6;
+  --color-gray-0: #ffffff;
+}
+
+@layer base {
+  html {
+    font-family: Pretendard, Helvetica, sans-serif;
+  }
+}
+
+@layer components {
+  .login-card {
+    @apply inline-flex flex-col  w-[30vw] min-w-[250px]  aspect-4/5 items-center justify-center gap-12 px-[4.5vw] py-[5vh] relative  bg-white rounded-4xl shadow-[0px_0px_8px_2px_#0000001a];
+  }
+
+  .login-logo {
+    @apply inline-flex flex-col items-center gap-6 relative flex-[0_0_auto];
+  }
+  .login-logo-image {
+    @apply w-[40%] aspect-square max-w-[900px]  min-w-[100px];
+  }
+  .login-logo-title {
+    @apply relative w-fit text-center font-['Pretendard-SemiBold',Helvetica] font-semibold text-gray-60 text-lg sm:text-xl md:text-2xl lg:text-3xl min-w-[200px] tracking-[0] leading-[normal] whitespace-nowrap;
+  }
+
+  .login-input-container {
+    @apply flex flex-col items-start gap-8 relative self-stretch w-full flex-[0_0_auto];
+  }
+  .login-input-inputs {
+    @apply flex flex-col items-center gap-7 relative self-stretch w-full flex-[0_0_auto];
+  }
+  .login-input-box {
+    @apply flex items-center gap-2.5 px-0 py-3 relative self-stretch w-full min-w-8 flex-[0_0_auto] border-b-2 [border-bottom-style:solid] border-gray-40;
+  }
+  .login-input-placeholder {
+    @apply relative w-fit -mt-0.5 font-['Pretendard-Regular',Helvetica] font-normal text-gray-40 text-base sm:text-lg md:text-xl lg:text-xl min-w-[200px] tracking-[0] leading-[normal] whitespace-nowrap;
+  }
+
+  .login-button-box {
+    @apply flex items-center justify-center gap-2.5 px-11 py-4 relative self-stretch bg-purple flex-[0_0_auto] rounded-2xl min-h-12;
+  }
+  .login-button-text {
+    @apply relative w-fit -mt-px font-['Pretendard-SemiBold',Helvetica] font-semibold text-white text-lg sm:text-lg md:text-2xl tracking-[0] leading-[normal] whitespace-nowrap;
+  }
+}
+
+@layer components {
+  .delete-card {
+    @apply inline-flex flex-col items-center gap-6 px-[108px] py-9 bg-gray-0 rounded-2xl shadow-[4px_4px_4px_3px_#0000002a] overflow-hidden justify-center relative;
+  }
+  .title {
+    @apply font-['Pretendard-Bold',Helvetica] font-bold text-gray-60 text-[32px] relative w-fit -mt-px tracking-[0] leading-[normal] whitespace-nowrap;
+  }
+  .logo {
+    @apply h-40 w-40;
+  }
+  .button-container {
+    @apply flex items-start gap-4 self-stretch w-full flex-[0_0_auto] justify-center relative;
+  }
+  .button-no {
+    @apply bg-gray-0 h-10 border border-solid border-gray-60 inline-flex items-center justify-center px-6 py-1.5 relative flex-[0_0_auto] rounded-md;
+  }
+  .button-text-no {
+    @apply font-semibold text-gray-60 text-xl relative w-fit -mt-px tracking-[0] leading-normal whitespace-nowrap font-['Pretendard-SemiBold',Helvetica];
+  }
+  .button-yes {
+    @apply bg-gray-60 h-10 border border-solid border-gray-60 inline-flex items-center justify-center px-6 py-1.5 relative flex-[0_0_auto] rounded-md;
+  }
+  .button-text-yes {
+    @apply font-semibold text-gray-0 text-xl relative w-fit -mt-px tracking-[0] leading-[normal] whitespace-nowrap font-['Pretendard-SemiBold',Helvetica];
+  }
+}
+
+@layer components {
+  .add-card {
+    @apply px-16 py-9 relative bg-gray-0 rounded-2xl shadow-[4px_4px_4px_3px_rgba(0,0,0,0.25)] inline-flex flex-col justify-start items-start gap-12 overflow-hidden;
+  }
+  .multiply {
+    @apply absolute top-4 right-4 w-6 h-6 aspect-[1];
+  }
+  .add-logo {
+    @apply w-[480px] inline-flex justify-start items-center gap-4 overflow-hidden;
+  }
+  .add-logo-image {
+    @apply w-20 h-20 left-0 top-0 relative;
+  }
+  .add-logo-title {
+    @apply justify-start text-gray-60 text-3xl font-bold font-['Pretendard'];
+  }
+  .title-input-container {
+    @apply self-stretch flex flex-col justify-start items-start gap-2;
+  }
+  .title-text {
+    @apply justify-start text-gray-60 text-2xl font-semibold font-['Pretendard'];
+  }
+  .input {
+    @apply self-stretch px-2 py-1 border-b border-gray-60 inline-flex justify-between items-center overflow-hidden;
+  }
+  .location-container {
+    @apply self-stretch h-60 px-4 py-2 rounded-lg outline-1 -outline-offset-1 outline-gray-40 flex flex-col justify-start items-start gap-4 overflow-auto;
+  }
+  .location-item {
+    @apply self-stretch px-3 py-2 relative border-b border-gray-40 flex flex-col justify-start items-start gap-1;
+  }
+  .location-item-title {
+    @apply self-stretch justify-start text-gray-100 text-base font-medium font-['Pretendard'];
+  }
+  .location-item-detail {
+    @apply self-stretch justify-start text-gray-40 text-xs font-normal font-['Pretendard'];
+  }
+  .location-item-check {
+    @apply w-9 h-9 left-[404px] top-[9.50px] absolute;
+  }
+  .okbutton-container {
+    @apply self-stretch inline-flex justify-end items-end overflow-hidden;
+  }
+  .okbutton {
+    @apply px-7 py-1.5 bg-gray-60 rounded-md flex justify-center items-center;
+  }
+  .okbutton-text {
+    @apply justify-start text-gray-0 text-xl font-semibold font-['Pretendard'];
+  }
+}

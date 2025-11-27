@@ -1,0 +1,88 @@
+import type {
+  TodayWeather,
+  HourlyWeather,
+  WeeklyWeather,
+} from "../types/weather";
+
+export const mockToday: TodayWeather = {
+  locationName: "롯데월드",
+  date: "4월 26일",
+  temperature: 12.2,
+  feelsLike: 9.0,
+  humidity: 48,
+  windSpeed: 0.4,
+  status: "야간 / 흐림",
+  icon: "Night-Clouds",
+  fineDust: "좋음",
+  ultraFineDust: "보통",
+  uv: "위험",
+  sunrise: "05:44",
+};
+
+export const mockHourly: HourlyWeather[] = [
+  { time: "03시", temp: 8, icon: "Night-Clouds", status: "흐림" },
+  { time: "04시", temp: 9, icon: "Night-Clouds", status: "흐림" },
+  { time: "05시", temp: 10, icon: "Night-Clouds", status: "흐림" },
+  { time: "06시", temp: 8, icon: "Night-Clouds", status: "흐림" },
+  { time: "07시", temp: 6, icon: "Day-Sun", status: "맑음" },
+  { time: "08시", temp: 12, icon: "Day-Sun", status: "맑음" },
+  { time: "09시", temp: 20, icon: "Day-Sun", status: "맑음" },
+  { time: "10시", temp: 8, icon: "Day-Sun", status: "맑음" },
+  { time: "11시", temp: 8, icon: "Day-Sun", status: "맑음" },
+  { time: "12시", temp: 8, icon: "Day-Sun", status: "맑음" },
+  { time: "13시", temp: 8, icon: "Day-Sun", status: "맑음" },
+  { time: "14시", temp: 8, icon: "Day-Sun", status: "맑음" },
+];
+
+export const mockWeekly: WeeklyWeather[] = [
+  {
+    dayLabel: "오늘",
+    date: "4.26",
+    amIcon: "Day-Sun",
+    pmIcon: "Night-Rain",
+    amRain: 10,
+    pmRain: 10,
+    amTemp: 8,
+    pmTemp: 19,
+  },
+  {
+    dayLabel: "일",
+    date: "4.27",
+    amIcon: "Day-Clouds",
+    pmIcon: "Night-Rain",
+    amRain: 0,
+    pmRain: 20,
+    amTemp: 8,
+    pmTemp: 20,
+  },
+  {
+    dayLabel: "월",
+    date: "4.28",
+    amIcon: "Day-Sun",
+    pmIcon: "Night-Rain",
+    amRain: 0,
+    pmRain: 40,
+    amTemp: 8,
+    pmTemp: 19,
+  },
+  {
+    dayLabel: "화",
+    date: "4.29",
+    amIcon: "Day-Sun",
+    pmIcon: "Night-Clouds",
+    amRain: 10,
+    pmRain: 10,
+    amTemp: 12,
+    pmTemp: 20,
+  },
+  {
+    dayLabel: "수",
+    date: "4.30",
+    amIcon: "Day-Sun",
+    pmIcon: "Night-Clouds",
+    amRain: 10,
+    pmRain: 10,
+    amTemp: 12,
+    pmTemp: 22,
+  },
+];
