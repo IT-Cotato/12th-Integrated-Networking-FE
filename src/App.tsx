@@ -13,19 +13,19 @@ import MainWeatherPanel from "./components/MainWeatherPanel/MainWeatherPanel";
 import WeeklyForecastPanel from "./components/WeeklyForecast/WeeklyForecast";
 import HourlyWeatherPanel from "./components/HourlyForecast/HourlyForecast";
 
-import { 
-  getLocations, 
-  addLocation as addLocationToBackend, 
+import {
+  getLocations,
+  addLocation as addLocationToBackend,
   deleteLocation as deleteLocationFromBackend,
   type BackendLocation,
-  getAccessToken
+  getAccessToken,
 } from "./services/AuthService";
 
 interface Location {
   id: string;
   name: string;
   lat: number;
-  lng: number;
+  log: number;
 }
 
 export default function App() {
@@ -42,7 +42,7 @@ export default function App() {
     id: String(backendLoc.id),
     name: backendLoc.placeName,
     lat: backendLoc.latitude,
-    lng: backendLoc.longitude,
+    log: backendLoc.longitude,
   });
 
   const loadUserLocations = async () => {
@@ -51,9 +51,9 @@ export default function App() {
       const backendLocations = await getLocations();
       const convertedLocations = backendLocations.map(convertBackendLocation);
       setLocations(convertedLocations);
-      console.log('위치 목록 불러오기 성공:', convertedLocations);
+      console.log("위치 목록 불러오기 성공:", convertedLocations);
     } catch (error) {
-      console.error('위치 목록 불러오기 실패:', error);
+      console.error("위치 목록 불러오기 실패:", error);
     } finally {
       setIsLoadingLocations(false);
     }
@@ -67,14 +67,14 @@ export default function App() {
           await loadUserLocations();
           setUser({
             memberId: 0,
-            nickname: '사용자',
-            profileImageUrl: '',
+            nickname: "사용자",
+            profileImageUrl: "",
             isNewUser: false,
           });
         } catch (error) {
-          console.error('자동 로그인 실패:', error);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          console.error("자동 로그인 실패:", error);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
         }
       }
       setIsCheckingAuth(false);
@@ -87,7 +87,7 @@ export default function App() {
     setUser(null);
     setLocations([]);
     setSelectedLocation(null);
-    console.log('로그아웃');
+    console.log("로그아웃");
   };
 
   const handleLocationClick = (id: string) => {
@@ -108,10 +108,10 @@ export default function App() {
         if (selectedLocation === locationToDelete) {
           setSelectedLocation(null);
         }
-        console.log('위치 삭제 성공');
+        console.log("위치 삭제 성공");
       } catch (error) {
-        console.error('위치 삭제 실패:', error);
-        alert('위치 삭제에 실패했습니다.');
+        console.error("위치 삭제 실패:", error);
+        alert("위치 삭제에 실패했습니다.");
       }
     }
     setShowDeleteModal(false);
@@ -120,7 +120,7 @@ export default function App() {
 
   const handleAddLocation = async (place: KakaoPlace) => {
     if (!user) {
-      alert('로그인이 필요합니다.');
+      alert("로그인이 필요합니다.");
       return;
     }
 
@@ -135,12 +135,12 @@ export default function App() {
 
       const newLocation = convertBackendLocation(backendLocation);
       setLocations([...locations, newLocation]);
-      
-      console.log('위치 추가 성공:', newLocation);
+
+      console.log("위치 추가 성공:", newLocation);
       setShowAddModal(false);
     } catch (error) {
-      console.error('위치 추가 실패:', error);
-      alert('위치 추가에 실패했습니다.');
+      console.error("위치 추가 실패:", error);
+      alert("위치 추가에 실패했습니다.");
     }
   };
 
@@ -184,31 +184,38 @@ export default function App() {
       <main className="flex-1 overflow-auto">
         {selectedLocation ? (
           (() => {
-            const currentLocation = locations.find((loc) => loc.id === selectedLocation);
-            
+            const currentLocation = locations.find(
+              (loc) => loc.id === selectedLocation
+            );
+
             if (!currentLocation) return null;
-            
+
             return (
               <div className="w-full min-h-screen flex flex-col gap-6 p-10">
                 <MainWeatherPanel
                   lat={currentLocation.lat}
-                  lng={currentLocation.lng}
+                  log={currentLocation.log}
                   locationName={currentLocation.name}
                 />
-                <HourlyWeatherPanel 
+                <HourlyWeatherPanel
                   lat={currentLocation.lat}
-                  lng={currentLocation.lng}
+                  log={currentLocation.log}
                 />
-                <WeeklyForecastPanel 
+                <WeeklyForecastPanel
                   lat={currentLocation.lat}
-                  lng={currentLocation.lng}
+                  log={currentLocation.log}
                 />
               </div>
             );
           })()
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-black">
-            <img src="/Day Clouds.svg" width="240px" height="240px" alt="구름" />
+            <img
+              src="/Day Clouds.svg"
+              width="240px"
+              height="240px"
+              alt="구름"
+            />
             <p className="text-[36px] font-bold">
               아직 선택된 위치가 없습니다!
             </p>

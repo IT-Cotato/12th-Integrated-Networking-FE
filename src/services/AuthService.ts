@@ -127,14 +127,14 @@ export const deleteLocation = async (locationId: number): Promise<void> => {
 
 // ========== 날씨 관련 API ========== ⭐ 추가
 
-export const getWeather = async (latitude: number, longitude: number) => {
+export const getWeather = async (lat: number, lon: number) => {
   try {
     console.log("🌤️ 날씨 조회 시작");
-    console.log("위도:", latitude);
-    console.log("경도:", longitude);
+    console.log("위도:", lat);
+    console.log("경도:", lon);
 
     const response = await api.get("/api/weather", {
-      params: { latitude, longitude },
+      params: { lat, lon },
     });
 
     console.log("✅ 날씨 조회 성공:", response.data);

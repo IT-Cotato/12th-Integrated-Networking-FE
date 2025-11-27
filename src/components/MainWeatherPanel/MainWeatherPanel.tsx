@@ -14,20 +14,19 @@ import {
 import { WeatherIconMap } from "../../utils/WeatherIconMap";
 import DayCloud from "../../assets/icons/Day_Clouds.svg";
 import { getWeather } from "../../services/AuthService"; // ⭐ 추가
+import { mapWeatherStatus } from "../../utils/weatherStatusMapper";
 
 interface Props {
   lat: number;
-  lng: number;
+  log: number;
   locationName?: string;
 }
 
 // ⭐ AuthService 사용으로 변경
-const fetchWeather = async (lat: number, lng: number): Promise<WeatherInfo> => {
-  const res = await getWeather(lat, lng);
-
+const fetchWeather = async (lat: number, log: number): Promise<WeatherInfo> => {
+  const res = await getWeather(lat, log);
   const current = res.current;
 
-  // API Response → WeatherInfo 매핑
   return {
     location: current.location || "선택된 위치",
     apiDate: new Date().toISOString().split("T")[0],
@@ -41,7 +40,10 @@ const fetchWeather = async (lat: number, lng: number): Promise<WeatherInfo> => {
     humidity: parseInt(current.humidity),
     windDirection: current.windDirection,
     windSpeed: parseFloat(current.windSpeed),
-    status: current.skyCondition as WeatherInfo["status"],
+
+    // ⭐⭐⭐ 핵심: 여기! 백엔드 상태를 프론트 상태로 변환
+    status: mapWeatherStatus(current.skyCondition),
+
     isDaytime: current.timeOfDay === "주간",
     fineDust:
       current.pm10Grade === "좋음"
@@ -61,14 +63,14 @@ const fetchWeather = async (lat: number, lng: number): Promise<WeatherInfo> => {
   };
 };
 
-export default function MainWeatherPanel({ lat, lng, locationName }: Props) {
+export default function MainWeatherPanel({ lat, log, locationName }: Props) {
   const {
     data: weather,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["weather", lat, lng],
-    queryFn: () => fetchWeather(lat, lng),
+    queryKey: ["weather", lat, log],
+    queryFn: () => fetchWeather(lat, log),
     staleTime: 1000 * 60 * 5,
     retry: 2, // ⭐ 재시도 추가
   });

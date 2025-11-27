@@ -3,17 +3,17 @@ import axios from "axios";
 import type { HourlyForecast, HourlyApiResponse } from "../types/Weather";
 import { iconCodeMap } from "../utils/IconCodeMap";
 
-const BASE_URL = 'http://43.200.174.15:8080';
+const BASE_URL = "http://43.200.174.15:8080";
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
-export const useHourlyWeather = (lat: number, lng: number) => {
+export const useHourlyWeather = (lat: number, log: number) => {
   return useQuery({
-    queryKey: ["hourlyWeather", lat, lng],
+    queryKey: ["hourlyWeather", lat, log],
     queryFn: async (): Promise<HourlyForecast[]> => {
       const token = getAccessToken();
       const res = await axios.get(`${BASE_URL}/api/weather`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { latitude: lat, longitude: lng },
+        params: { lat, log },
       });
 
       const hourlyData: HourlyApiResponse[] = res.data.hourly;

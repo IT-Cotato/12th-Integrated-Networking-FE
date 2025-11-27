@@ -8,7 +8,7 @@ import { iconCodeMap } from "../../utils/IconCodeMap";
 
 interface Props {
   lat: number;
-  lng: number;
+  log: number;
 }
 
 interface ApiDaily {
@@ -22,7 +22,7 @@ interface ApiDaily {
   pmPrecipitationProb: string;
 }
 
-const BASE_URL = 'http://43.200.174.15:8080';
+const BASE_URL = "http://43.200.174.15:8080";
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
 const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {
@@ -43,17 +43,17 @@ const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {
   }));
 };
 
-export default function WeeklyForecastPanel({ lat, lng }: Props) {
+export default function WeeklyForecastPanel({ lat, log }: Props) {
   const {
     data: weekly,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["weeklyWeather", lat, lng],
+    queryKey: ["weeklyWeather", lat, log],
     queryFn: async () => {
       const token = getAccessToken();
       const res = await axios.get(`${BASE_URL}/api/weather`, {
-        params: { latitude: lat, longitude: lng },
+        params: { latitude: lat, longitude: log },
         headers: { Authorization: `Bearer ${token}` },
       });
       return mapDailyToWeekly(res.data.daily as ApiDaily[]);

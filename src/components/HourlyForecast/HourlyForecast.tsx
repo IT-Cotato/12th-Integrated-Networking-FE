@@ -4,11 +4,11 @@ import { LineChart, Line, XAxis } from "recharts";
 
 import type { HourlyForecast } from "../../types/Weather";
 import { WeatherIconMap } from "../../utils/WeatherIconMap";
-import { useHourlyWeather } from "../../Hooks/UseHourlyWeather";
+import { useHourlyWeather } from "../../hooks/UseHourlyWeather";
 
 interface Props {
   lat: number;
-  lng: number;
+  log: number;
 }
 
 const CENTER_GAP = 86;
@@ -91,8 +91,8 @@ function TimeItems({ hourly }: { hourly: HourlyForecast[] }) {
   );
 }
 
-export default function HourlyForecastPanel({ lat, lng }: Props) {
-  const { data: hourly, isLoading, error } = useHourlyWeather(lat, lng);
+export default function HourlyForecastPanel({ lat, log }: Props) {
+  const { data: hourly, isLoading, error } = useHourlyWeather(lat, log);
 
   if (isLoading)
     return (
