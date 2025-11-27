@@ -1,14 +1,13 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useRef } from "react"; // ⭐ useRef import
 import type { WeeklyForecast } from "../../types/Weather";
 import { getWeatherIcon } from "../../utils/GetWeatherIcon";
 import { iconCodeMap } from "../../utils/IconCodeMap";
 
 interface Props {
   lat: number;
-  log: number;
+  lon: number;
 }
 
 interface ApiDaily {
@@ -25,8 +24,8 @@ interface ApiDaily {
 const BASE_URL = "http://43.200.174.15:8080";
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
-const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {
-  return daily.map((day) => ({
+const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] =>
+  daily.map((day) => ({
     date: `${day.dayOfWeek} ${day.dateLabel}`,
     forecasts: {
       am: {
@@ -41,22 +40,33 @@ const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {
       },
     },
   }));
-};
 
-export default function WeeklyForecastPanel({ lat, log }: Props) {
+export default function WeeklyForecastPanel({ lat, lon }: Props) {
+  const isFetchingRef = useRef(false); // ⭐ 중복 요청 방지 플래그
+
   const {
     data: weekly,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["weeklyWeather", lat, log],
+    queryKey: ["weeklyWeather", lat, lon],
     queryFn: async () => {
-      const token = getAccessToken();
-      const res = await axios.get(`${BASE_URL}/api/weather`, {
-        params: { latitude: lat, longitude: log },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return mapDailyToWeekly(res.data.daily as ApiDaily[]);
+      if (isFetchingRef.current) {
+        console.log("⏳ 이미 요청 중, 중복 방지");
+        return []; // 이미 요청 중이면 빈 배열 반환
+      }
+      isFetchingRef.current = true;
+
+      try {
+        const token = getAccessToken();
+        const res = await axios.get(`${BASE_URL}/api/weather`, {
+          params: { lat: lat, lon: lon },
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return mapDailyToWeekly(res.data.daily as ApiDaily[]);
+      } finally {
+        isFetchingRef.current = false; // 요청 완료 후 플래그 해제
+      }
     },
     staleTime: 1000 * 60 * 5,
   });

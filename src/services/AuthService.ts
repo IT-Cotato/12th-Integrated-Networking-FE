@@ -16,8 +16,8 @@ export interface BackendLoginResponse {
 export interface BackendLocation {
   id: number;
   placeName: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   address: string;
   isPinned: boolean;
   createdAt: string;
@@ -31,8 +31,8 @@ export interface GetLocationsResponse {
 
 export interface AddLocationRequest {
   placeName: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lon: number;
   address: string;
   isPinned: boolean;
 }

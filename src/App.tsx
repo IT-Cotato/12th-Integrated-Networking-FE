@@ -25,7 +25,7 @@ interface Location {
   id: string;
   name: string;
   lat: number;
-  log: number;
+  lon: number;
 }
 
 export default function App() {
@@ -41,8 +41,8 @@ export default function App() {
   const convertBackendLocation = (backendLoc: BackendLocation): Location => ({
     id: String(backendLoc.id),
     name: backendLoc.placeName,
-    lat: backendLoc.latitude,
-    log: backendLoc.longitude,
+    lat: backendLoc.lat,
+    lon: backendLoc.lon,
   });
 
   const loadUserLocations = async () => {
@@ -127,8 +127,8 @@ export default function App() {
     try {
       const backendLocation = await addLocationToBackend({
         placeName: place.place_name,
-        latitude: parseFloat(place.y),
-        longitude: parseFloat(place.x),
+        lat: parseFloat(place.y),
+        lon: parseFloat(place.x),
         address: place.road_address_name || place.address_name,
         isPinned: false,
       });
@@ -194,16 +194,16 @@ export default function App() {
               <div className="w-full min-h-screen flex flex-col gap-6 p-10">
                 <MainWeatherPanel
                   lat={currentLocation.lat}
-                  log={currentLocation.log}
+                  lon={currentLocation.lon}
                   locationName={currentLocation.name}
                 />
                 <HourlyWeatherPanel
                   lat={currentLocation.lat}
-                  log={currentLocation.log}
+                  lon={currentLocation.lon}
                 />
                 <WeeklyForecastPanel
                   lat={currentLocation.lat}
-                  log={currentLocation.log}
+                  lon={currentLocation.lon}
                 />
               </div>
             );

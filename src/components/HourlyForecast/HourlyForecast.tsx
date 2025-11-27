@@ -8,7 +8,7 @@ import { useHourlyWeather } from "../../hooks/UseHourlyWeather";
 
 interface Props {
   lat: number;
-  log: number;
+  lon: number;
 }
 
 const CENTER_GAP = 86;
@@ -91,8 +91,8 @@ function TimeItems({ hourly }: { hourly: HourlyForecast[] }) {
   );
 }
 
-export default function HourlyForecastPanel({ lat, log }: Props) {
-  const { data: hourly, isLoading, error } = useHourlyWeather(lat, log);
+export default function HourlyForecastPanel({ lat, lon }: Props) {
+  const { data: hourly, isLoading, error } = useHourlyWeather(lat, lon);
 
   if (isLoading)
     return (
