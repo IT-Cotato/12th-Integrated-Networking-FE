@@ -24,6 +24,7 @@ export function useSidebar(initialLocations: Location[]) {
   // 🔹 초기 진입 시 INITIAL_LOCATIONS로 한 번만 채워주기
   useEffect(() => {
     if (locations.length === 0 && initialLocations.length > 0) {
+      // 내부에서 sortLocations 호출하니까 여기선 그대로 넣어주면 됨
       setLocations(initialLocations);
       setSelectedId(initialLocations[0].id);
     }
@@ -71,7 +72,7 @@ export function useSidebar(initialLocations: Location[]) {
     setSelectedId(newId);
   };
 
-  // 🔹 핀 토글 (로직은 store에 있음)
+  // 🔹 핀 토글 (정렬은 store 안에서 처리)
   const handleTogglePin = (id: string) => {
     togglePin(id);
   };
