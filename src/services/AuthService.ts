@@ -106,7 +106,7 @@ export const logoutFromBackend = async (): Promise<void> => {
 
 export const getLocations = async (): Promise<BackendLocation[]> => {
   const response = await api.get<GetLocationsResponse>(
-    "/api/cotato/backend/place/locations"
+    "/cotato/backend/place/locations"
   );
   return response.data.places;
 };
