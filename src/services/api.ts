@@ -7,8 +7,10 @@ import type {
   DeleteLocationResponse,
 } from "../types";
 
-// 프로덕션 환경: Vercel 서버리스 함수 프록시 사용 (api/[...path].ts)
-const API_BASE_URL = ""; // 빈 문자열로 상대 경로 사용
+// 개발 환경과 프로덕션 환경 모두 HTTPS 백엔드 서버로 직접 호출 (CORS 허용 필요)
+// .env 파일(로컬) 또는 Vercel 환경 변수(프로덕션)에 VITE_API_BASE_URL 설정 필요
+// 백엔드 CORS 설정에 http://localhost:5173 추가 필요
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 // axios 인스턴스 생성
 // TODO: 추후 로그인 구현 시 accessToken 헤더에 추가 필요
