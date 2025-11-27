@@ -20,7 +20,7 @@ export default function LocationList({
   onTogglePin,
 }: Props) {
   return (
-    <nav className="space-y-2">
+    <nav className="flex w-full flex-col gap-2">
       {locations.map(location => (
         <LocationListItem
           key={location.id}
@@ -33,7 +33,7 @@ export default function LocationList({
       ))}
 
       {locations.length === 0 && (
-        <div className="mt-4 text-xs text-gray-400">
+        <div className="text-xs text-gray-400">
           아직 등록된 위치가 없습니다.
         </div>
       )}

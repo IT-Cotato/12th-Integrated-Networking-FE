@@ -23,16 +23,18 @@ export default function Sidebar({
   onTogglePin,
 }: SidebarProps) {
   return (
-    <aside className="h-screen w-64 border-r border-gray-200 bg-white px-6 py-8">
+    <aside className="bg-gray-0 section-shadow flex h-[1200px] w-[248px] shrink-0 flex-col items-start gap-10 rounded-r-[48px] px-4 py-12">
       <SidebarHeader onClickAdd={onClickAdd} />
 
-      <LocationList
-        locations={locations}
-        selectedId={selectedId}
-        onSelect={onSelect}
-        onDelete={onClickDelete}
-        onTogglePin={onTogglePin}
-      />
+      <div className="w-full px-4">
+        <LocationList
+          locations={locations}
+          selectedId={selectedId}
+          onSelect={onSelect}
+          onDelete={onClickDelete}
+          onTogglePin={onTogglePin}
+        />
+      </div>
     </aside>
   );
 }
