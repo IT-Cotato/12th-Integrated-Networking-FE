@@ -66,7 +66,7 @@ export function useAddLocationModal(
 
   const handleConfirm = () => {
     if (!name || !lat || !lng) {
-      alert("장소 이름, 위도, 경도를 모두 선택해주세요.");
+      console.log("장소 이름, 위도, 경도를 모두 선택해주세요.");
       return;
     }
 
@@ -74,7 +74,8 @@ export function useAddLocationModal(
     const lngNum = Number(lng);
 
     if (Number.isNaN(latNum) || Number.isNaN(lngNum)) {
-      alert("위도/경도 형식이 잘못됐어요.");
+      // alert 대신 콘솔 에러 로그만 남기도록 변경
+      console.error("위도/경도 형식이 잘못되었습니다.", { lat, lng });
       return;
     }
 
