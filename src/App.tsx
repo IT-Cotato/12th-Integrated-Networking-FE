@@ -1,0 +1,41 @@
+import { Suspense, useState } from 'react';
+import type { Location } from '@/types/location';
+import { SelectedLocationContext } from './contexts/selected-location-context';
+import Sidebar from './components/Sidebar';
+import MainView from './components/main/main-view';
+import { WeatherSkeleton } from './components/main/skeleton/loading';
+
+function App() {
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null,
+  );
+
+  return (
+    <SelectedLocationContext
+      value={{
+        selectedLocation: selectedLocation,
+        selectLocation: setSelectedLocation,
+      }}
+    >
+      {/* <div className="bg-blue"> sdflsj</div> */}
+      <div className="bg-gray5 flex overflow-y-auto">
+        <Sidebar />
+
+        {selectedLocation != null ? (
+          <Suspense fallback={<WeatherSkeleton />}>
+            {' '}
+            <MainView />
+          </Suspense>
+        ) : (
+          <main className="flex w-full items-center justify-center">
+            <p className="text-7xl text-black">
+              사이드바에서 장소를 선택해주세요.
+            </p>
+          </main>
+        )}
+      </div>
+    </SelectedLocationContext>
+  );
+}
+
+export default App;
