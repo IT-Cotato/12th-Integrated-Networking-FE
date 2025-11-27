@@ -6,14 +6,14 @@ import { iconCodeMap } from "../utils/IconCodeMap";
 const BASE_URL = "http://43.200.174.15:8080";
 const getAccessToken = () => localStorage.getItem("accessToken") || "";
 
-export const useHourlyWeather = (lat: number, log: number) => {
+export const useHourlyWeather = (lat: number, lon: number) => {
   return useQuery({
-    queryKey: ["hourlyWeather", lat, log],
+    queryKey: ["hourlyWeather", lat, lon],
     queryFn: async (): Promise<HourlyForecast[]> => {
       const token = getAccessToken();
       const res = await axios.get(`${BASE_URL}/api/weather`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { lat, log },
+        params: { lat, lon },
       });
 
       const hourlyData: HourlyApiResponse[] = res.data.hourly;

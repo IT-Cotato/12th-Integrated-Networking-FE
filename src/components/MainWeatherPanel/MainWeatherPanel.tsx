@@ -18,13 +18,13 @@ import { mapWeatherStatus } from "../../utils/weatherStatusMapper";
 
 interface Props {
   lat: number;
-  log: number;
+  lon: number;
   locationName?: string;
 }
 
 // ⭐ AuthService 사용으로 변경
-const fetchWeather = async (lat: number, log: number): Promise<WeatherInfo> => {
-  const res = await getWeather(lat, log);
+const fetchWeather = async (lat: number, lon: number): Promise<WeatherInfo> => {
+  const res = await getWeather(lat, lon);
   const current = res.current;
 
   return {
@@ -63,14 +63,14 @@ const fetchWeather = async (lat: number, log: number): Promise<WeatherInfo> => {
   };
 };
 
-export default function MainWeatherPanel({ lat, log, locationName }: Props) {
+export default function MainWeatherPanel({ lat, lon, locationName }: Props) {
   const {
     data: weather,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["weather", lat, log],
-    queryFn: () => fetchWeather(lat, log),
+    queryKey: ["weather", lat, lon],
+    queryFn: () => fetchWeather(lat, lon),
     staleTime: 1000 * 60 * 5,
     retry: 2, // ⭐ 재시도 추가
   });

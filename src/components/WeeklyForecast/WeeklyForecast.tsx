@@ -8,7 +8,7 @@ import { iconCodeMap } from "../../utils/IconCodeMap";
 
 interface Props {
   lat: number;
-  log: number;
+  lon: number;
 }
 
 interface ApiDaily {
@@ -43,19 +43,23 @@ const mapDailyToWeekly = (daily: ApiDaily[]): WeeklyForecast[] => {
   }));
 };
 
-export default function WeeklyForecastPanel({ lat, log }: Props) {
+export default function WeeklyForecastPanel({ lat, lon }: Props) {
   const {
     data: weekly,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["weeklyWeather", lat, log],
+    queryKey: ["weeklyWeather", lat, lon],
     queryFn: async () => {
       const token = getAccessToken();
+      console.log("사용 토큰:", token); // ✅ 토큰 확인
+      console.log("요청 파라미터:", { latitude: lat, longitude: lon }); // ✅ 파라미터 확인
+
       const res = await axios.get(`${BASE_URL}/api/weather`, {
-        params: { latitude: lat, longitude: log },
+        params: { lat: lat, lon: lon },
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log("API 데이터:", res.data);
       return mapDailyToWeekly(res.data.daily as ApiDaily[]);
     },
     staleTime: 1000 * 60 * 5,
