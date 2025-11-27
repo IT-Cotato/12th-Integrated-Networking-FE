@@ -41,8 +41,8 @@ export default function App() {
   const convertBackendLocation = (backendLoc: BackendLocation): Location => ({
     id: String(backendLoc.id),
     name: backendLoc.placeName,
-    lat: backendLoc.lat,
-    lon: backendLoc.lon,
+    lat: backendLoc.latitude,
+    lon: backendLoc.longitude,
   });
 
   const loadUserLocations = async () => {
@@ -127,8 +127,8 @@ export default function App() {
     try {
       const backendLocation = await addLocationToBackend({
         placeName: place.place_name,
-        lat: parseFloat(place.y),
-        lon: parseFloat(place.x),
+        latitude: parseFloat(place.y),
+        longitude: parseFloat(place.x),
         address: place.road_address_name || place.address_name,
         isPinned: false,
       });
