@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 
 import "@/styles/globals.css";
 
+import ReactQueryProvider from "./ReactQueryProvider";
+
 const pretendard = localFont({
   src: "../assets/fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
@@ -25,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={pretendard.variable}>
-      <body className={pretendard.className}>{children}</body>
+      <body className={pretendard.className}>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+      </body>
     </html>
   );
 }
