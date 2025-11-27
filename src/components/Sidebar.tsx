@@ -9,10 +9,22 @@ import { fetchLocation, fetchLocations, deleteLocation, createLocation } from '@
 export default function Sidebar() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pinnedIds, setPinnedIds] = useState<string[]>([]);
+  const [pinnedReady, setPinnedReady] = useState(false);
+
+  useEffect(() => {
+  const saved = window.localStorage.getItem('pinned-location-ids');
+  if (saved) {
+    setPinnedIds(JSON.parse(saved));
+  }
+  setPinnedReady(true); // 읽기 끝났다고 표시
+}, []);
 
   const userId = 1;
 
-   useEffect(() => {
+  useEffect(() => {
+  if (!pinnedReady) return;
+
     const load = async () => {
       try {
         const data = await fetchLocations(userId);
@@ -24,17 +36,21 @@ export default function Sidebar() {
           address: '',        
           x: String(item.longitude),
           y: String(item.latitude),
-          isFixed: false,   
+          isFixed: pinnedIds.includes(String(item.id)),   
         }));
 
-        setLocations(mapped);
+        const sorted = [...mapped].sort((a,b) =>{
+          if(a.isFixed === b.isFixed) return a.name.localeCompare(b.name);
+          return a.isFixed? -1:1;
+        });
+        setLocations(sorted);
       } catch (e) {
         console.error(e);
       }
     };
 
     load();
-  }, [userId]);
+  }, [userId, pinnedReady, pinnedIds]);
 
   const handleAddLocation = async (place: {
     id: string;
@@ -85,6 +101,10 @@ export default function Sidebar() {
   }
 };
 
+  useEffect(() => {
+    window.localStorage.setItem('pinned-location-ids', JSON.stringify(pinnedIds));
+  }, [pinnedIds]);
+
   // 핀 버튼 클릭 시 고정/비고정 상태를 토글
   const handleTogglePin = (id: string) => {
   setLocations((locs) => {
@@ -92,15 +112,15 @@ export default function Sidebar() {
       loc.id === id ? { ...loc, isFixed: !loc.isFixed } : loc
     );
 
-  const sorted = [...updated].sort((a,b) =>{
-    if(a.isFixed === b.isFixed){
-      return a.name.localeCompare(b.name);
-    }
-    return a.isFixed? -1:1;
-  });
+  const sorted = [...updated].sort((a, b) => {
+      if (a.isFixed === b.isFixed) return a.name.localeCompare(b.name);
+      return a.isFixed ? -1 : 1;
+    });
 
   return sorted;
 });
+  setPinnedIds((prev) =>
+    prev.includes(id) ? prev.filter((x) => x!== id) : [...prev,id])
 };
 
   // useContext 훅은 컴포넌트 함수 안에서 실행!
@@ -185,7 +205,7 @@ export default function Sidebar() {
                   className="mr-3 ml-2 h-6 w-6"
                 />
               </button>
-              <span className="truncate w-[120px] bloc flex-1 text-[16px] leading-5 font-medium">
+              <span className="truncate w-[248px] bloc flex-1 text-[16px] leading-5 font-medium">
                 {loc.name}
               </span>
               {/* hover 시 trash 노출 */}
