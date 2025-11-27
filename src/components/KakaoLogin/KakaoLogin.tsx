@@ -11,10 +11,9 @@ interface KakaoLoginProps {
 
 export default function KakaoLogin({ user, onLogout }: KakaoLoginProps) {
   const handleLogin = () => {
-  const KAKAO_REST_API_KEY = '9bfed80dcead19c576f1dfbb138a508b';
-  const REDIRECT_URI = 'http://localhost:5173/oauth/callback'; // ✅ 정확히 일치
-  
-  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  //const KAKAO_REST_API_KEY = 'd2ffdfaa297012904086e71f5d7eda1f';
+  //const REDIRECT_URI = 'http://localhost:5173/oauth/kakao/callback'; // ✅ 정확히 일치
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=d2ffdfaa297012904086e71f5d7eda1f&redirect_uri=http://localhost:5173/oauth/kakao/callback&response_type=code `;
   window.location.href = kakaoAuthUrl;
 };
 

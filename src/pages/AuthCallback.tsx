@@ -18,7 +18,7 @@ export default function AuthCallback() {
 
       try {
         // 직접 값 사용
-        const redirectUri = 'http://localhost:5173/oauth/callback';
+        const redirectUri = 'http://localhost:5173/oauth/kakao/callback';
         const response = await loginWithKakaoCode(code, redirectUri);
 
         saveTokens(response.accessToken, response.refreshToken);
