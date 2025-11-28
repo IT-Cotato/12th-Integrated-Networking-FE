@@ -30,11 +30,10 @@ const fetchWeather = async (lat: number, lon: number): Promise<WeatherInfo> => {
   return {
     location: current.location || "선택된 위치",
     apiDate: new Date().toISOString().split("T")[0],
-    displayDate:
-      new Date().toLocaleDateString("ko-KR", {
-        month: "numeric",
-        day: "numeric",
-      }) + "일",
+    displayDate: new Date().toLocaleDateString("ko-KR", {
+      month: "long",
+      day: "numeric",
+    }),
     temperature: parseFloat(current.temperature),
     feelsLike: parseFloat(current.feelsLike),
     humidity: parseInt(current.humidity),
